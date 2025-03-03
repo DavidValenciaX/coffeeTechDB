@@ -137,7 +137,7 @@ CREATE TABLE transaction (
     transaction_type_id integer NOT NULL,
     transaction_date date NOT NULL,
     status_id integer NOT NULL,
-    value bigint NOT NULL,
+    value numeric(15, 2) NOT NULL,
     transaction_category_id integer NOT NULL,
     creador_id integer
 );
@@ -180,7 +180,7 @@ CREATE TABLE users (
     email character varying(150) NOT NULL UNIQUE,
     password_hash character varying(255) NOT NULL,
     verification_token character varying(255),
-    session_token character varying(50),
+    session_token character varying(255),
     status_id integer NOT NULL,
     fcm_token character varying(255)
 );
