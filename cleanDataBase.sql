@@ -383,7 +383,7 @@ CREATE TABLE IF NOT EXISTS audit.plot_audit (
     farm_id INTEGER,
     status_id INTEGER,
     operation CHAR(1) NOT NULL,
-    user_id VARCHAR(50),
+    user_id INTEGER,
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -573,11 +573,11 @@ CREATE OR REPLACE FUNCTION log_plot_changes() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
 DECLARE
-    val_user_id TEXT;
+    val_user_id INTEGER;
 BEGIN
     -- Get current user ID from session if available
     BEGIN
-        val_user_id := current_setting('app.current_user', true);
+        val_user_id := NULLIF(current_setting('app.current_user', true), '')::INTEGER;
     EXCEPTION
         WHEN OTHERS THEN
             val_user_id := NULL;
