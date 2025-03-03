@@ -181,76 +181,76 @@ CREATE TABLE users (
 );
 
 ALTER TABLE ONLY cultural_work_tasks
-    ADD CONSTRAINT fk_cultural_work_tasks_cultural_works FOREIGN KEY (cultural_works_id) REFERENCES cultural_works(cultural_works_id) ON UPDATE CASCADE;
+    ADD CONSTRAINT fk_cultural_work_tasks_cultural_works FOREIGN KEY (cultural_works_id) REFERENCES cultural_works(cultural_works_id);
 
 ALTER TABLE ONLY cultural_work_tasks
-    ADD CONSTRAINT fk_cultural_work_tasks_plot FOREIGN KEY (plot_id) REFERENCES plot(plot_id) ON UPDATE CASCADE;
+    ADD CONSTRAINT fk_cultural_work_tasks_plot FOREIGN KEY (plot_id) REFERENCES plot(plot_id);
 
 ALTER TABLE ONLY cultural_work_tasks
-    ADD CONSTRAINT fk_cultural_work_tasks_status FOREIGN KEY (status_id) REFERENCES status(status_id) ON UPDATE CASCADE;
+    ADD CONSTRAINT fk_cultural_work_tasks_status FOREIGN KEY (status_id) REFERENCES status(status_id);
 
 ALTER TABLE ONLY user_role_farm
     ADD CONSTRAINT fk_farm FOREIGN KEY (farm_id) REFERENCES farm(farm_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY farm
-    ADD CONSTRAINT fk_farm_area_unit_id FOREIGN KEY (area_unit_id) REFERENCES unit_of_measure(unit_of_measure_id) ON UPDATE CASCADE;
+    ADD CONSTRAINT fk_farm_area_unit_id FOREIGN KEY (area_unit_id) REFERENCES unit_of_measure(unit_of_measure_id);
 
 ALTER TABLE ONLY flowering
-    ADD CONSTRAINT fk_flowering_plot_id FOREIGN KEY (plot_id) REFERENCES plot(plot_id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT fk_flowering_plot_id FOREIGN KEY (plot_id) REFERENCES plot(plot_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY flowering
-    ADD CONSTRAINT fk_flowering_status_id FOREIGN KEY (status_id) REFERENCES status(status_id) ON UPDATE CASCADE;
+    ADD CONSTRAINT fk_flowering_status_id FOREIGN KEY (status_id) REFERENCES status(status_id);
 
 ALTER TABLE ONLY flowering
-    ADD CONSTRAINT fk_flowering_type_id FOREIGN KEY (flowering_type_id) REFERENCES flowering_type(flowering_type_id) ON UPDATE CASCADE;
+    ADD CONSTRAINT fk_flowering_type_id FOREIGN KEY (flowering_type_id) REFERENCES flowering_type(flowering_type_id);
 
 ALTER TABLE ONLY health_checks
-    ADD CONSTRAINT fk_health_checks_cultural_work_tasks FOREIGN KEY (cultural_work_tasks_id) REFERENCES cultural_work_tasks(cultural_work_tasks_id) ON UPDATE CASCADE;
+    ADD CONSTRAINT fk_health_checks_cultural_work_tasks FOREIGN KEY (cultural_work_tasks_id) REFERENCES cultural_work_tasks(cultural_work_tasks_id);
 
 ALTER TABLE ONLY health_checks
-    ADD CONSTRAINT fk_health_checks_recommendation FOREIGN KEY (recommendation_id) REFERENCES recommendation(recommendation_id) ON UPDATE CASCADE;
+    ADD CONSTRAINT fk_health_checks_recommendation FOREIGN KEY (recommendation_id) REFERENCES recommendation(recommendation_id);
 
 ALTER TABLE ONLY health_checks
-    ADD CONSTRAINT fk_health_checks_status FOREIGN KEY (status_id) REFERENCES status(status_id) ON UPDATE CASCADE;
+    ADD CONSTRAINT fk_health_checks_status FOREIGN KEY (status_id) REFERENCES status(status_id);
 
 ALTER TABLE ONLY invitation
-    ADD CONSTRAINT fk_invitation_farm_id FOREIGN KEY (farm_id) REFERENCES farm(farm_id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT fk_invitation_farm_id FOREIGN KEY (farm_id) REFERENCES farm(farm_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY invitation
     ADD CONSTRAINT fk_invitation_status FOREIGN KEY (status_id) REFERENCES status(status_id);
 
 ALTER TABLE ONLY invitation
-    ADD CONSTRAINT fk_invitation_status_id FOREIGN KEY (status_id) REFERENCES status(status_id) ON UPDATE CASCADE;
+    ADD CONSTRAINT fk_invitation_status_id FOREIGN KEY (status_id) REFERENCES status(status_id);
 
 ALTER TABLE ONLY invitation
     ADD CONSTRAINT fk_invitation_user FOREIGN KEY (inviter_user_id) REFERENCES users(user_id);
 
 ALTER TABLE ONLY notifications
-    ADD CONSTRAINT fk_notifications_notification_type_id FOREIGN KEY (notification_type_id) REFERENCES notification_type(notification_type_id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT fk_notifications_notification_type_id FOREIGN KEY (notification_type_id) REFERENCES notification_type(notification_type_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY notifications
-    ADD CONSTRAINT fk_notifications_status_id FOREIGN KEY (status_id) REFERENCES status(status_id) ON UPDATE CASCADE;
+    ADD CONSTRAINT fk_notifications_status_id FOREIGN KEY (status_id) REFERENCES status(status_id);
 
 ALTER TABLE ONLY notifications
-    ADD CONSTRAINT fk_notifications_user_id FOREIGN KEY (user_id) REFERENCES users(user_id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT fk_notifications_user_id FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY plot
-    ADD CONSTRAINT fk_plot_coffee_variety_id FOREIGN KEY (coffee_variety_id) REFERENCES coffee_variety(coffee_variety_id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT fk_plot_coffee_variety_id FOREIGN KEY (coffee_variety_id) REFERENCES coffee_variety(coffee_variety_id);
 
 ALTER TABLE ONLY plot
-    ADD CONSTRAINT fk_plot_farm_id FOREIGN KEY (farm_id) REFERENCES farm(farm_id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT fk_plot_farm_id FOREIGN KEY (farm_id) REFERENCES farm(farm_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY plot
-    ADD CONSTRAINT fk_plot_status_id FOREIGN KEY (status_id) REFERENCES status(status_id) ON UPDATE CASCADE;
+    ADD CONSTRAINT fk_plot_status_id FOREIGN KEY (status_id) REFERENCES status(status_id);
 
 ALTER TABLE ONLY user_role_farm
     ADD CONSTRAINT fk_role FOREIGN KEY (role_id) REFERENCES role(role_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY role_permission
-    ADD CONSTRAINT fk_role_permission_permission_id FOREIGN KEY (permission_id) REFERENCES permission(permission_id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT fk_role_permission_permission_id FOREIGN KEY (permission_id) REFERENCES permission(permission_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY role_permission
-    ADD CONSTRAINT fk_role_permission_role_id FOREIGN KEY (role_id) REFERENCES role(role_id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT fk_role_permission_role_id FOREIGN KEY (role_id) REFERENCES role(role_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY user_role_farm
     ADD CONSTRAINT fk_status FOREIGN KEY (status_id) REFERENCES status(status_id);
@@ -259,40 +259,40 @@ ALTER TABLE ONLY plot
     ADD CONSTRAINT fk_status_id FOREIGN KEY (status_id) REFERENCES status(status_id);
 
 ALTER TABLE ONLY status
-    ADD CONSTRAINT fk_status_status_type_id FOREIGN KEY (status_type_id) REFERENCES status_type(status_type_id) ON UPDATE CASCADE;
+    ADD CONSTRAINT fk_status_status_type_id FOREIGN KEY (status_type_id) REFERENCES status_type(status_type_id);
 
 ALTER TABLE ONLY transaction
-    ADD CONSTRAINT fk_transaction_plot_id FOREIGN KEY (plot_id) REFERENCES plot(plot_id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT fk_transaction_plot_id FOREIGN KEY (plot_id) REFERENCES plot(plot_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY transaction
-    ADD CONSTRAINT fk_transaction_status_id FOREIGN KEY (status_id) REFERENCES status(status_id) ON UPDATE CASCADE;
+    ADD CONSTRAINT fk_transaction_status_id FOREIGN KEY (status_id) REFERENCES status(status_id);
 
 ALTER TABLE ONLY transaction
-    ADD CONSTRAINT fk_transaction_transaction_category_id FOREIGN KEY (transaction_category_id) REFERENCES transaction_category(transaction_category_id) ON UPDATE CASCADE;
+    ADD CONSTRAINT fk_transaction_transaction_category_id FOREIGN KEY (transaction_category_id) REFERENCES transaction_category(transaction_category_id);
 
 ALTER TABLE ONLY transaction
-    ADD CONSTRAINT fk_transaction_transaction_type_id FOREIGN KEY (transaction_type_id) REFERENCES transaction_type(transaction_type_id) ON UPDATE CASCADE;
+    ADD CONSTRAINT fk_transaction_transaction_type_id FOREIGN KEY (transaction_type_id) REFERENCES transaction_type(transaction_type_id);
 
 ALTER TABLE ONLY transaction_category
-    ADD CONSTRAINT fk_transaction_type FOREIGN KEY (transaction_type_id) REFERENCES transaction_type(transaction_type_id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT fk_transaction_type FOREIGN KEY (transaction_type_id) REFERENCES transaction_type(transaction_type_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY unit_of_measure
-    ADD CONSTRAINT fk_unit_of_measure_unit_of_measure_type_id FOREIGN KEY (unit_of_measure_type_id) REFERENCES unit_of_measure_type(unit_of_measure_type_id) ON UPDATE CASCADE;
+    ADD CONSTRAINT fk_unit_of_measure_unit_of_measure_type_id FOREIGN KEY (unit_of_measure_type_id) REFERENCES unit_of_measure_type(unit_of_measure_type_id);
 
 ALTER TABLE ONLY user_role_farm
-    ADD CONSTRAINT fk_user_role_farm_farm_id FOREIGN KEY (farm_id) REFERENCES farm(farm_id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT fk_user_role_farm_farm_id FOREIGN KEY (farm_id) REFERENCES farm(farm_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY user_role_farm
-    ADD CONSTRAINT fk_user_role_farm_role_id FOREIGN KEY (role_id) REFERENCES role(role_id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT fk_user_role_farm_role_id FOREIGN KEY (role_id) REFERENCES role(role_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY user_role_farm
-    ADD CONSTRAINT fk_user_role_farm_status_id FOREIGN KEY (status_id) REFERENCES status(status_id) ON UPDATE CASCADE;
+    ADD CONSTRAINT fk_user_role_farm_status_id FOREIGN KEY (status_id) REFERENCES status(status_id);
 
 ALTER TABLE ONLY user_role_farm
-    ADD CONSTRAINT fk_user_role_farm_user_id FOREIGN KEY (user_id) REFERENCES users(user_id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT fk_user_role_farm_user_id FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY users
-    ADD CONSTRAINT fk_users_status_id FOREIGN KEY (status_id) REFERENCES status(status_id) ON UPDATE CASCADE;
+    ADD CONSTRAINT fk_users_status_id FOREIGN KEY (status_id) REFERENCES status(status_id);
 
 ALTER TABLE ONLY notifications
     ADD CONSTRAINT notifications_farm_id_fkey FOREIGN KEY (farm_id) REFERENCES farm(farm_id);
