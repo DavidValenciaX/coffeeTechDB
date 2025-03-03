@@ -84,7 +84,7 @@ CREATE TABLE notifications (
     user_id integer NOT NULL,
     invitation_id integer,
     notification_type_id integer,
-    farm_id integer,
+    farm_id integer NOT NULL,
     status_id integer NOT NULL
 );
 
@@ -102,7 +102,7 @@ CREATE TABLE plot (
     altitude NUMERIC(10, 2),
     coffee_variety_id integer NOT NULL,
     farm_id integer NOT NULL,
-    status_id integer
+    status_id integer NOT NULL
 );
 
 CREATE TABLE recommendation (
@@ -142,7 +142,7 @@ CREATE TABLE transaction (
     status_id integer NOT NULL,
     value numeric(15, 2) NOT NULL,
     transaction_category_id integer NOT NULL,
-    creador_id integer
+    creador_id integer NOT NULL
 );
 
 CREATE TABLE transaction_type (
@@ -181,7 +181,7 @@ CREATE TABLE user_role_farm (
     role_id integer NOT NULL,
     user_id integer NOT NULL,
     farm_id integer NOT NULL,
-    status_id integer DEFAULT 22,
+    status_id integer DEFAULT 22 NOT NULL,
     UNIQUE(user_id, role_id, farm_id)
 );
 
