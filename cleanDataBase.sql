@@ -96,7 +96,7 @@ CREATE TABLE plot (
     name character varying(100) NOT NULL,
     longitude NUMERIC(11, 8),
     latitude NUMERIC(11, 8),
-    altitude character varying(45),
+    altitude NUMERIC(10, 2),
     coffee_variety_id integer NOT NULL,
     farm_id integer NOT NULL,
     status_id integer
@@ -378,7 +378,7 @@ CREATE TABLE IF NOT EXISTS audit.plot_audit (
     name VARCHAR(100),
     longitude NUMERIC(11, 8),
     latitude NUMERIC(11, 8),
-    altitude VARCHAR(45),
+    altitude NUMERIC(10, 2),
     coffee_variety_id INTEGER,
     farm_id INTEGER,
     status_id INTEGER,
