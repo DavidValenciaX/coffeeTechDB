@@ -346,6 +346,11 @@ CREATE TABLE IF NOT EXISTS audit.farm_audit (
     area_unit_id INTEGER,
     status_id INTEGER,
     operation CHAR(1) NOT NULL,
+    old_name VARCHAR(255),
+    old_area NUMERIC(10,2),
+    old_area_unit_id INTEGER,
+    old_status_id INTEGER,
+    modified_by_user_id INTEGER,
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -387,7 +392,14 @@ CREATE TABLE IF NOT EXISTS audit.plot_audit (
     farm_id INTEGER,
     status_id INTEGER,
     operation CHAR(1) NOT NULL,
-    user_id INTEGER,
+    old_name VARCHAR(255),
+    old_longitude NUMERIC(11, 8),
+    old_latitude NUMERIC(11, 8),
+    old_altitude NUMERIC(10, 2),
+    old_coffee_variety_id INTEGER,
+    old_farm_id INTEGER,
+    old_status_id INTEGER,
+    modified_by_user_id INTEGER,
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -474,28 +486,43 @@ BEGIN
 END;
 $$;
 
+-- Función mejorada para auditar cambios en farm
 CREATE OR REPLACE FUNCTION log_farm_changes() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
+DECLARE
+    val_user_id INTEGER;
 BEGIN
-    -- Log based on operation type
+    -- Obtener el ID del usuario actual desde la sesión si está disponible
+    BEGIN
+        val_user_id := NULLIF(current_setting('app.current_user', true), '')::INTEGER;
+    EXCEPTION
+        WHEN OTHERS THEN
+            val_user_id := NULL;
+    END;
+
+    -- Registrar según el tipo de operación
     IF TG_OP = 'INSERT' THEN
         INSERT INTO audit.farm_audit (
-            farm_id, name, area, area_unit_id, status_id, operation
+            farm_id, name, area, area_unit_id, status_id, operation, modified_by_user_id
         ) VALUES (
-            NEW.farm_id, NEW.name, NEW.area, NEW.area_unit_id, NEW.status_id, 'I'
+            NEW.farm_id, NEW.name, NEW.area, NEW.area_unit_id, NEW.status_id, 'I', val_user_id
         );
     ELSIF TG_OP = 'UPDATE' THEN
         INSERT INTO audit.farm_audit (
-            farm_id, name, area, area_unit_id, status_id, operation
+            farm_id, name, area, area_unit_id, status_id, 
+            old_name, old_area, old_area_unit_id, old_status_id,
+            operation, modified_by_user_id
         ) VALUES (
-            NEW.farm_id, NEW.name, NEW.area, NEW.area_unit_id, NEW.status_id, 'U'
+            NEW.farm_id, NEW.name, NEW.area, NEW.area_unit_id, NEW.status_id,
+            OLD.name, OLD.area, OLD.area_unit_id, OLD.status_id,
+            'U', val_user_id
         );
     ELSIF TG_OP = 'DELETE' THEN
         INSERT INTO audit.farm_audit (
-            farm_id, name, area, area_unit_id, status_id, operation
+            farm_id, name, area, area_unit_id, status_id, operation, modified_by_user_id
         ) VALUES (
-            OLD.farm_id, OLD.name, OLD.area, OLD.area_unit_id, OLD.status_id, 'D'
+            OLD.farm_id, OLD.name, OLD.area, OLD.area_unit_id, OLD.status_id, 'D', val_user_id
         );
     END IF;
     
@@ -579,7 +606,7 @@ CREATE OR REPLACE FUNCTION log_plot_changes() RETURNS trigger
 DECLARE
     val_user_id INTEGER;
 BEGIN
-    -- Get current user ID from session if available
+    -- Obtener el ID del usuario actual desde la sesión si está disponible
     BEGIN
         val_user_id := NULLIF(current_setting('app.current_user', true), '')::INTEGER;
     EXCEPTION
@@ -587,11 +614,11 @@ BEGIN
             val_user_id := NULL;
     END;
 
-    -- Log based on operation type
+    -- Registrar según el tipo de operación
     IF TG_OP = 'INSERT' THEN
         INSERT INTO audit.plot_audit (
             plot_id, name, longitude, latitude, altitude,
-            coffee_variety_id, farm_id, status_id, operation, user_id
+            coffee_variety_id, farm_id, status_id, operation, modified_by_user_id
         ) VALUES (
             NEW.plot_id, NEW.name, NEW.longitude, NEW.latitude, NEW.altitude,
             NEW.coffee_variety_id, NEW.farm_id, NEW.status_id, 'I', val_user_id
@@ -599,15 +626,21 @@ BEGIN
     ELSIF TG_OP = 'UPDATE' THEN
         INSERT INTO audit.plot_audit (
             plot_id, name, longitude, latitude, altitude,
-            coffee_variety_id, farm_id, status_id, operation, user_id
+            coffee_variety_id, farm_id, status_id,
+            old_name, old_longitude, old_latitude, old_altitude,
+            old_coffee_variety_id, old_farm_id, old_status_id,
+            operation, modified_by_user_id
         ) VALUES (
             NEW.plot_id, NEW.name, NEW.longitude, NEW.latitude, NEW.altitude,
-            NEW.coffee_variety_id, NEW.farm_id, NEW.status_id, 'U', val_user_id
+            NEW.coffee_variety_id, NEW.farm_id, NEW.status_id,
+            OLD.name, OLD.longitude, OLD.latitude, OLD.altitude,
+            OLD.coffee_variety_id, OLD.farm_id, OLD.status_id,
+            'U', val_user_id
         );
     ELSIF TG_OP = 'DELETE' THEN
         INSERT INTO audit.plot_audit (
             plot_id, name, longitude, latitude, altitude,
-            coffee_variety_id, farm_id, status_id, operation, user_id
+            coffee_variety_id, farm_id, status_id, operation, modified_by_user_id
         ) VALUES (
             OLD.plot_id, OLD.name, OLD.longitude, OLD.latitude, OLD.altitude,
             OLD.coffee_variety_id, OLD.farm_id, OLD.status_id, 'D', val_user_id
