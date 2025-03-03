@@ -747,37 +747,37 @@ CREATE INDEX idx_cultural_work_tasks_collaborator_user ON cultural_work_tasks (c
 
 CREATE INDEX idx_cultural_work_tasks_owner_user ON cultural_work_tasks (owner_user_id);
 
-CREATE INDEX fk_flowering_plot1_idx ON flowering USING btree (plot_id);
+CREATE INDEX idx_flowering_plot1_idx ON flowering USING btree (plot_id);
 
-CREATE INDEX fk_flowering_status1_idx ON flowering USING btree (status_id);
+CREATE INDEX idx_flowering_status1_idx ON flowering USING btree (status_id);
 
-CREATE INDEX fk_invitation_farm1_idx ON invitation USING btree (farm_id);
+CREATE INDEX idx_invitation_farm1_idx ON invitation USING btree (farm_id);
 
-CREATE INDEX fk_notifications_notification_type1_idx ON notifications USING btree (notification_type_id);
+CREATE INDEX idx_notifications_notification_type1_idx ON notifications USING btree (notification_type_id);
 
-CREATE INDEX fk_notifications_user1_idx ON notifications USING btree (user_id);
+CREATE INDEX idx_notifications_user1_idx ON notifications USING btree (user_id);
 
-CREATE INDEX fk_plot_coffee_variety1_idx ON plot USING btree (coffee_variety_id);
+CREATE INDEX idx_plot_coffee_variety1_idx ON plot USING btree (coffee_variety_id);
 
-CREATE INDEX fk_plot_farm1_idx ON plot USING btree (farm_id);
+CREATE INDEX idx_plot_farm1_idx ON plot USING btree (farm_id);
 
-CREATE INDEX fk_role_permissions_permissions1_idx ON role_permission USING btree (permission_id);
+CREATE INDEX idx_role_permissions_permissions1_idx ON role_permission USING btree (permission_id);
 
-CREATE INDEX fk_role_permissions_roles1_idx ON role_permission USING btree (role_id);
+CREATE INDEX idx_role_permissions_roles1_idx ON role_permission USING btree (role_id);
 
-CREATE INDEX fk_transaction_plot_id_idx ON transaction USING btree (plot_id);
+CREATE INDEX idx_transaction_plot_id_idx ON transaction USING btree (plot_id);
 
-CREATE INDEX fk_transaction_status_id_idx ON transaction USING btree (status_id);
+CREATE INDEX idx_transaction_status_id_idx ON transaction USING btree (status_id);
 
-CREATE INDEX fk_transaction_transaction_category_id_idx ON transaction USING btree (transaction_category_id);
+CREATE INDEX idx_transaction_transaction_category_id_idx ON transaction USING btree (transaction_category_id);
 
-CREATE INDEX fk_transaction_transaction_type_id_idx ON transaction USING btree (transaction_type_id);
+CREATE INDEX idx_transaction_transaction_type_id_idx ON transaction USING btree (transaction_type_id);
 
-CREATE INDEX fk_user_role_farm_farm1_idx ON user_role_farm USING btree (farm_id);
+CREATE INDEX idx_user_role_farm_farm1_idx ON user_role_farm USING btree (farm_id);
 
-CREATE INDEX fk_user_role_farm_roles1_idx ON user_role_farm USING btree (role_id);
+CREATE INDEX idx_user_role_farm_roles1_idx ON user_role_farm USING btree (role_id);
 
-CREATE INDEX fk_user_role_farm_user1_idx ON user_role_farm USING btree (user_id);
+CREATE INDEX idx_user_role_farm_user1_idx ON user_role_farm USING btree (user_id);
 
 CREATE INDEX idx_farm_area_unit_id ON farm USING btree (area_unit_id);
 
@@ -787,10 +787,10 @@ CREATE INDEX idx_unit_of_measure_unit_of_measure_type_id ON unit_of_measure USIN
 
 CREATE INDEX idx_users_status_id ON users USING btree (status_id);
 
-CREATE INDEX ix_status_status_id ON status USING btree (status_id);
+CREATE INDEX idx_status_status_id ON status USING btree (status_id);
 
-CREATE INDEX ix_status_type_status_type_id ON status_type USING btree (status_type_id);
+CREATE INDEX idx_status_type_status_type_id ON status_type USING btree (status_type_id);
 
-CREATE INDEX ix_transaction_category_id ON transaction_category USING btree (transaction_category_id);
+CREATE INDEX idx_transaction_category_id ON transaction_category USING btree (transaction_category_id);
 
-CREATE INDEX ix_transaction_type_id ON transaction_type USING btree (transaction_type_id);
+CREATE INDEX idx_transaction_type_id ON transaction_type USING btree (transaction_type_id);
