@@ -319,6 +319,430 @@ ALTER TABLE ONLY notifications
 ALTER TABLE ONLY notifications
     ADD CONSTRAINT notifications_status_id_fkey FOREIGN KEY (status_id) REFERENCES status(status_id);
 
+-- Create audit schema if it doesn't exist
+CREATE SCHEMA IF NOT EXISTS audit;
+
+-- Audit table for cultural_work_tasks
+CREATE TABLE IF NOT EXISTS audit.cultural_work_tasks_audit (
+    audit_id SERIAL PRIMARY KEY,
+    cultural_work_tasks_id INTEGER,
+    cultural_works_id INTEGER,
+    plot_id INTEGER,
+    reminder_owner BOOLEAN,
+    reminder_collaborator BOOLEAN,
+    collaborator_user_id INTEGER,
+    owner_user_id INTEGER,
+    status_id INTEGER,
+    task_date DATE,
+    created_at TIMESTAMP,
+    operation CHAR(1) NOT NULL,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Audit table for farm
+CREATE TABLE IF NOT EXISTS audit.farm_audit (
+    audit_id SERIAL PRIMARY KEY,
+    farm_id INTEGER,
+    name VARCHAR(100),
+    area NUMERIC(10,2),
+    area_unit_id INTEGER,
+    status_id INTEGER,
+    operation CHAR(1) NOT NULL,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Audit table for health_checks
+CREATE TABLE IF NOT EXISTS audit.health_checks_audit (
+    audit_id SERIAL PRIMARY KEY,
+    health_checks_id INTEGER,
+    check_date DATE,
+    recommendation_id INTEGER,
+    prediction VARCHAR(150),
+    cultural_work_tasks_id INTEGER,
+    status_id INTEGER,
+    operation CHAR(1) NOT NULL,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Audit table for flowering
+CREATE TABLE IF NOT EXISTS audit.flowering_audit (
+    audit_id SERIAL PRIMARY KEY,
+    flowering_id INTEGER,
+    plot_id INTEGER,
+    flowering_date DATE,
+    harvest_date DATE,
+    status_id INTEGER,
+    flowering_type_id INTEGER,
+    operation CHAR(1) NOT NULL,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Audit table for plot
+CREATE TABLE IF NOT EXISTS audit.plot_audit (
+    audit_id SERIAL PRIMARY KEY,
+    plot_id INTEGER,
+    name VARCHAR(100),
+    longitude NUMERIC(11, 8),
+    latitude NUMERIC(11, 8),
+    altitude VARCHAR(45),
+    coffee_variety_id INTEGER,
+    farm_id INTEGER,
+    status_id INTEGER,
+    operation CHAR(1) NOT NULL,
+    user_id VARCHAR(50),
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Audit table for role_permission
+CREATE TABLE IF NOT EXISTS audit.role_permission_audit (
+    audit_id SERIAL PRIMARY KEY,
+    role_id INTEGER,
+    permission_id INTEGER,
+    operation CHAR(1) NOT NULL,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Audit table for transaction
+CREATE TABLE IF NOT EXISTS audit.transaction_audit (
+    audit_id SERIAL PRIMARY KEY,
+    transaction_id INTEGER,
+    plot_id INTEGER,
+    description VARCHAR(50),
+    transaction_type_id INTEGER,
+    transaction_date DATE,
+    status_id INTEGER,
+    value BIGINT,
+    transaction_category_id INTEGER,
+    creador_id INTEGER,
+    operation CHAR(1) NOT NULL,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Audit table for users
+CREATE TABLE IF NOT EXISTS audit.users_audit (
+    audit_id SERIAL PRIMARY KEY,
+    user_id INTEGER,
+    name VARCHAR(100),
+    email VARCHAR(150),
+    password_hash VARCHAR(255),
+    verification_token VARCHAR(255),
+    session_token VARCHAR(50),
+    status_id INTEGER,
+    fcm_token VARCHAR(255),
+    operation CHAR(1) NOT NULL,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- FUNCTIONS
+
+CREATE OR REPLACE FUNCTION log_cultural_work_tasks_changes() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    -- Log based on operation type
+    IF TG_OP = 'INSERT' THEN
+        INSERT INTO audit.cultural_work_tasks_audit (
+            cultural_work_tasks_id, cultural_works_id, plot_id, 
+            reminder_owner, reminder_collaborator, collaborator_user_id, 
+            owner_user_id, status_id, task_date, created_at, operation
+        ) VALUES (
+            NEW.cultural_work_tasks_id, NEW.cultural_works_id, NEW.plot_id,
+            NEW.reminder_owner, NEW.reminder_collaborator, NEW.collaborator_user_id,
+            NEW.owner_user_id, NEW.status_id, NEW.task_date, NEW.created_at, 'I'
+        );
+    ELSIF TG_OP = 'UPDATE' THEN
+        INSERT INTO audit.cultural_work_tasks_audit (
+            cultural_work_tasks_id, cultural_works_id, plot_id, 
+            reminder_owner, reminder_collaborator, collaborator_user_id, 
+            owner_user_id, status_id, task_date, created_at, operation
+        ) VALUES (
+            NEW.cultural_work_tasks_id, NEW.cultural_works_id, NEW.plot_id,
+            NEW.reminder_owner, NEW.reminder_collaborator, NEW.collaborator_user_id,
+            NEW.owner_user_id, NEW.status_id, NEW.task_date, NEW.created_at, 'U'
+        );
+    ELSIF TG_OP = 'DELETE' THEN
+        INSERT INTO audit.cultural_work_tasks_audit (
+            cultural_work_tasks_id, cultural_works_id, plot_id, 
+            reminder_owner, reminder_collaborator, collaborator_user_id, 
+            owner_user_id, status_id, task_date, created_at, operation
+        ) VALUES (
+            OLD.cultural_work_tasks_id, OLD.cultural_works_id, OLD.plot_id,
+            OLD.reminder_owner, OLD.reminder_collaborator, OLD.collaborator_user_id,
+            OLD.owner_user_id, OLD.status_id, OLD.task_date, OLD.created_at, 'D'
+        );
+    END IF;
+    
+    RETURN NEW;
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION log_farm_changes() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    -- Log based on operation type
+    IF TG_OP = 'INSERT' THEN
+        INSERT INTO audit.farm_audit (
+            farm_id, name, area, area_unit_id, status_id, operation
+        ) VALUES (
+            NEW.farm_id, NEW.name, NEW.area, NEW.area_unit_id, NEW.status_id, 'I'
+        );
+    ELSIF TG_OP = 'UPDATE' THEN
+        INSERT INTO audit.farm_audit (
+            farm_id, name, area, area_unit_id, status_id, operation
+        ) VALUES (
+            NEW.farm_id, NEW.name, NEW.area, NEW.area_unit_id, NEW.status_id, 'U'
+        );
+    ELSIF TG_OP = 'DELETE' THEN
+        INSERT INTO audit.farm_audit (
+            farm_id, name, area, area_unit_id, status_id, operation
+        ) VALUES (
+            OLD.farm_id, OLD.name, OLD.area, OLD.area_unit_id, OLD.status_id, 'D'
+        );
+    END IF;
+    
+    RETURN NEW;
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION log_health_checks_changes() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    -- Log based on operation type
+    IF TG_OP = 'INSERT' THEN
+        INSERT INTO audit.health_checks_audit (
+            health_checks_id, check_date, recommendation_id, prediction, 
+            cultural_work_tasks_id, status_id, operation
+        ) VALUES (
+            NEW.health_checks_id, NEW.check_date, NEW.recommendation_id, NEW.prediction,
+            NEW.cultural_work_tasks_id, NEW.status_id, 'I'
+        );
+    ELSIF TG_OP = 'UPDATE' THEN
+        INSERT INTO audit.health_checks_audit (
+            health_checks_id, check_date, recommendation_id, prediction, 
+            cultural_work_tasks_id, status_id, operation
+        ) VALUES (
+            NEW.health_checks_id, NEW.check_date, NEW.recommendation_id, NEW.prediction,
+            NEW.cultural_work_tasks_id, NEW.status_id, 'U'
+        );
+    ELSIF TG_OP = 'DELETE' THEN
+        INSERT INTO audit.health_checks_audit (
+            health_checks_id, check_date, recommendation_id, prediction, 
+            cultural_work_tasks_id, status_id, operation
+        ) VALUES (
+            OLD.health_checks_id, OLD.check_date, OLD.recommendation_id, OLD.prediction,
+            OLD.cultural_work_tasks_id, OLD.status_id, 'D'
+        );
+    END IF;
+    
+    RETURN NEW;
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION log_flowering_changes() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    -- Log based on operation type
+    IF TG_OP = 'INSERT' THEN
+        INSERT INTO audit.flowering_audit (
+            flowering_id, plot_id, flowering_date, harvest_date, 
+            status_id, flowering_type_id, operation
+        ) VALUES (
+            NEW.flowering_id, NEW.plot_id, NEW.flowering_date, NEW.harvest_date,
+            NEW.status_id, NEW.flowering_type_id, 'I'
+        );
+    ELSIF TG_OP = 'UPDATE' THEN
+        INSERT INTO audit.flowering_audit (
+            flowering_id, plot_id, flowering_date, harvest_date, 
+            status_id, flowering_type_id, operation
+        ) VALUES (
+            NEW.flowering_id, NEW.plot_id, NEW.flowering_date, NEW.harvest_date,
+            NEW.status_id, NEW.flowering_type_id, 'U'
+        );
+    ELSIF TG_OP = 'DELETE' THEN
+        INSERT INTO audit.flowering_audit (
+            flowering_id, plot_id, flowering_date, harvest_date, 
+            status_id, flowering_type_id, operation
+        ) VALUES (
+            OLD.flowering_id, OLD.plot_id, OLD.flowering_date, OLD.harvest_date,
+            OLD.status_id, OLD.flowering_type_id, 'D'
+        );
+    END IF;
+    
+    RETURN NEW;
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION log_plot_changes() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    val_user_id TEXT;
+BEGIN
+    -- Get current user ID from session if available
+    BEGIN
+        val_user_id := current_setting('app.current_user', true);
+    EXCEPTION
+        WHEN OTHERS THEN
+            val_user_id := NULL;
+    END;
+
+    -- Log based on operation type
+    IF TG_OP = 'INSERT' THEN
+        INSERT INTO audit.plot_audit (
+            plot_id, name, longitude, latitude, altitude,
+            coffee_variety_id, farm_id, status_id, operation, user_id
+        ) VALUES (
+            NEW.plot_id, NEW.name, NEW.longitude, NEW.latitude, NEW.altitude,
+            NEW.coffee_variety_id, NEW.farm_id, NEW.status_id, 'I', val_user_id
+        );
+    ELSIF TG_OP = 'UPDATE' THEN
+        INSERT INTO audit.plot_audit (
+            plot_id, name, longitude, latitude, altitude,
+            coffee_variety_id, farm_id, status_id, operation, user_id
+        ) VALUES (
+            NEW.plot_id, NEW.name, NEW.longitude, NEW.latitude, NEW.altitude,
+            NEW.coffee_variety_id, NEW.farm_id, NEW.status_id, 'U', val_user_id
+        );
+    ELSIF TG_OP = 'DELETE' THEN
+        INSERT INTO audit.plot_audit (
+            plot_id, name, longitude, latitude, altitude,
+            coffee_variety_id, farm_id, status_id, operation, user_id
+        ) VALUES (
+            OLD.plot_id, OLD.name, OLD.longitude, OLD.latitude, OLD.altitude,
+            OLD.coffee_variety_id, OLD.farm_id, OLD.status_id, 'D', val_user_id
+        );
+    END IF;
+    
+    RETURN NEW;
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION log_role_permission_changes() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    -- Log based on operation type
+    IF TG_OP = 'INSERT' THEN
+        INSERT INTO audit.role_permission_audit (
+            role_id, permission_id, operation
+        ) VALUES (
+            NEW.role_id, NEW.permission_id, 'I'
+        );
+    ELSIF TG_OP = 'UPDATE' THEN
+        INSERT INTO audit.role_permission_audit (
+            role_id, permission_id, operation
+        ) VALUES (
+            NEW.role_id, NEW.permission_id, 'U'
+        );
+    ELSIF TG_OP = 'DELETE' THEN
+        INSERT INTO audit.role_permission_audit (
+            role_id, permission_id, operation
+        ) VALUES (
+            OLD.role_id, OLD.permission_id, 'D'
+        );
+    END IF;
+    
+    RETURN NEW;
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION log_transaction_changes() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    -- Log based on operation type
+    IF TG_OP = 'INSERT' THEN
+        INSERT INTO audit.transaction_audit (
+            transaction_id, plot_id, description, transaction_type_id,
+            transaction_date, status_id, value, transaction_category_id,
+            creador_id, operation
+        ) VALUES (
+            NEW.transaction_id, NEW.plot_id, NEW.description, NEW.transaction_type_id,
+            NEW.transaction_date, NEW.status_id, NEW.value, NEW.transaction_category_id,
+            NEW.creador_id, 'I'
+        );
+    ELSIF TG_OP = 'UPDATE' THEN
+        INSERT INTO audit.transaction_audit (
+            transaction_id, plot_id, description, transaction_type_id,
+            transaction_date, status_id, value, transaction_category_id,
+            creador_id, operation
+        ) VALUES (
+            NEW.transaction_id, NEW.plot_id, NEW.description, NEW.transaction_type_id,
+            NEW.transaction_date, NEW.status_id, NEW.value, NEW.transaction_category_id,
+            NEW.creador_id, 'U'
+        );
+    ELSIF TG_OP = 'DELETE' THEN
+        INSERT INTO audit.transaction_audit (
+            transaction_id, plot_id, description, transaction_type_id,
+            transaction_date, status_id, value, transaction_category_id,
+            creador_id, operation
+        ) VALUES (
+            OLD.transaction_id, OLD.plot_id, OLD.description, OLD.transaction_type_id,
+            OLD.transaction_date, OLD.status_id, OLD.value, OLD.transaction_category_id,
+            OLD.creador_id, 'D'
+        );
+    END IF;
+    
+    RETURN NEW;
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION log_user_changes() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    -- Log based on operation type
+    IF TG_OP = 'INSERT' THEN
+        INSERT INTO audit.users_audit (
+            user_id, name, email, password_hash, verification_token,
+            session_token, status_id, fcm_token, operation
+        ) VALUES (
+            NEW.user_id, NEW.name, NEW.email, NEW.password_hash, NEW.verification_token,
+            NEW.session_token, NEW.status_id, NEW.fcm_token, 'I'
+        );
+    ELSIF TG_OP = 'UPDATE' THEN
+        INSERT INTO audit.users_audit (
+            user_id, name, email, password_hash, verification_token,
+            session_token, status_id, fcm_token, operation
+        ) VALUES (
+            NEW.user_id, NEW.name, NEW.email, NEW.password_hash, NEW.verification_token,
+            NEW.session_token, NEW.status_id, NEW.fcm_token, 'U'
+        );
+    ELSIF TG_OP = 'DELETE' THEN
+        INSERT INTO audit.users_audit (
+            user_id, name, email, password_hash, verification_token,
+            session_token, status_id, fcm_token, operation
+        ) VALUES (
+            OLD.user_id, OLD.name, OLD.email, OLD.password_hash, OLD.verification_token,
+            OLD.session_token, OLD.status_id, OLD.fcm_token, 'D'
+        );
+    END IF;
+    
+    RETURN NEW;
+END;
+$$;
+
+-- TRIGGERS
+
+CREATE TRIGGER cultural_work_tasks_audit_trigger AFTER INSERT OR DELETE OR UPDATE ON cultural_work_tasks FOR EACH ROW EXECUTE FUNCTION log_cultural_work_tasks_changes();
+
+CREATE TRIGGER farm_audit_trigger AFTER INSERT OR DELETE OR UPDATE ON farm FOR EACH ROW EXECUTE FUNCTION log_farm_changes();
+
+CREATE TRIGGER health_checks_audit_trigger AFTER INSERT OR DELETE OR UPDATE ON health_checks FOR EACH ROW EXECUTE FUNCTION log_health_checks_changes();
+
+CREATE TRIGGER log_flowering_changes AFTER INSERT OR DELETE OR UPDATE ON flowering FOR EACH ROW EXECUTE FUNCTION log_flowering_changes();
+
+CREATE TRIGGER plot_audit_trigger AFTER INSERT OR DELETE OR UPDATE ON plot FOR EACH ROW EXECUTE FUNCTION log_plot_changes();
+
+CREATE TRIGGER role_permission_audit_trigger AFTER INSERT OR DELETE OR UPDATE ON role_permission FOR EACH ROW EXECUTE FUNCTION log_role_permission_changes();
+
+CREATE TRIGGER transaction_audit_trigger AFTER INSERT OR DELETE OR UPDATE ON transaction FOR EACH ROW EXECUTE FUNCTION log_transaction_changes();
+
+CREATE TRIGGER users_audit_trigger AFTER INSERT OR DELETE OR UPDATE ON users FOR EACH ROW EXECUTE FUNCTION log_user_changes();
+
 -- INDEXES
 
 CREATE INDEX idx_cultural_work_tasks_collaborator_user ON cultural_work_tasks (collaborator_user_id);
@@ -372,515 +796,3 @@ CREATE INDEX ix_status_type_status_type_id ON status_type USING btree (status_ty
 CREATE INDEX ix_transaction_category_id ON transaction_category USING btree (transaction_category_id);
 
 CREATE INDEX ix_transaction_type_id ON transaction_type USING btree (transaction_type_id);
-
--- FUNCTIONS
-
-CREATE FUNCTION log_cultural_work_tasks_changes() RETURNS trigger
-    LANGUAGE plpgsql
-    AS $$
-DECLARE
-    sql TEXT;
-BEGIN
-    -- Diagnóstico
-    RAISE NOTICE 'Trigger activated for operation: %', TG_OP;
-
-    -- Construir la consulta SQL según la operación
-    IF TG_OP = 'INSERT' THEN
-        sql := 'INSERT INTO audit.cultural_work_tasks_audit (cultural_work_tasks_id, cultural_works_id, plot_id, reminder_owner, reminder_collaborator, collaborator_user_id, owner_user_id, status_id, task_date, created_at, operation) VALUES ('
-            || quote_literal(NEW.cultural_work_tasks_id) || ', '
-            || quote_literal(NEW.cultural_works_id) || ', '
-            || quote_literal(NEW.plot_id) || ', '
-            || quote_literal(NEW.reminder_owner) || ', '
-            || quote_literal(NEW.reminder_collaborator) || ', '
-            || quote_literal(NEW.collaborator_user_id) || ', '
-            || quote_literal(NEW.owner_user_id) || ', '
-            || quote_literal(NEW.status_id) || ', '
-            || quote_literal(NEW.task_date) || ', '
-            || quote_literal(NEW.created_at) || ', ''I'')';
-
-    ELSIF TG_OP = 'UPDATE' THEN
-        sql := 'INSERT INTO audit.cultural_work_tasks_audit (cultural_work_tasks_id, cultural_works_id, plot_id, reminder_owner, reminder_collaborator, collaborator_user_id, owner_user_id, status_id, task_date, created_at, operation) VALUES ('
-            || quote_literal(NEW.cultural_work_tasks_id) || ', '
-            || quote_literal(NEW.cultural_works_id) || ', '
-            || quote_literal(NEW.plot_id) || ', '
-            || quote_literal(NEW.reminder_owner) || ', '
-            || quote_literal(NEW.reminder_collaborator) || ', '
-            || quote_literal(NEW.collaborator_user_id) || ', '
-            || quote_literal(NEW.owner_user_id) || ', '
-            || quote_literal(NEW.status_id) || ', '
-            || quote_literal(NEW.task_date) || ', '
-            || quote_literal(NEW.created_at) || ', ''U'')';
-
-    ELSIF TG_OP = 'DELETE' THEN
-        sql := 'INSERT INTO audit.cultural_work_tasks_audit (cultural_work_tasks_id, cultural_works_id, plot_id, reminder_owner, reminder_collaborator, collaborator_user_id, owner_user_id, status_id, task_date, created_at, operation) VALUES ('
-            || quote_literal(OLD.cultural_work_tasks_id) || ', '
-            || quote_literal(OLD.cultural_works_id) || ', '
-            || quote_literal(OLD.plot_id) || ', '
-            || quote_literal(OLD.reminder_owner) || ', '
-            || quote_literal(OLD.reminder_collaborator) || ', '
-            || quote_literal(OLD.collaborator_user_id) || ', '
-            || quote_literal(OLD.owner_user_id) || ', '
-            || quote_literal(OLD.status_id) || ', '
-            || quote_literal(OLD.task_date) || ', '
-            || quote_literal(OLD.created_at) || ', ''D'')';
-    END IF;
-
-    -- Diagnóstico de la consulta construida
-    RAISE NOTICE 'Executing SQL: %', sql;
-
-    -- Ejecución de la consulta
-    BEGIN
-        PERFORM dblink_exec('host=junction.proxy.rlwy.net port=15674 dbname=postgres user=postgres password=NtEdGgDlBFTGqdvtxSJDPFUuVILcBoVb', sql);
-    EXCEPTION
-        WHEN OTHERS THEN
-            RAISE NOTICE 'Error en dblink_exec: %', SQLERRM;
-    END;
-
-    RETURN NEW;
-END;
-$$;
-
-CREATE FUNCTION log_farm_changes() RETURNS trigger
-    LANGUAGE plpgsql
-    AS $$
-DECLARE
-    sql TEXT;
-    val_farm_id TEXT;
-    val_name TEXT;
-    val_area TEXT;
-    val_area_unit_id TEXT;
-    val_status_id TEXT;
-BEGIN
-    -- Diagnóstico
-    RAISE NOTICE 'Trigger activated for operation: %', TG_OP;
-
-    -- Asegurarse de que todos los valores sean válidos
-    val_farm_id := COALESCE(quote_literal(NEW.farm_id), 'NULL');
-    val_name := COALESCE(quote_literal(NEW.name), 'NULL');
-    val_area := COALESCE(quote_literal(NEW.area), 'NULL');
-    val_area_unit_id := COALESCE(quote_literal(NEW.area_unit_id), 'NULL');
-    val_status_id := COALESCE(quote_literal(NEW.status_id), 'NULL');
-
-    -- Construir la consulta SQL según la operación
-    IF TG_OP = 'INSERT' THEN
-        sql := 'INSERT INTO audit.farm_audit (farm_id, name, area, area_unit_id, status_id, operation) VALUES ('
-            || val_farm_id || ', '
-            || val_name || ', '
-            || val_area || ', '
-            || val_area_unit_id || ', '
-            || val_status_id || ', ''I'')';
-
-    ELSIF TG_OP = 'UPDATE' THEN
-        sql := 'INSERT INTO audit.farm_audit (farm_id, name, area, area_unit_id, status_id, operation) VALUES ('
-            || val_farm_id || ', '
-            || val_name || ', '
-            || val_area || ', '
-            || val_area_unit_id || ', '
-            || val_status_id || ', ''U'')';
-
-    ELSIF TG_OP = 'DELETE' THEN
-        sql := 'INSERT INTO audit.farm_audit (farm_id, name, area, area_unit_id, status_id, operation) VALUES ('
-            || COALESCE(quote_literal(OLD.farm_id), 'NULL') || ', '
-            || COALESCE(quote_literal(OLD.name), 'NULL') || ', '
-            || COALESCE(quote_literal(OLD.area), 'NULL') || ', '
-            || COALESCE(quote_literal(OLD.area_unit_id), 'NULL') || ', '
-            || COALESCE(quote_literal(OLD.status_id), 'NULL') || ', ''D'')';
-    END IF;
-
-    -- Diagnóstico de la consulta construida
-    RAISE NOTICE 'Executing SQL: %', sql;
-
-    -- Ejecución de la consulta
-    BEGIN
-        PERFORM dblink_exec('host=junction.proxy.rlwy.net port=15674 dbname=postgres user=postgres password=NtEdGgDlBFTGqdvtxSJDPFUuVILcBoVb', sql);
-    EXCEPTION
-        WHEN OTHERS THEN
-            RAISE NOTICE 'Error en dblink_exec: %', SQLERRM;
-    END;
-
-    RETURN NEW;
-END;
-$$;
-
-CREATE FUNCTION log_health_checks_changes() RETURNS trigger
-    LANGUAGE plpgsql
-    AS $$
-DECLARE
-    sql TEXT;
-BEGIN
-    -- Diagnóstico
-    RAISE NOTICE 'Trigger activated for operation: %', TG_OP;
-
-    -- Construir la consulta SQL según la operación
-    IF TG_OP = 'INSERT' THEN
-        sql := 'INSERT INTO audit.health_checks_audit (health_checks_id, check_date, recommendation_id, prediction, cultural_work_tasks_id, status_id, operation) VALUES ('
-            || quote_literal(NEW.health_checks_id) || ', '
-            || quote_literal(NEW.check_date) || ', '
-            || quote_literal(NEW.recommendation_id) || ', '
-            || quote_literal(NEW.prediction) || ', '
-            || quote_literal(NEW.cultural_work_tasks_id) || ', '
-            || quote_literal(NEW.status_id) || ', ''I'')';
-
-    ELSIF TG_OP = 'UPDATE' THEN
-        sql := 'INSERT INTO audit.health_checks_audit (health_checks_id, check_date, recommendation_id, prediction, cultural_work_tasks_id, status_id, operation) VALUES ('
-            || quote_literal(NEW.health_checks_id) || ', '
-            || quote_literal(NEW.check_date) || ', '
-            || quote_literal(NEW.recommendation_id) || ', '
-            || quote_literal(NEW.prediction) || ', '
-            || quote_literal(NEW.cultural_work_tasks_id) || ', '
-            || quote_literal(NEW.status_id) || ', ''U'')';
-
-    ELSIF TG_OP = 'DELETE' THEN
-        sql := 'INSERT INTO audit.health_checks_audit (health_checks_id, check_date, recommendation_id, prediction, cultural_work_tasks_id, status_id, operation) VALUES ('
-            || quote_literal(OLD.health_checks_id) || ', '
-            || quote_literal(OLD.check_date) || ', '
-            || quote_literal(OLD.recommendation_id) || ', '
-            || quote_literal(OLD.prediction) || ', '
-            || quote_literal(OLD.cultural_work_tasks_id) || ', '
-            || quote_literal(OLD.status_id) || ', ''D'')';
-    END IF;
-
-    -- Diagnóstico de la consulta construida
-    RAISE NOTICE 'Executing SQL: %', sql;
-
-    -- Ejecución de la consulta
-    BEGIN
-        PERFORM dblink_exec('host=junction.proxy.rlwy.net port=15674 dbname=postgres user=postgres password=NtEdGgDlBFTGqdvtxSJDPFUuVILcBoVb', sql);
-    EXCEPTION
-        WHEN OTHERS THEN
-            RAISE NOTICE 'Error en dblink_exec: %', SQLERRM;
-    END;
-
-    RETURN NEW;
-END;
-$$;
-
-CREATE FUNCTION log_flowering_changes() RETURNS trigger
-    LANGUAGE plpgsql
-    AS $$
-DECLARE
-    sql TEXT;
-BEGIN
-    -- Construir la consulta SQL según la operación (INSERT, UPDATE, DELETE)
-    IF TG_OP = 'INSERT' THEN
-        sql := 'INSERT INTO audit.flowering_audit (flowering_id, plot_id, flowering_date, harvest_date, status_id, flowering_type_id, operation) VALUES ('
-            || quote_literal(NEW.flowering_id) || ', '
-            || quote_literal(NEW.plot_id) || ', '
-            || quote_literal(NEW.flowering_date) || ', '
-            || quote_literal(NEW.harvest_date) || ', '
-            || quote_literal(NEW.status_id) || ', '
-            || quote_literal(NEW.flowering_type_id) || ', ''I'')';
-
-    ELSIF TG_OP = 'UPDATE' THEN
-        sql := 'INSERT INTO audit.flowering_audit (flowering_id, plot_id, flowering_date, harvest_date, status_id, flowering_type_id, operation) VALUES ('
-            || quote_literal(NEW.flowering_id) || ', '
-            || quote_literal(NEW.plot_id) || ', '
-            || quote_literal(NEW.flowering_date) || ', '
-            || quote_literal(NEW.harvest_date) || ', '
-            || quote_literal(NEW.status_id) || ', '
-            || quote_literal(NEW.flowering_type_id) || ', ''U'')';
-
-    ELSIF TG_OP = 'DELETE' THEN
-        sql := 'INSERT INTO audit.flowering_audit (flowering_id, plot_id, flowering_date, harvest_date, status_id, flowering_type_id, operation) VALUES ('
-            || quote_literal(OLD.flowering_id) || ', '
-            || quote_literal(OLD.plot_id) || ', '
-            || quote_literal(OLD.flowering_date) || ', '
-            || quote_literal(OLD.harvest_date) || ', '
-            || quote_literal(OLD.status_id) || ', '
-            || quote_literal(OLD.flowering_type_id) || ', ''D'')';
-    END IF;
-
-    -- Diagnóstico de la consulta construida
-    RAISE NOTICE 'Executing SQL: %', sql;
-
-    -- Ejecutar la consulta (puedes usar dblink si es necesario, o ejecutar directamente si la tabla de auditoría está en la misma base de datos)
-    BEGIN
-        PERFORM dblink_exec('host=junction.proxy.rlwy.net port=15674 dbname=postgres user=postgres password=NtEdGgDlBFTGqdvtxSJDPFUuVILcBoVb', sql);
-    EXCEPTION
-        WHEN OTHERS THEN
-            RAISE NOTICE 'Error en dblink_exec: %', SQLERRM;
-    END;
-
-    RETURN NEW;
-END;
-$$;
-
-CREATE FUNCTION log_plot_changes() RETURNS trigger
-    LANGUAGE plpgsql
-    AS $$
-DECLARE
-    sql TEXT;
-    val_plot_id TEXT;
-    val_name TEXT;
-    val_longitude TEXT;
-    val_latitude TEXT;
-    val_altitude TEXT;
-    val_coffee_variety_id TEXT;
-    val_farm_id TEXT;
-    val_status_id TEXT;
-    val_user_id TEXT;
-BEGIN
-    -- Obtener el ID del usuario desde la sesión
-    BEGIN
-        val_user_id := current_setting('app.current_user', true);  -- Devuelve NULL si no se ha configurado
-    EXCEPTION
-        WHEN OTHERS THEN
-            val_user_id := 'NULL';  -- Si no se configura el usuario, lo deja como NULL
-    END;
-
-    -- Obtener los valores de la fila afectada
-    val_plot_id := COALESCE(quote_literal(NEW.plot_id), 'NULL');
-    val_name := COALESCE(quote_literal(NEW.name), 'NULL');
-    val_longitude := COALESCE(quote_literal(NEW.longitude), 'NULL');
-    val_latitude := COALESCE(quote_literal(NEW.latitude), 'NULL');
-    val_altitude := COALESCE(quote_literal(NEW.altitude), 'NULL');
-    val_coffee_variety_id := COALESCE(quote_literal(NEW.coffee_variety_id), 'NULL');
-    val_farm_id := COALESCE(quote_literal(NEW.farm_id), 'NULL');
-    val_status_id := COALESCE(quote_literal(NEW.status_id), 'NULL');
-
-    -- Construir la consulta según el tipo de operación (INSERT, UPDATE, DELETE)
-    IF TG_OP = 'INSERT' THEN
-        sql := 'INSERT INTO audit.plot_audit (plot_id, name, longitude, latitude, altitude, coffee_variety_id, farm_id, status_id, operation, user_id) VALUES ('
-            || val_plot_id || ', '
-            || val_name || ', '
-            || val_longitude || ', '
-            || val_latitude || ', '
-            || val_altitude || ', '
-            || val_coffee_variety_id || ', '
-            || val_farm_id || ', '
-            || val_status_id || ', ''I'', '
-            || quote_literal(val_user_id) || ')';
-    ELSIF TG_OP = 'UPDATE' THEN
-        sql := 'INSERT INTO audit.plot_audit (plot_id, name, longitude, latitude, altitude, coffee_variety_id, farm_id, status_id, operation, user_id) VALUES ('
-            || val_plot_id || ', '
-            || val_name || ', '
-            || val_longitude || ', '
-            || val_latitude || ', '
-            || val_altitude || ', '
-            || val_coffee_variety_id || ', '
-            || val_farm_id || ', '
-            || val_status_id || ', ''U'', '
-            || quote_literal(val_user_id) || ')';
-    ELSIF TG_OP = 'DELETE' THEN
-        sql := 'INSERT INTO audit.plot_audit (plot_id, name, longitude, latitude, altitude, coffee_variety_id, farm_id, status_id, operation, user_id) VALUES ('
-            || COALESCE(quote_literal(OLD.plot_id), 'NULL') || ', '
-            || COALESCE(quote_literal(OLD.name), 'NULL') || ', '
-            || COALESCE(quote_literal(OLD.longitude), 'NULL') || ', '
-            || COALESCE(quote_literal(OLD.latitude), 'NULL') || ', '
-            || COALESCE(quote_literal(OLD.altitude), 'NULL') || ', '
-            || COALESCE(quote_literal(OLD.coffee_variety_id), 'NULL') || ', '
-            || COALESCE(quote_literal(OLD.farm_id), 'NULL') || ', '
-            || COALESCE(quote_literal(OLD.status_id), 'NULL') || ', ''D'', '
-            || quote_literal(val_user_id) || ')';
-    END IF;
-
-    -- Diagnóstico de la consulta construida
-    RAISE NOTICE 'Executing SQL: %', sql;
-
-    -- Ejecutar la consulta
-    BEGIN
-        PERFORM dblink_exec('host=junction.proxy.rlwy.net port=15674 dbname=postgres user=postgres password=NtEdGgDlBFTGqdvtxSJDPFUuVILcBoVb', sql);
-    EXCEPTION
-        WHEN OTHERS THEN
-            RAISE NOTICE 'Error en dblink_exec: %', SQLERRM;
-    END;
-
-    RETURN NEW;
-END;
-$$;
-
-CREATE FUNCTION log_role_permission_changes() RETURNS trigger
-    LANGUAGE plpgsql
-    AS $$
-DECLARE
-    sql TEXT;
-BEGIN
-    -- Construir la consulta SQL
-    IF TG_OP = 'INSERT' THEN
-        sql := 'INSERT INTO audit.role_permission_audit (role_id, permission_id, operation) VALUES ('
-            || quote_literal(NEW.role_id) || ', '
-            || quote_literal(NEW.permission_id) || ', ''I'')';
-
-    ELSIF TG_OP = 'UPDATE' THEN
-        sql := 'INSERT INTO audit.role_permission_audit (role_id, permission_id, operation) VALUES ('
-            || quote_literal(NEW.role_id) || ', '
-            || quote_literal(NEW.permission_id) || ', ''U'')';
-
-    ELSIF TG_OP = 'DELETE' THEN
-        sql := 'INSERT INTO audit.role_permission_audit (role_id, permission_id, operation) VALUES ('
-            || quote_literal(OLD.role_id) || ', '
-            || quote_literal(OLD.permission_id) || ', ''D'')';
-    END IF;
-
-    -- Diagnóstico de la consulta construida
-    RAISE NOTICE 'Executing SQL: %', sql;
-
-    -- Ejecutar en base de datos externa
-    BEGIN
-        PERFORM dblink_exec('host=junction.proxy.rlwy.net port=15674 dbname=postgres user=postgres password=NtEdGgDlBFTGqdvtxSJDPFUuVILcBoVb', sql);
-    EXCEPTION
-        WHEN OTHERS THEN
-            RAISE NOTICE 'Error en dblink_exec: %', SQLERRM;
-    END;
-
-    RETURN NEW;
-END;
-$$;
-
-CREATE FUNCTION log_transaction_changes() RETURNS trigger
-    LANGUAGE plpgsql
-    AS $$
-DECLARE
-    sql TEXT;
-BEGIN
-    -- Diagnóstico
-    RAISE NOTICE 'Trigger activated for operation: %', TG_OP;
-
-    -- Construir la consulta SQL según la operación
-    IF TG_OP = 'INSERT' THEN
-        sql := 'INSERT INTO audit.transaction_audit (transaction_id, plot_id, description, transaction_type_id, transaction_date, status_id, value, transaction_category_id, creador_id, operation) VALUES ('
-            || quote_literal(NEW.transaction_id) || ', '
-            || quote_literal(NEW.plot_id) || ', '
-            || quote_literal(NEW.description) || ', '
-            || quote_literal(NEW.transaction_type_id) || ', '
-            || quote_literal(NEW.transaction_date) || ', '
-            || quote_literal(NEW.status_id) || ', '
-            || quote_literal(NEW.value) || ', '
-            || quote_literal(NEW.transaction_category_id) || ', '
-            || quote_literal(NEW.creador_id) || ', ''I'')';
-
-    ELSIF TG_OP = 'UPDATE' THEN
-        sql := 'INSERT INTO audit.transaction_audit (transaction_id, plot_id, description, transaction_type_id, transaction_date, status_id, value, transaction_category_id, creador_id, operation) VALUES ('
-            || quote_literal(NEW.transaction_id) || ', '
-            || quote_literal(NEW.plot_id) || ', '
-            || quote_literal(NEW.description) || ', '
-            || quote_literal(NEW.transaction_type_id) || ', '
-            || quote_literal(NEW.transaction_date) || ', '
-            || quote_literal(NEW.status_id) || ', '
-            || quote_literal(NEW.value) || ', '
-            || quote_literal(NEW.transaction_category_id) || ', '
-            || quote_literal(NEW.creador_id) || ', ''U'')';
-
-    ELSIF TG_OP = 'DELETE' THEN
-        sql := 'INSERT INTO audit.transaction_audit (transaction_id, plot_id, description, transaction_type_id, transaction_date, status_id, value, transaction_category_id, creador_id, operation) VALUES ('
-            || quote_literal(OLD.transaction_id) || ', '
-            || quote_literal(OLD.plot_id) || ', '
-            || quote_literal(OLD.description) || ', '
-            || quote_literal(OLD.transaction_type_id) || ', '
-            || quote_literal(OLD.transaction_date) || ', '
-            || quote_literal(OLD.status_id) || ', '
-            || quote_literal(OLD.value) || ', '
-            || quote_literal(OLD.transaction_category_id) || ', '
-            || quote_literal(OLD.creador_id) || ', ''D'')';
-    END IF;
-
-    -- Diagnóstico de la consulta construida
-    RAISE NOTICE 'Executing SQL: %', sql;
-
-    -- Ejecución de la consulta
-    BEGIN
-        PERFORM dblink_exec('host=junction.proxy.rlwy.net port=15674 dbname=postgres user=postgres password=NtEdGgDlBFTGqdvtxSJDPFUuVILcBoVb', sql);
-    EXCEPTION
-        WHEN OTHERS THEN
-            RAISE NOTICE 'Error en dblink_exec: %', SQLERRM;
-    END;
-
-    RETURN NEW;
-END;
-$$;
-
-CREATE FUNCTION log_user_changes() RETURNS trigger
-    LANGUAGE plpgsql
-    AS $$
-DECLARE
-    sql TEXT;
-    val_user_id TEXT;
-    val_name TEXT;
-    val_email TEXT;
-    val_password_hash TEXT;
-    val_verification_token TEXT;
-    val_session_token TEXT;
-    val_status_id TEXT;
-    val_fcm_token TEXT;
-BEGIN
-    -- Diagnóstico
-    RAISE NOTICE 'Trigger activated for operation: %', TG_OP;
-
-    -- Asegurarse de que todos los valores sean válidos
-    val_user_id := COALESCE(quote_literal(NEW.user_id), 'NULL');
-    val_name := COALESCE(quote_literal(NEW.name), 'NULL');
-    val_email := COALESCE(quote_literal(NEW.email), 'NULL');
-    val_password_hash := COALESCE(quote_literal(NEW.password_hash), 'NULL');
-    val_verification_token := COALESCE(quote_literal(NEW.verification_token), 'NULL');
-    val_session_token := COALESCE(quote_literal(NEW.session_token), 'NULL');
-    val_status_id := COALESCE(quote_literal(NEW.status_id), 'NULL');
-    val_fcm_token := COALESCE(quote_literal(NEW.fcm_token), 'NULL');
-
-    -- Construir la consulta SQL según la operación
-    IF TG_OP = 'INSERT' THEN
-        sql := 'INSERT INTO audit.users_audit (user_id, name, email, password_hash, verification_token, session_token, status_id, fcm_token, operation) VALUES ('
-            || val_user_id || ', '
-            || val_name || ', '
-            || val_email || ', '
-            || val_password_hash || ', '
-            || val_verification_token || ', '
-            || val_session_token || ', '
-            || val_status_id || ', '
-            || val_fcm_token || ', ''I'')';
-
-    ELSIF TG_OP = 'UPDATE' THEN
-        sql := 'INSERT INTO audit.users_audit (user_id, name, email, password_hash, verification_token, session_token, status_id, fcm_token, operation) VALUES ('
-            || val_user_id || ', '
-            || val_name || ', '
-            || val_email || ', '
-            || val_password_hash || ', '
-            || val_verification_token || ', '
-            || val_session_token || ', '
-            || val_status_id || ', '
-            || val_fcm_token || ', ''U'')';
-
-    ELSIF TG_OP = 'DELETE' THEN
-        sql := 'INSERT INTO audit.users_audit (user_id, name, email, password_hash, verification_token, session_token, status_id, fcm_token, operation) VALUES ('
-            || COALESCE(quote_literal(OLD.user_id), 'NULL') || ', '
-            || COALESCE(quote_literal(OLD.name), 'NULL') || ', '
-            || COALESCE(quote_literal(OLD.email), 'NULL') || ', '
-            || COALESCE(quote_literal(OLD.password_hash), 'NULL') || ', '
-            || COALESCE(quote_literal(OLD.verification_token), 'NULL') || ', '
-            || COALESCE(quote_literal(OLD.session_token), 'NULL') || ', '
-            || COALESCE(quote_literal(OLD.status_id), 'NULL') || ', '
-            || COALESCE(quote_literal(OLD.fcm_token), 'NULL') || ', ''D'')';
-    END IF;
-
-    -- Diagnóstico de la consulta construida
-    RAISE NOTICE 'Executing SQL: %', sql;
-
-    -- Ejecución de la consulta
-    BEGIN
-        PERFORM dblink_exec('host=junction.proxy.rlwy.net port=15674 dbname=postgres user=postgres password=NtEdGgDlBFTGqdvtxSJDPFUuVILcBoVb', sql);
-
-    EXCEPTION
-        WHEN OTHERS THEN
-            RAISE NOTICE 'Error en dblink_exec: %', SQLERRM;
-    END;
-
-    RETURN NEW;
-END;
-$$;
-
--- TRIGGERS
-
-CREATE TRIGGER cultural_work_tasks_audit_trigger AFTER INSERT OR DELETE OR UPDATE ON cultural_work_tasks FOR EACH ROW EXECUTE FUNCTION log_cultural_work_tasks_changes();
-
-CREATE TRIGGER farm_audit_trigger AFTER INSERT OR DELETE OR UPDATE ON farm FOR EACH ROW EXECUTE FUNCTION log_farm_changes();
-
-CREATE TRIGGER health_checks_audit_trigger AFTER INSERT OR DELETE OR UPDATE ON health_checks FOR EACH ROW EXECUTE FUNCTION log_health_checks_changes();
-
-CREATE TRIGGER log_flowering_changes AFTER INSERT OR DELETE OR UPDATE ON flowering FOR EACH ROW EXECUTE FUNCTION log_flowering_changes();
-
-CREATE TRIGGER plot_audit_trigger AFTER INSERT OR DELETE OR UPDATE ON plot FOR EACH ROW EXECUTE FUNCTION log_plot_changes();
-
-CREATE TRIGGER role_permission_audit_trigger AFTER INSERT OR DELETE OR UPDATE ON role_permission FOR EACH ROW EXECUTE FUNCTION log_role_permission_changes();
-
-CREATE TRIGGER transaction_audit_trigger AFTER INSERT OR DELETE OR UPDATE ON transaction FOR EACH ROW EXECUTE FUNCTION log_transaction_changes();
-
-CREATE TRIGGER users_audit_trigger AFTER INSERT OR DELETE OR UPDATE ON users FOR EACH ROW EXECUTE FUNCTION log_user_changes();
