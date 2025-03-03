@@ -361,7 +361,7 @@ CREATE INDEX ix_transaction_type_id ON transaction_type USING btree (transaction
 
 -- FUNCTIONS
 
-CREATE FUNCTION public.log_cultural_work_tasks_changes() RETURNS trigger
+CREATE FUNCTION log_cultural_work_tasks_changes() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
 DECLARE
@@ -426,7 +426,7 @@ BEGIN
 END;
 $$;
 
-CREATE FUNCTION public.log_farm_changes() RETURNS trigger
+CREATE FUNCTION log_farm_changes() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
 DECLARE
@@ -488,7 +488,7 @@ BEGIN
 END;
 $$;
 
-CREATE FUNCTION public.log_health_checks_changes() RETURNS trigger
+CREATE FUNCTION log_health_checks_changes() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
 DECLARE
@@ -541,7 +541,7 @@ BEGIN
 END;
 $$;
 
-CREATE FUNCTION public.log_flowering_changes() RETURNS trigger
+CREATE FUNCTION log_flowering_changes() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
 DECLARE
@@ -591,7 +591,7 @@ BEGIN
 END;
 $$;
 
-CREATE FUNCTION public.log_plot_changes() RETURNS trigger
+CREATE FUNCTION log_plot_changes() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
 DECLARE
@@ -675,7 +675,7 @@ BEGIN
 END;
 $$;
 
-CREATE FUNCTION public.log_role_permission_changes() RETURNS trigger
+CREATE FUNCTION log_role_permission_changes() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
 DECLARE
@@ -713,7 +713,7 @@ BEGIN
 END;
 $$;
 
-CREATE FUNCTION public.log_transaction_changes() RETURNS trigger
+CREATE FUNCTION log_transaction_changes() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
 DECLARE
@@ -775,7 +775,7 @@ BEGIN
 END;
 $$;
 
-CREATE FUNCTION public.log_user_changes() RETURNS trigger
+CREATE FUNCTION log_user_changes() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
 DECLARE
