@@ -170,7 +170,8 @@ CREATE TABLE user_role_farm (
     role_id integer NOT NULL,
     user_id integer NOT NULL,
     farm_id integer NOT NULL,
-    status_id integer DEFAULT 22
+    status_id integer DEFAULT 22,
+    UNIQUE(user_id, role_id, farm_id)
 );
 
 CREATE TABLE users (
