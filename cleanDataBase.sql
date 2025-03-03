@@ -179,894 +179,304 @@ CREATE TABLE public.users (
     fcm_token character varying(255)
 );
 
---
--- Name: cultural_work_tasks cultural_work_tasks_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.cultural_work_tasks ALTER COLUMN cultural_work_tasks_id SET DEFAULT nextval('public.cultural_work_tasks_cultural_work_tasks_id_seq'::regclass);
-
-
---
--- Name: farm farm_id; Type: DEFAULT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.farm ALTER COLUMN farm_id SET DEFAULT nextval('public.farm_farm_id_seq'::regclass);
 
-
---
--- Name: flowering_type flowering_type_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.flowering_type ALTER COLUMN flowering_type_id SET DEFAULT nextval('public.flowering_type_flowering_type_id_seq'::regclass);
-
-
---
--- Name: health_checks health_checks_id; Type: DEFAULT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.health_checks ALTER COLUMN health_checks_id SET DEFAULT nextval('public.health_checks_id_seq'::regclass);
 
-
---
--- Name: invitation invitation_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.invitation ALTER COLUMN invitation_id SET DEFAULT nextval('public.invitation_invitation_id_seq'::regclass);
-
-
---
--- Name: notification_type notification_type_id; Type: DEFAULT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.notification_type ALTER COLUMN notification_type_id SET DEFAULT nextval('public.notification_type_notification_type_id_seq'::regclass);
 
-
---
--- Name: notifications notifications_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.notifications ALTER COLUMN notifications_id SET DEFAULT nextval('public.notifications_notifications_id_seq'::regclass);
-
-
---
--- Name: permission permission_id; Type: DEFAULT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.permission ALTER COLUMN permission_id SET DEFAULT nextval('public.permission_permission_id_seq'::regclass);
 
-
---
--- Name: plot plot_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.plot ALTER COLUMN plot_id SET DEFAULT nextval('public.plot_plot_id_seq'::regclass);
-
-
---
--- Name: recommendation recommendation_id; Type: DEFAULT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.recommendation ALTER COLUMN recommendation_id SET DEFAULT nextval('public.recommendation_id_seq'::regclass);
 
-
---
--- Name: role role_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.role ALTER COLUMN role_id SET DEFAULT nextval('public.role_role_id_seq'::regclass);
-
-
---
--- Name: status status_id; Type: DEFAULT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.status ALTER COLUMN status_id SET DEFAULT nextval('public.status_status_id_seq'::regclass);
 
-
---
--- Name: status_type status_type_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.status_type ALTER COLUMN status_type_id SET DEFAULT nextval('public.status_type_status_type_id_seq'::regclass);
-
-
---
--- Name: transaction_category transaction_category_id; Type: DEFAULT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.transaction_category ALTER COLUMN transaction_category_id SET DEFAULT nextval('public.transaction_category_transaction_category_id_seq'::regclass);
 
-
---
--- Name: unit_of_measure unit_of_measure_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.unit_of_measure ALTER COLUMN unit_of_measure_id SET DEFAULT nextval('public.unit_of_measure_unit_of_measure_id_seq'::regclass);
-
-
---
--- Name: unit_of_measure_type unit_of_measure_type_id; Type: DEFAULT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.unit_of_measure_type ALTER COLUMN unit_of_measure_type_id SET DEFAULT nextval('public.unit_of_measure_type_unit_of_measure_type_id_seq'::regclass);
 
-
---
--- Name: user_role_farm user_role_farm_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.user_role_farm ALTER COLUMN user_role_farm_id SET DEFAULT nextval('public.user_role_farm_user_role_farm_id_seq'::regclass);
-
-
---
--- Name: coffee_variety coffee_variety_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.coffee_variety
     ADD CONSTRAINT coffee_variety_pkey PRIMARY KEY (coffee_variety_id);
 
-
---
--- Name: cultural_works cultural_works_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.cultural_works
     ADD CONSTRAINT cultural_works_pkey PRIMARY KEY (cultural_works_id);
-
-
---
--- Name: farm farm_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.farm
     ADD CONSTRAINT farm_pkey PRIMARY KEY (farm_id);
 
-
---
--- Name: flowering flowering_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.flowering
     ADD CONSTRAINT flowering_pkey PRIMARY KEY (flowering_id);
-
-
---
--- Name: flowering_type flowering_type_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.flowering_type
     ADD CONSTRAINT flowering_type_pkey PRIMARY KEY (flowering_type_id);
 
-
---
--- Name: health_checks health_checks_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.health_checks
     ADD CONSTRAINT health_checks_pkey PRIMARY KEY (health_checks_id);
-
-
---
--- Name: notification_type notification_type_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.notification_type
     ADD CONSTRAINT notification_type_pkey PRIMARY KEY (notification_type_id);
 
-
---
--- Name: notifications notifications_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.notifications
     ADD CONSTRAINT notifications_pkey PRIMARY KEY (notifications_id);
-
-
---
--- Name: permission permission_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.permission
     ADD CONSTRAINT permission_name_key UNIQUE (name);
 
-
---
--- Name: permission permission_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.permission
     ADD CONSTRAINT permission_pkey PRIMARY KEY (permission_id);
-
-
---
--- Name: plot plot_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.plot
     ADD CONSTRAINT plot_pkey PRIMARY KEY (plot_id);
 
-
---
--- Name: recommendation recommendation_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.recommendation
     ADD CONSTRAINT recommendation_pkey PRIMARY KEY (recommendation_id);
-
-
---
--- Name: role role_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.role
     ADD CONSTRAINT role_name_key UNIQUE (name);
 
-
---
--- Name: role_permission role_permission_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.role_permission
     ADD CONSTRAINT role_permission_pkey PRIMARY KEY (role_id, permission_id);
-
-
---
--- Name: role role_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.role
     ADD CONSTRAINT role_pkey PRIMARY KEY (role_id);
 
-
---
--- Name: status status_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.status
     ADD CONSTRAINT status_pkey PRIMARY KEY (status_id);
-
-
---
--- Name: status_type status_type_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.status_type
     ADD CONSTRAINT status_type_pkey PRIMARY KEY (status_type_id);
 
-
---
--- Name: transaction_category transaction_category_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.transaction_category
     ADD CONSTRAINT transaction_category_pkey PRIMARY KEY (transaction_category_id);
-
-
---
--- Name: transaction transaction_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.transaction
     ADD CONSTRAINT transaction_pkey PRIMARY KEY (transaction_id);
 
-
---
--- Name: transaction_type transaction_type_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.transaction_type
     ADD CONSTRAINT transaction_type_pkey PRIMARY KEY (transaction_type_id);
-
-
---
--- Name: unit_of_measure unique_abbreviation; Type: CONSTRAINT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.unit_of_measure
     ADD CONSTRAINT unique_abbreviation UNIQUE (abbreviation);
 
-
---
--- Name: cultural_work_tasks unique_cultural_work_tasks_id; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.cultural_work_tasks
     ADD CONSTRAINT unique_cultural_work_tasks_id UNIQUE (cultural_work_tasks_id);
-
-
---
--- Name: unit_of_measure unit_of_measure_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.unit_of_measure
     ADD CONSTRAINT unit_of_measure_pkey PRIMARY KEY (unit_of_measure_id);
 
-
---
--- Name: unit_of_measure_type unit_of_measure_type_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.unit_of_measure_type
     ADD CONSTRAINT unit_of_measure_type_pkey PRIMARY KEY (unit_of_measure_type_id);
-
-
---
--- Name: user_role_farm user_role_farm_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.user_role_farm
     ADD CONSTRAINT user_role_farm_pkey PRIMARY KEY (user_role_farm_id);
 
-
---
--- Name: users users_email_key; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_email_key UNIQUE (email);
-
-
---
--- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (user_id);
 
-
---
--- Name: fk_flowering_plot1_idx; Type: INDEX; Schema: public; Owner: postgres
---
-
 CREATE INDEX fk_flowering_plot1_idx ON public.flowering USING btree (plot_id);
-
-
---
--- Name: fk_flowering_status1_idx; Type: INDEX; Schema: public; Owner: postgres
---
 
 CREATE INDEX fk_flowering_status1_idx ON public.flowering USING btree (status_id);
 
-
---
--- Name: fk_invitation_farm1_idx; Type: INDEX; Schema: public; Owner: postgres
---
-
 CREATE INDEX fk_invitation_farm1_idx ON public.invitation USING btree (farm_id);
-
-
---
--- Name: fk_notifications_notification_type1_idx; Type: INDEX; Schema: public; Owner: postgres
---
 
 CREATE INDEX fk_notifications_notification_type1_idx ON public.notifications USING btree (notification_type_id);
 
-
---
--- Name: fk_notifications_user1_idx; Type: INDEX; Schema: public; Owner: postgres
---
-
 CREATE INDEX fk_notifications_user1_idx ON public.notifications USING btree (user_id);
-
-
---
--- Name: fk_plot_coffee_variety1_idx; Type: INDEX; Schema: public; Owner: postgres
---
 
 CREATE INDEX fk_plot_coffee_variety1_idx ON public.plot USING btree (coffee_variety_id);
 
-
---
--- Name: fk_plot_farm1_idx; Type: INDEX; Schema: public; Owner: postgres
---
-
 CREATE INDEX fk_plot_farm1_idx ON public.plot USING btree (farm_id);
-
-
---
--- Name: fk_role_permissions_permissions1_idx; Type: INDEX; Schema: public; Owner: postgres
---
 
 CREATE INDEX fk_role_permissions_permissions1_idx ON public.role_permission USING btree (permission_id);
 
-
---
--- Name: fk_role_permissions_roles1_idx; Type: INDEX; Schema: public; Owner: postgres
---
-
 CREATE INDEX fk_role_permissions_roles1_idx ON public.role_permission USING btree (role_id);
-
-
---
--- Name: fk_transaction_plot_id_idx; Type: INDEX; Schema: public; Owner: postgres
---
 
 CREATE INDEX fk_transaction_plot_id_idx ON public.transaction USING btree (plot_id);
 
-
---
--- Name: fk_transaction_status_id_idx; Type: INDEX; Schema: public; Owner: postgres
---
-
 CREATE INDEX fk_transaction_status_id_idx ON public.transaction USING btree (status_id);
-
-
---
--- Name: fk_transaction_transaction_category_id_idx; Type: INDEX; Schema: public; Owner: postgres
---
 
 CREATE INDEX fk_transaction_transaction_category_id_idx ON public.transaction USING btree (transaction_category_id);
 
-
---
--- Name: fk_transaction_transaction_type_id_idx; Type: INDEX; Schema: public; Owner: postgres
---
-
 CREATE INDEX fk_transaction_transaction_type_id_idx ON public.transaction USING btree (transaction_type_id);
-
-
---
--- Name: fk_user_role_farm_farm1_idx; Type: INDEX; Schema: public; Owner: postgres
---
 
 CREATE INDEX fk_user_role_farm_farm1_idx ON public.user_role_farm USING btree (farm_id);
 
-
---
--- Name: fk_user_role_farm_roles1_idx; Type: INDEX; Schema: public; Owner: postgres
---
-
 CREATE INDEX fk_user_role_farm_roles1_idx ON public.user_role_farm USING btree (role_id);
-
-
---
--- Name: fk_user_role_farm_user1_idx; Type: INDEX; Schema: public; Owner: postgres
---
 
 CREATE INDEX fk_user_role_farm_user1_idx ON public.user_role_farm USING btree (user_id);
 
-
---
--- Name: idx_farm_area_unit_id; Type: INDEX; Schema: public; Owner: postgres
---
-
 CREATE INDEX idx_farm_area_unit_id ON public.farm USING btree (area_unit_id);
-
-
---
--- Name: idx_status_status_type_id; Type: INDEX; Schema: public; Owner: postgres
---
 
 CREATE INDEX idx_status_status_type_id ON public.status USING btree (status_type_id);
 
-
---
--- Name: idx_unit_of_measure_unit_of_measure_type_id; Type: INDEX; Schema: public; Owner: postgres
---
-
 CREATE INDEX idx_unit_of_measure_unit_of_measure_type_id ON public.unit_of_measure USING btree (unit_of_measure_type_id);
-
-
---
--- Name: idx_users_status_id; Type: INDEX; Schema: public; Owner: postgres
---
 
 CREATE INDEX idx_users_status_id ON public.users USING btree (status_id);
 
-
---
--- Name: ix_status_status_id; Type: INDEX; Schema: public; Owner: postgres
---
-
 CREATE INDEX ix_status_status_id ON public.status USING btree (status_id);
-
-
---
--- Name: ix_status_type_status_type_id; Type: INDEX; Schema: public; Owner: postgres
---
 
 CREATE INDEX ix_status_type_status_type_id ON public.status_type USING btree (status_type_id);
 
-
---
--- Name: ix_transaction_category_id; Type: INDEX; Schema: public; Owner: postgres
---
-
 CREATE INDEX ix_transaction_category_id ON public.transaction_category USING btree (transaction_category_id);
-
-
---
--- Name: ix_transaction_type_id; Type: INDEX; Schema: public; Owner: postgres
---
 
 CREATE INDEX ix_transaction_type_id ON public.transaction_type USING btree (transaction_type_id);
 
-
---
--- Name: cultural_work_tasks cultural_work_tasks_audit_trigger; Type: TRIGGER; Schema: public; Owner: postgres
---
-
 CREATE TRIGGER cultural_work_tasks_audit_trigger AFTER INSERT OR DELETE OR UPDATE ON public.cultural_work_tasks FOR EACH ROW EXECUTE FUNCTION public.log_cultural_work_tasks_changes();
-
-
---
--- Name: farm farm_audit_trigger; Type: TRIGGER; Schema: public; Owner: postgres
---
 
 CREATE TRIGGER farm_audit_trigger AFTER INSERT OR DELETE OR UPDATE ON public.farm FOR EACH ROW EXECUTE FUNCTION public.log_farm_changes();
 
-
---
--- Name: health_checks health_checks_audit_trigger; Type: TRIGGER; Schema: public; Owner: postgres
---
-
 CREATE TRIGGER health_checks_audit_trigger AFTER INSERT OR DELETE OR UPDATE ON public.health_checks FOR EACH ROW EXECUTE FUNCTION public.log_health_checks_changes();
-
-
---
--- Name: flowering log_flowering_changes; Type: TRIGGER; Schema: public; Owner: postgres
---
 
 CREATE TRIGGER log_flowering_changes AFTER INSERT OR DELETE OR UPDATE ON public.flowering FOR EACH ROW EXECUTE FUNCTION public.log_flowering_changes();
 
-
---
--- Name: plot plot_audit_trigger; Type: TRIGGER; Schema: public; Owner: postgres
---
-
 CREATE TRIGGER plot_audit_trigger AFTER INSERT OR DELETE OR UPDATE ON public.plot FOR EACH ROW EXECUTE FUNCTION public.log_plot_changes();
-
-
---
--- Name: role_permission role_permission_audit_trigger; Type: TRIGGER; Schema: public; Owner: postgres
---
 
 CREATE TRIGGER role_permission_audit_trigger AFTER INSERT OR DELETE OR UPDATE ON public.role_permission FOR EACH ROW EXECUTE FUNCTION public.log_role_permission_changes();
 
-
---
--- Name: transaction transaction_audit_trigger; Type: TRIGGER; Schema: public; Owner: postgres
---
-
 CREATE TRIGGER transaction_audit_trigger AFTER INSERT OR DELETE OR UPDATE ON public.transaction FOR EACH ROW EXECUTE FUNCTION public.log_transaction_changes();
 
-
---
--- Name: users users_audit_trigger; Type: TRIGGER; Schema: public; Owner: postgres
---
-
 CREATE TRIGGER users_audit_trigger AFTER INSERT OR DELETE OR UPDATE ON public.users FOR EACH ROW EXECUTE FUNCTION public.log_user_changes();
-
-
---
--- Name: cultural_work_tasks fk_cultural_work_tasks_cultural_works; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.cultural_work_tasks
     ADD CONSTRAINT fk_cultural_work_tasks_cultural_works FOREIGN KEY (cultural_works_id) REFERENCES public.cultural_works(cultural_works_id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
-
---
--- Name: cultural_work_tasks fk_cultural_work_tasks_plot; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.cultural_work_tasks
     ADD CONSTRAINT fk_cultural_work_tasks_plot FOREIGN KEY (plot_id) REFERENCES public.plot(plot_id) ON UPDATE CASCADE ON DELETE RESTRICT;
-
-
---
--- Name: cultural_work_tasks fk_cultural_work_tasks_status; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.cultural_work_tasks
     ADD CONSTRAINT fk_cultural_work_tasks_status FOREIGN KEY (status_id) REFERENCES public.status(status_id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
-
---
--- Name: user_role_farm fk_farm; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.user_role_farm
     ADD CONSTRAINT fk_farm FOREIGN KEY (farm_id) REFERENCES public.farm(farm_id) ON DELETE CASCADE;
-
-
---
--- Name: farm fk_farm_area_unit_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.farm
     ADD CONSTRAINT fk_farm_area_unit_id FOREIGN KEY (area_unit_id) REFERENCES public.unit_of_measure(unit_of_measure_id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
-
---
--- Name: flowering fk_flowering_plot_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.flowering
     ADD CONSTRAINT fk_flowering_plot_id FOREIGN KEY (plot_id) REFERENCES public.plot(plot_id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
--- Name: flowering fk_flowering_status_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.flowering
     ADD CONSTRAINT fk_flowering_status_id FOREIGN KEY (status_id) REFERENCES public.status(status_id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
-
---
--- Name: flowering fk_flowering_type_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.flowering
     ADD CONSTRAINT fk_flowering_type_id FOREIGN KEY (flowering_type_id) REFERENCES public.flowering_type(flowering_type_id) ON UPDATE CASCADE ON DELETE RESTRICT;
-
-
---
--- Name: health_checks fk_health_checks_cultural_work_tasks; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.health_checks
     ADD CONSTRAINT fk_health_checks_cultural_work_tasks FOREIGN KEY (cultural_work_tasks_id) REFERENCES public.cultural_work_tasks(cultural_work_tasks_id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
-
---
--- Name: health_checks fk_health_checks_recommendation; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.health_checks
     ADD CONSTRAINT fk_health_checks_recommendation FOREIGN KEY (recommendation_id) REFERENCES public.recommendation(recommendation_id) ON UPDATE CASCADE ON DELETE RESTRICT;
-
-
---
--- Name: health_checks fk_health_checks_status; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.health_checks
     ADD CONSTRAINT fk_health_checks_status FOREIGN KEY (status_id) REFERENCES public.status(status_id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
-
---
--- Name: invitation fk_invitation_farm_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.invitation
     ADD CONSTRAINT fk_invitation_farm_id FOREIGN KEY (farm_id) REFERENCES public.farm(farm_id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
--- Name: invitation fk_invitation_status; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.invitation
     ADD CONSTRAINT fk_invitation_status FOREIGN KEY (status_id) REFERENCES public.status(status_id);
 
-
---
--- Name: invitation fk_invitation_status_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.invitation
     ADD CONSTRAINT fk_invitation_status_id FOREIGN KEY (status_id) REFERENCES public.status(status_id) ON UPDATE CASCADE ON DELETE RESTRICT;
-
-
---
--- Name: invitation fk_invitation_user; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.invitation
     ADD CONSTRAINT fk_invitation_user FOREIGN KEY (inviter_user_id) REFERENCES public.users(user_id);
 
-
---
--- Name: notifications fk_notifications_notification_type_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.notifications
     ADD CONSTRAINT fk_notifications_notification_type_id FOREIGN KEY (notification_type_id) REFERENCES public.notification_type(notification_type_id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
--- Name: notifications fk_notifications_status_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.notifications
     ADD CONSTRAINT fk_notifications_status_id FOREIGN KEY (status_id) REFERENCES public.status(status_id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
-
---
--- Name: notifications fk_notifications_user_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.notifications
     ADD CONSTRAINT fk_notifications_user_id FOREIGN KEY (user_id) REFERENCES public.users(user_id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
--- Name: plot fk_plot_coffee_variety_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.plot
     ADD CONSTRAINT fk_plot_coffee_variety_id FOREIGN KEY (coffee_variety_id) REFERENCES public.coffee_variety(coffee_variety_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
-
---
--- Name: plot fk_plot_farm_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.plot
     ADD CONSTRAINT fk_plot_farm_id FOREIGN KEY (farm_id) REFERENCES public.farm(farm_id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
--- Name: plot fk_plot_status_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.plot
     ADD CONSTRAINT fk_plot_status_id FOREIGN KEY (status_id) REFERENCES public.status(status_id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
-
---
--- Name: user_role_farm fk_role; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.user_role_farm
     ADD CONSTRAINT fk_role FOREIGN KEY (role_id) REFERENCES public.role(role_id) ON DELETE CASCADE;
-
-
---
--- Name: role_permission fk_role_permission_permission_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.role_permission
     ADD CONSTRAINT fk_role_permission_permission_id FOREIGN KEY (permission_id) REFERENCES public.permission(permission_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
-
---
--- Name: role_permission fk_role_permission_role_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.role_permission
     ADD CONSTRAINT fk_role_permission_role_id FOREIGN KEY (role_id) REFERENCES public.role(role_id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
--- Name: user_role_farm fk_status; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.user_role_farm
     ADD CONSTRAINT fk_status FOREIGN KEY (status_id) REFERENCES public.status(status_id);
 
-
---
--- Name: plot fk_status_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.plot
     ADD CONSTRAINT fk_status_id FOREIGN KEY (status_id) REFERENCES public.status(status_id) ON DELETE RESTRICT;
-
-
---
--- Name: status fk_status_status_type_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.status
     ADD CONSTRAINT fk_status_status_type_id FOREIGN KEY (status_type_id) REFERENCES public.status_type(status_type_id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
-
---
--- Name: transaction fk_transaction_plot_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.transaction
     ADD CONSTRAINT fk_transaction_plot_id FOREIGN KEY (plot_id) REFERENCES public.plot(plot_id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
--- Name: transaction fk_transaction_status_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.transaction
     ADD CONSTRAINT fk_transaction_status_id FOREIGN KEY (status_id) REFERENCES public.status(status_id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
-
---
--- Name: transaction fk_transaction_transaction_category_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.transaction
     ADD CONSTRAINT fk_transaction_transaction_category_id FOREIGN KEY (transaction_category_id) REFERENCES public.transaction_category(transaction_category_id) ON UPDATE CASCADE ON DELETE RESTRICT;
-
-
---
--- Name: transaction fk_transaction_transaction_type_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.transaction
     ADD CONSTRAINT fk_transaction_transaction_type_id FOREIGN KEY (transaction_type_id) REFERENCES public.transaction_type(transaction_type_id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
-
---
--- Name: transaction_category fk_transaction_type; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.transaction_category
     ADD CONSTRAINT fk_transaction_type FOREIGN KEY (transaction_type_id) REFERENCES public.transaction_type(transaction_type_id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
--- Name: unit_of_measure fk_unit_of_measure_unit_of_measure_type_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.unit_of_measure
     ADD CONSTRAINT fk_unit_of_measure_unit_of_measure_type_id FOREIGN KEY (unit_of_measure_type_id) REFERENCES public.unit_of_measure_type(unit_of_measure_type_id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
-
---
--- Name: user_role_farm fk_user_role_farm_farm_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.user_role_farm
     ADD CONSTRAINT fk_user_role_farm_farm_id FOREIGN KEY (farm_id) REFERENCES public.farm(farm_id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
--- Name: user_role_farm fk_user_role_farm_role_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.user_role_farm
     ADD CONSTRAINT fk_user_role_farm_role_id FOREIGN KEY (role_id) REFERENCES public.role(role_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
-
---
--- Name: user_role_farm fk_user_role_farm_status_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.user_role_farm
     ADD CONSTRAINT fk_user_role_farm_status_id FOREIGN KEY (status_id) REFERENCES public.status(status_id) ON UPDATE CASCADE ON DELETE RESTRICT;
-
-
---
--- Name: user_role_farm fk_user_role_farm_user_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.user_role_farm
     ADD CONSTRAINT fk_user_role_farm_user_id FOREIGN KEY (user_id) REFERENCES public.users(user_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
-
---
--- Name: users fk_users_status_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT fk_users_status_id FOREIGN KEY (status_id) REFERENCES public.status(status_id) ON UPDATE CASCADE ON DELETE RESTRICT;
-
-
---
--- Name: notifications notifications_farm_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.notifications
     ADD CONSTRAINT notifications_farm_id_fkey FOREIGN KEY (farm_id) REFERENCES public.farm(farm_id);
 
-
---
--- Name: notifications notifications_notification_type_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.notifications
     ADD CONSTRAINT notifications_notification_type_id_fkey FOREIGN KEY (notification_type_id) REFERENCES public.notification_type(notification_type_id);
 
-
---
--- Name: notifications notifications_status_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.notifications
     ADD CONSTRAINT notifications_status_id_fkey FOREIGN KEY (status_id) REFERENCES public.status(status_id);
-
-
---
--- PostgreSQL database dump complete
---
-
