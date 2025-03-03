@@ -246,6 +246,9 @@ ALTER TABLE ONLY notifications
 ALTER TABLE ONLY notifications
     ADD CONSTRAINT fk_notifications_user_id FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE;
 
+ALTER TABLE ONLY notifications
+    ADD CONSTRAINT fk_notifications_farm_id FOREIGN KEY (farm_id) REFERENCES farm(farm_id);
+
 ALTER TABLE ONLY plot
     ADD CONSTRAINT fk_plot_coffee_variety_id FOREIGN KEY (coffee_variety_id) REFERENCES coffee_variety(coffee_variety_id);
 
@@ -309,15 +312,6 @@ ALTER TABLE ONLY user_role_farm
 
 ALTER TABLE ONLY users
     ADD CONSTRAINT fk_users_status_id FOREIGN KEY (status_id) REFERENCES status(status_id);
-
-ALTER TABLE ONLY notifications
-    ADD CONSTRAINT notifications_farm_id_fkey FOREIGN KEY (farm_id) REFERENCES farm(farm_id);
-
-ALTER TABLE ONLY notifications
-    ADD CONSTRAINT notifications_notification_type_id_fkey FOREIGN KEY (notification_type_id) REFERENCES notification_type(notification_type_id);
-
-ALTER TABLE ONLY notifications
-    ADD CONSTRAINT notifications_status_id_fkey FOREIGN KEY (status_id) REFERENCES status(status_id);
 
 -- Create audit schema if it doesn't exist
 CREATE SCHEMA IF NOT EXISTS audit;
