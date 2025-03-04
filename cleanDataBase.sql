@@ -197,12 +197,10 @@ ALTER TABLE cultural_work_tasks
     ADD CONSTRAINT fk_cultural_work_tasks_status FOREIGN KEY (status_id) REFERENCES status(status_id);
 
 ALTER TABLE cultural_work_tasks 
-    ADD CONSTRAINT fk_cultural_work_tasks_collaborator_user 
-    FOREIGN KEY (collaborator_user_id) REFERENCES users(user_id);
+    ADD CONSTRAINT fk_cultural_work_tasks_collaborator_user FOREIGN KEY (collaborator_user_id) REFERENCES users(user_id);
 
 ALTER TABLE cultural_work_tasks 
-    ADD CONSTRAINT fk_cultural_work_tasks_owner_user 
-    FOREIGN KEY (owner_user_id) REFERENCES users(user_id);
+    ADD CONSTRAINT fk_cultural_work_tasks_owner_user FOREIGN KEY (owner_user_id) REFERENCES users(user_id);
 
 ALTER TABLE user_role_farm
     ADD CONSTRAINT fk_farm FOREIGN KEY (farm_id) REFERENCES farm(farm_id) ON DELETE CASCADE;
@@ -250,8 +248,7 @@ ALTER TABLE notifications
     ADD CONSTRAINT fk_notifications_farm_id FOREIGN KEY (farm_id) REFERENCES farm(farm_id);
 
 ALTER TABLE notifications 
-    ADD CONSTRAINT fk_notifications_invitation_id 
-    FOREIGN KEY (invitation_id) REFERENCES invitation(invitation_id);
+    ADD CONSTRAINT fk_notifications_invitation_id FOREIGN KEY (invitation_id) REFERENCES invitation(invitation_id);
 
 ALTER TABLE plot
     ADD CONSTRAINT fk_plot_coffee_variety_id FOREIGN KEY (coffee_variety_id) REFERENCES coffee_variety(coffee_variety_id);
@@ -293,8 +290,7 @@ ALTER TABLE transaction
     ADD CONSTRAINT fk_transaction_transaction_type_id FOREIGN KEY (transaction_type_id) REFERENCES transaction_type(transaction_type_id);
 
 ALTER TABLE transaction 
-    ADD CONSTRAINT fk_transaction_creador 
-    FOREIGN KEY (creador_id) REFERENCES users(user_id);
+    ADD CONSTRAINT fk_transaction_creador FOREIGN KEY (creador_id) REFERENCES users(user_id);
 
 ALTER TABLE transaction_category
     ADD CONSTRAINT fk_transaction_type FOREIGN KEY (transaction_type_id) REFERENCES transaction_type(transaction_type_id) ON DELETE CASCADE;
