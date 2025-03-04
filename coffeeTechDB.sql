@@ -316,6 +316,9 @@ ALTER TABLE users
 -- Create audit schema if it doesn't exist
 CREATE SCHEMA IF NOT EXISTS audit;
 
+-- Create an ENUM type for audit operations
+CREATE TYPE audit.operation_type AS ENUM ('INSERT', 'UPDATE', 'DELETE');
+
 -- Audit table for cultural_work_tasks
 CREATE TABLE IF NOT EXISTS audit.cultural_work_tasks_audit (
     audit_id SERIAL PRIMARY KEY,
@@ -329,7 +332,7 @@ CREATE TABLE IF NOT EXISTS audit.cultural_work_tasks_audit (
     status_id INTEGER,
     task_date DATE,
     created_at TIMESTAMP,
-    operation CHAR(1) NOT NULL,
+    operation audit.operation_type NOT NULL,
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -341,7 +344,7 @@ CREATE TABLE IF NOT EXISTS audit.farm_audit (
     area NUMERIC(10,2),
     area_unit_id INTEGER,
     status_id INTEGER,
-    operation CHAR(1) NOT NULL,
+    operation audit.operation_type NOT NULL,
     old_name VARCHAR(255),
     old_area NUMERIC(10,2),
     old_area_unit_id INTEGER,
@@ -359,7 +362,7 @@ CREATE TABLE IF NOT EXISTS audit.health_checks_audit (
     prediction VARCHAR(150),
     cultural_work_tasks_id INTEGER,
     status_id INTEGER,
-    operation CHAR(1) NOT NULL,
+    operation audit.operation_type NOT NULL,
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -372,7 +375,7 @@ CREATE TABLE IF NOT EXISTS audit.flowering_audit (
     harvest_date DATE,
     status_id INTEGER,
     flowering_type_id INTEGER,
-    operation CHAR(1) NOT NULL,
+    operation audit.operation_type NOT NULL,
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -387,7 +390,7 @@ CREATE TABLE IF NOT EXISTS audit.plot_audit (
     coffee_variety_id INTEGER,
     farm_id INTEGER,
     status_id INTEGER,
-    operation CHAR(1) NOT NULL,
+    operation audit.operation_type NOT NULL,
     old_name VARCHAR(255),
     old_longitude NUMERIC(11, 8),
     old_latitude NUMERIC(11, 8),
@@ -404,7 +407,7 @@ CREATE TABLE IF NOT EXISTS audit.role_permission_audit (
     audit_id SERIAL PRIMARY KEY,
     role_id INTEGER,
     permission_id INTEGER,
-    operation CHAR(1) NOT NULL,
+    operation audit.operation_type NOT NULL,
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -420,7 +423,7 @@ CREATE TABLE IF NOT EXISTS audit.transaction_audit (
     value numeric(15,2),
     transaction_category_id INTEGER,
     creador_id INTEGER,
-    operation CHAR(1) NOT NULL,
+    operation audit.operation_type NOT NULL,
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -435,7 +438,7 @@ CREATE TABLE IF NOT EXISTS audit.users_audit (
     session_token varchar(255),
     status_id INTEGER,
     fcm_token VARCHAR(255),
-    operation CHAR(1) NOT NULL,
+    operation audit.operation_type NOT NULL,
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -454,7 +457,7 @@ BEGIN
         ) VALUES (
             NEW.cultural_work_tasks_id, NEW.cultural_works_id, NEW.plot_id,
             NEW.reminder_owner, NEW.reminder_collaborator, NEW.collaborator_user_id,
-            NEW.owner_user_id, NEW.status_id, NEW.task_date, NEW.created_at, 'I'
+            NEW.owner_user_id, NEW.status_id, NEW.task_date, NEW.created_at, 'INSERT'
         );
     ELSIF TG_OP = 'UPDATE' THEN
         INSERT INTO audit.cultural_work_tasks_audit (
@@ -464,7 +467,7 @@ BEGIN
         ) VALUES (
             NEW.cultural_work_tasks_id, NEW.cultural_works_id, NEW.plot_id,
             NEW.reminder_owner, NEW.reminder_collaborator, NEW.collaborator_user_id,
-            NEW.owner_user_id, NEW.status_id, NEW.task_date, NEW.created_at, 'U'
+            NEW.owner_user_id, NEW.status_id, NEW.task_date, NEW.created_at, 'UPDATE'
         );
     ELSIF TG_OP = 'DELETE' THEN
         INSERT INTO audit.cultural_work_tasks_audit (
@@ -474,7 +477,7 @@ BEGIN
         ) VALUES (
             OLD.cultural_work_tasks_id, OLD.cultural_works_id, OLD.plot_id,
             OLD.reminder_owner, OLD.reminder_collaborator, OLD.collaborator_user_id,
-            OLD.owner_user_id, OLD.status_id, OLD.task_date, OLD.created_at, 'D'
+            OLD.owner_user_id, OLD.status_id, OLD.task_date, OLD.created_at, 'DELETE'
         );
     END IF;
     
@@ -502,7 +505,7 @@ BEGIN
         INSERT INTO audit.farm_audit (
             farm_id, name, area, area_unit_id, status_id, operation, modified_by_user_id
         ) VALUES (
-            NEW.farm_id, NEW.name, NEW.area, NEW.area_unit_id, NEW.status_id, 'I', val_user_id
+            NEW.farm_id, NEW.name, NEW.area, NEW.area_unit_id, NEW.status_id, 'INSERT', val_user_id
         );
     ELSIF TG_OP = 'UPDATE' THEN
         INSERT INTO audit.farm_audit (
@@ -512,13 +515,13 @@ BEGIN
         ) VALUES (
             NEW.farm_id, NEW.name, NEW.area, NEW.area_unit_id, NEW.status_id,
             OLD.name, OLD.area, OLD.area_unit_id, OLD.status_id,
-            'U', val_user_id
+            'UPDATE', val_user_id
         );
     ELSIF TG_OP = 'DELETE' THEN
         INSERT INTO audit.farm_audit (
             farm_id, name, area, area_unit_id, status_id, operation, modified_by_user_id
         ) VALUES (
-            OLD.farm_id, OLD.name, OLD.area, OLD.area_unit_id, OLD.status_id, 'D', val_user_id
+            OLD.farm_id, OLD.name, OLD.area, OLD.area_unit_id, OLD.status_id, 'DELETE', val_user_id
         );
     END IF;
     
@@ -537,7 +540,7 @@ BEGIN
             cultural_work_tasks_id, status_id, operation
         ) VALUES (
             NEW.health_checks_id, NEW.check_date, NEW.recommendation_id, NEW.prediction,
-            NEW.cultural_work_tasks_id, NEW.status_id, 'I'
+            NEW.cultural_work_tasks_id, NEW.status_id, 'INSERT'
         );
     ELSIF TG_OP = 'UPDATE' THEN
         INSERT INTO audit.health_checks_audit (
@@ -545,7 +548,7 @@ BEGIN
             cultural_work_tasks_id, status_id, operation
         ) VALUES (
             NEW.health_checks_id, NEW.check_date, NEW.recommendation_id, NEW.prediction,
-            NEW.cultural_work_tasks_id, NEW.status_id, 'U'
+            NEW.cultural_work_tasks_id, NEW.status_id, 'UPDATE'
         );
     ELSIF TG_OP = 'DELETE' THEN
         INSERT INTO audit.health_checks_audit (
@@ -553,7 +556,7 @@ BEGIN
             cultural_work_tasks_id, status_id, operation
         ) VALUES (
             OLD.health_checks_id, OLD.check_date, OLD.recommendation_id, OLD.prediction,
-            OLD.cultural_work_tasks_id, OLD.status_id, 'D'
+            OLD.cultural_work_tasks_id, OLD.status_id, 'DELETE'
         );
     END IF;
     
@@ -572,7 +575,7 @@ BEGIN
             status_id, flowering_type_id, operation
         ) VALUES (
             NEW.flowering_id, NEW.plot_id, NEW.flowering_date, NEW.harvest_date,
-            NEW.status_id, NEW.flowering_type_id, 'I'
+            NEW.status_id, NEW.flowering_type_id, 'INSERT'
         );
     ELSIF TG_OP = 'UPDATE' THEN
         INSERT INTO audit.flowering_audit (
@@ -580,7 +583,7 @@ BEGIN
             status_id, flowering_type_id, operation
         ) VALUES (
             NEW.flowering_id, NEW.plot_id, NEW.flowering_date, NEW.harvest_date,
-            NEW.status_id, NEW.flowering_type_id, 'U'
+            NEW.status_id, NEW.flowering_type_id, 'UPDATE'
         );
     ELSIF TG_OP = 'DELETE' THEN
         INSERT INTO audit.flowering_audit (
@@ -588,7 +591,7 @@ BEGIN
             status_id, flowering_type_id, operation
         ) VALUES (
             OLD.flowering_id, OLD.plot_id, OLD.flowering_date, OLD.harvest_date,
-            OLD.status_id, OLD.flowering_type_id, 'D'
+            OLD.status_id, OLD.flowering_type_id, 'DELETE'
         );
     END IF;
     
@@ -617,7 +620,7 @@ BEGIN
             coffee_variety_id, farm_id, status_id, operation, modified_by_user_id
         ) VALUES (
             NEW.plot_id, NEW.name, NEW.longitude, NEW.latitude, NEW.altitude,
-            NEW.coffee_variety_id, NEW.farm_id, NEW.status_id, 'I', val_user_id
+            NEW.coffee_variety_id, NEW.farm_id, NEW.status_id, 'INSERT', val_user_id
         );
     ELSIF TG_OP = 'UPDATE' THEN
         INSERT INTO audit.plot_audit (
@@ -631,7 +634,7 @@ BEGIN
             NEW.coffee_variety_id, NEW.farm_id, NEW.status_id,
             OLD.name, OLD.longitude, OLD.latitude, OLD.altitude,
             OLD.coffee_variety_id, OLD.farm_id, OLD.status_id,
-            'U', val_user_id
+            'UPDATE', val_user_id
         );
     ELSIF TG_OP = 'DELETE' THEN
         INSERT INTO audit.plot_audit (
@@ -639,7 +642,7 @@ BEGIN
             coffee_variety_id, farm_id, status_id, operation, modified_by_user_id
         ) VALUES (
             OLD.plot_id, OLD.name, OLD.longitude, OLD.latitude, OLD.altitude,
-            OLD.coffee_variety_id, OLD.farm_id, OLD.status_id, 'D', val_user_id
+            OLD.coffee_variety_id, OLD.farm_id, OLD.status_id, 'DELETE', val_user_id
         );
     END IF;
     
@@ -656,19 +659,19 @@ BEGIN
         INSERT INTO audit.role_permission_audit (
             role_id, permission_id, operation
         ) VALUES (
-            NEW.role_id, NEW.permission_id, 'I'
+            NEW.role_id, NEW.permission_id, 'INSERT'
         );
     ELSIF TG_OP = 'UPDATE' THEN
         INSERT INTO audit.role_permission_audit (
             role_id, permission_id, operation
         ) VALUES (
-            NEW.role_id, NEW.permission_id, 'U'
+            NEW.role_id, NEW.permission_id, 'UPDATE'
         );
     ELSIF TG_OP = 'DELETE' THEN
         INSERT INTO audit.role_permission_audit (
             role_id, permission_id, operation
         ) VALUES (
-            OLD.role_id, OLD.permission_id, 'D'
+            OLD.role_id, OLD.permission_id, 'DELETE'
         );
     END IF;
     
@@ -689,7 +692,7 @@ BEGIN
         ) VALUES (
             NEW.transaction_id, NEW.plot_id, NEW.description, NEW.transaction_type_id,
             NEW.transaction_date, NEW.status_id, NEW.value, NEW.transaction_category_id,
-            NEW.creador_id, 'I'
+            NEW.creador_id, 'INSERT'
         );
     ELSIF TG_OP = 'UPDATE' THEN
         INSERT INTO audit.transaction_audit (
@@ -699,7 +702,7 @@ BEGIN
         ) VALUES (
             NEW.transaction_id, NEW.plot_id, NEW.description, NEW.transaction_type_id,
             NEW.transaction_date, NEW.status_id, NEW.value, NEW.transaction_category_id,
-            NEW.creador_id, 'U'
+            NEW.creador_id, 'UPDATE'
         );
     ELSIF TG_OP = 'DELETE' THEN
         INSERT INTO audit.transaction_audit (
@@ -709,7 +712,7 @@ BEGIN
         ) VALUES (
             OLD.transaction_id, OLD.plot_id, OLD.description, OLD.transaction_type_id,
             OLD.transaction_date, OLD.status_id, OLD.value, OLD.transaction_category_id,
-            OLD.creador_id, 'D'
+            OLD.creador_id, 'DELETE'
         );
     END IF;
     
@@ -728,7 +731,7 @@ BEGIN
             session_token, status_id, fcm_token, operation
         ) VALUES (
             NEW.user_id, NEW.name, NEW.email, NEW.password_hash, NEW.verification_token,
-            NEW.session_token, NEW.status_id, NEW.fcm_token, 'I'
+            NEW.session_token, NEW.status_id, NEW.fcm_token, 'INSERT'
         );
     ELSIF TG_OP = 'UPDATE' THEN
         INSERT INTO audit.users_audit (
@@ -736,7 +739,7 @@ BEGIN
             session_token, status_id, fcm_token, operation
         ) VALUES (
             NEW.user_id, NEW.name, NEW.email, NEW.password_hash, NEW.verification_token,
-            NEW.session_token, NEW.status_id, NEW.fcm_token, 'U'
+            NEW.session_token, NEW.status_id, NEW.fcm_token, 'UPDATE'
         );
     ELSIF TG_OP = 'DELETE' THEN
         INSERT INTO audit.users_audit (
@@ -744,7 +747,7 @@ BEGIN
             session_token, status_id, fcm_token, operation
         ) VALUES (
             OLD.user_id, OLD.name, OLD.email, OLD.password_hash, OLD.verification_token,
-            OLD.session_token, OLD.status_id, OLD.fcm_token, 'D'
+            OLD.session_token, OLD.status_id, OLD.fcm_token, 'DELETE'
         );
     END IF;
     
