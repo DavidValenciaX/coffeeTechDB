@@ -72,3 +72,17 @@ VACUUM FULL VERBOSE farm;
 
 -- Realiza la limpieza profunda de la tabla (VACUUM FULL), actualiza las estadísticas (ANALYZE) y ofrece una salida detallada (VERBOSE)
 VACUUM FULL VERBOSE ANALYZE farm;
+
+-- consultar indices
+SELECT * FROM pg_indexes WHERE tablename = 'farm';
+
+-- Rebuild a specific index by name
+REINDEX INDEX idx_farm_status_id;
+
+-- consultar estado del indice 
+SELECT indexrelid::regclass AS indice,
+       indisvalid,
+       indisready,
+       indislive
+FROM pg_index
+WHERE indexrelid = 'idx_farm_status_id'::regclass;
