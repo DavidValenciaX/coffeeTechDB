@@ -63,3 +63,12 @@ VACUUM VERBOSE farm;
 
 -- Realiza la limpieza de la tabla (VACUUM), actualiza las estadísticas (ANALYZE) y ofrece una salida detallada (VERBOSE)
 VACUUM VERBOSE ANALYZE farm;
+
+-- Realiza la limpieza profunda de la tabla (VACUUM FULL), actualiza las estadísticas (ANALYZE)
+VACUUM FULL ANALYZE farm;
+
+-- Realiza la limpieza profunda de la tabla (VACUUM FULL), y ofrece una salida detallada (VERBOSE)
+VACUUM FULL VERBOSE farm;
+
+-- Realiza la limpieza profunda de la tabla (VACUUM FULL), actualiza las estadísticas (ANALYZE) y ofrece una salida detallada (VERBOSE)
+VACUUM FULL VERBOSE ANALYZE farm;
