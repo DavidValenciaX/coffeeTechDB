@@ -1678,55 +1678,71 @@ INSERT INTO public.user_role_farm (user_role_farm_id, role_id, user_id, farm_id,
 (232, 1, 103, 160, 22),
 (233, 3, 38, 160, 22);
 
-SELECT setval(
-  pg_get_serial_sequence('coffee_variety', 'coffee_variety_id'),
-  (SELECT MAX(coffee_variety_id) FROM coffee_variety)
-);
+SELECT setval(pg_get_serial_sequence('coffee_variety', 'coffee_variety_id'),
+              (SELECT COALESCE(MAX(coffee_variety_id), 0) + 1 FROM coffee_variety), false);
 
-SELECT pg_catalog.setval('public.cultural_work_tasks_cultural_work_tasks_id_seq', 148, true);
+SELECT setval(pg_get_serial_sequence('cultural_work_tasks', 'cultural_work_tasks_id'), 
+              (SELECT COALESCE(MAX(cultural_work_tasks_id), 0) + 1 FROM cultural_work_tasks), false);
 
-SELECT pg_catalog.setval('public.cultural_works_cultural_works_id_seq', 1, false);
+SELECT setval(pg_get_serial_sequence('cultural_works', 'cultural_works_id'), 
+              (SELECT COALESCE(MAX(cultural_works_id), 0) + 1 FROM cultural_works), false);
 
-SELECT pg_catalog.setval('public.farm_farm_id_seq', 160, true);
+SELECT setval(pg_get_serial_sequence('farm', 'farm_id'), 
+              (SELECT COALESCE(MAX(farm_id), 0) + 1 FROM farm), false);
 
-SELECT pg_catalog.setval('public.flowering_flowering_id_seq', 99, true);
+SELECT setval(pg_get_serial_sequence('flowering', 'flowering_id'), 
+              (SELECT COALESCE(MAX(flowering_id), 0) + 1 FROM flowering), false);
 
-SELECT pg_catalog.setval('public.flowering_type_flowering_type_id_seq', 2, true);
+SELECT setval(pg_get_serial_sequence('flowering_type', 'flowering_type_id'), 
+              (SELECT COALESCE(MAX(flowering_type_id), 0) + 1 FROM flowering_type), false);
 
-SELECT pg_catalog.setval('public.health_checks_health_checks_id_seq', 1, false);
+SELECT setval(pg_get_serial_sequence('health_checks', 'health_checks_id'), 
+              (SELECT COALESCE(MAX(health_checks_id), 0) + 1 FROM health_checks), false);
 
-SELECT pg_catalog.setval('public.health_checks_id_seq', 316, true);
+SELECT setval(pg_get_serial_sequence('invitation', 'invitation_id'), 
+              (SELECT COALESCE(MAX(invitation_id), 0) + 1 FROM invitation), false);
 
-SELECT pg_catalog.setval('public.invitation_invitation_id_seq', 66, true);
+SELECT setval(pg_get_serial_sequence('notification_type', 'notification_type_id'), 
+              (SELECT COALESCE(MAX(notification_type_id), 0) + 1 FROM notification_type), false);
 
-SELECT pg_catalog.setval('public.notification_type_notification_type_id_seq', 2, true);
+SELECT setval(pg_get_serial_sequence('notifications', 'notifications_id'), 
+              (SELECT COALESCE(MAX(notifications_id), 0) + 1 FROM notifications), false);
 
-SELECT pg_catalog.setval('public.notifications_notifications_id_seq', 441, true);
+SELECT setval(pg_get_serial_sequence('permission', 'permission_id'), 
+              (SELECT COALESCE(MAX(permission_id), 0) + 1 FROM permission), false);
 
-SELECT pg_catalog.setval('public.permission_permission_id_seq', 28, true);
+SELECT setval(pg_get_serial_sequence('plot', 'plot_id'), 
+              (SELECT COALESCE(MAX(plot_id), 0) + 1 FROM plot), false);
 
-SELECT pg_catalog.setval('public.plot_plot_id_seq', 83, true);
+SELECT setval(pg_get_serial_sequence('recommendation', 'recommendation_id'), 
+              (SELECT COALESCE(MAX(recommendation_id), 0) + 1 FROM recommendation), false);
 
-SELECT pg_catalog.setval('public.recommendation_id_seq', 11, true);
+SELECT setval(pg_get_serial_sequence('role', 'role_id'), 
+              (SELECT COALESCE(MAX(role_id), 0) + 1 FROM role), false);
 
-SELECT pg_catalog.setval('public.recommendation_recommendation_id_seq', 1, false);
+SELECT setval(pg_get_serial_sequence('status', 'status_id'), 
+              (SELECT COALESCE(MAX(status_id), 0) + 1 FROM status), false);
 
-SELECT pg_catalog.setval('public.role_role_id_seq', 1, false);
+SELECT setval(pg_get_serial_sequence('status_type', 'status_type_id'), 
+              (SELECT COALESCE(MAX(status_type_id), 0) + 1 FROM status_type), false);
 
-SELECT pg_catalog.setval('public.status_status_id_seq', 6, true);
+SELECT setval(pg_get_serial_sequence('transaction_category', 'transaction_category_id'), 
+              (SELECT COALESCE(MAX(transaction_category_id), 0) + 1 FROM transaction_category), false);
 
-SELECT pg_catalog.setval('public.status_type_status_type_id_seq', 11, true);
+SELECT setval(pg_get_serial_sequence('transaction', 'transaction_id'), 
+              (SELECT COALESCE(MAX(transaction_id), 0) + 1 FROM transaction), false);
 
-SELECT pg_catalog.setval('public.transaction_category_transaction_category_id_seq', 6, true);
+SELECT setval(pg_get_serial_sequence('transaction_type', 'transaction_type_id'), 
+              (SELECT COALESCE(MAX(transaction_type_id), 0) + 1 FROM transaction_type), false);
 
-SELECT pg_catalog.setval('public.transaction_transaction_id_seq', 73, true);
+SELECT setval(pg_get_serial_sequence('unit_of_measure_type', 'unit_of_measure_type_id'), 
+              (SELECT COALESCE(MAX(unit_of_measure_type_id), 0) + 1 FROM unit_of_measure_type), false);
 
-SELECT pg_catalog.setval('public.transaction_type_transaction_type_id_seq', 2, true);
+SELECT setval(pg_get_serial_sequence('unit_of_measure', 'unit_of_measure_id'), 
+              (SELECT COALESCE(MAX(unit_of_measure_id), 0) + 1 FROM unit_of_measure), false);
 
-SELECT pg_catalog.setval('public.unit_of_measure_type_unit_of_measure_type_id_seq', 6, true);
+SELECT setval(pg_get_serial_sequence('user_role_farm', 'user_role_farm_id'), 
+              (SELECT COALESCE(MAX(user_role_farm_id), 0) + 1 FROM user_role_farm), false);
 
-SELECT pg_catalog.setval('public.unit_of_measure_unit_of_measure_id_seq', 10, true);
-
-SELECT pg_catalog.setval('public.user_role_farm_user_role_farm_id_seq', 233, true);
-
-SELECT pg_catalog.setval('public.users_user_id_seq', 112, true);
+SELECT setval(pg_get_serial_sequence('users', 'user_id'), 
+              (SELECT COALESCE(MAX(user_id), 0) + 1 FROM users), false);
