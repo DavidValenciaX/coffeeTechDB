@@ -1,3 +1,5 @@
+BEGIN;
+
 INSERT INTO public.coffee_variety (coffee_variety_id, name) VALUES 
 (1, 'Castillo'),
 (2, 'Borbon'),
@@ -1741,3 +1743,6 @@ SELECT setval(pg_get_serial_sequence('user_role_farm', 'user_role_farm_id'),
 
 SELECT setval(pg_get_serial_sequence('users', 'user_id'), 
               (SELECT COALESCE(MAX(user_id), 0) + 1 FROM users), false);
+
+-- Confirmar la transacción si todo va bien
+COMMIT;
