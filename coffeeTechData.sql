@@ -37,7 +37,7 @@ INSERT INTO public.farm (farm_id, name, area, area_unit_id, status_id) VALUES
 (72, 'PruebaAuto1', 10.00, 9, 9),
 (116, '00', 1.00, 10, 9),
 (4, 'prueba2 ', 200.00, 9, 9),
-(30, '                  ddf                                                                  ', 25.00, 9, 9),
+(30, 'ddf', 25.00, 9, 9),
 (6, 'Prueba 3', 100.00, 9, 9),
 (113, 'Finca 5', 98.00, 3, 9),
 (32, 'La Arcadia', 1.00, 3, 9),
@@ -522,11 +522,6 @@ INSERT INTO public.cultural_work_tasks (cultural_work_tasks_id, cultural_works_i
 (146, 2, 59, false, false, 2, 38, 27, '2024-11-30', '2024-11-28 14:07:55.392773'),
 (147, 1, 83, true, true, 38, 103, 28, '2024-11-29', '2024-11-28 14:24:10.63534'),
 (148, 2, 83, true, true, 38, 103, 28, '2024-11-29', '2024-11-28 14:26:43.749074');
-
-
---
--- Data for Name: flowering_type; Type: TABLE DATA; Schema: public; Owner: postgres
---
 
 INSERT INTO public.flowering_type (flowering_type_id, name) VALUES 
 (1, 'Principal'),
