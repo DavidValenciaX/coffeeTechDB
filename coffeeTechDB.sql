@@ -208,9 +208,6 @@ ALTER TABLE cultural_work_tasks
 ALTER TABLE cultural_work_tasks 
     ADD CONSTRAINT fk_cultural_work_tasks_owner_user FOREIGN KEY (owner_user_id) REFERENCES users(user_id);
 
-ALTER TABLE user_role_farm
-    ADD CONSTRAINT fk_farm FOREIGN KEY (farm_id) REFERENCES farm(farm_id) ON DELETE CASCADE;
-
 ALTER TABLE farm
     ADD CONSTRAINT fk_farm_area_unit_id FOREIGN KEY (area_unit_id) REFERENCES unit_of_measure(unit_of_measure_id);
 
@@ -265,20 +262,11 @@ ALTER TABLE plot
 ALTER TABLE plot
     ADD CONSTRAINT fk_plot_status_id FOREIGN KEY (status_id) REFERENCES status(status_id);
 
-ALTER TABLE user_role_farm
-    ADD CONSTRAINT fk_role FOREIGN KEY (role_id) REFERENCES role(role_id) ON DELETE CASCADE;
-
 ALTER TABLE role_permission
     ADD CONSTRAINT fk_role_permission_permission_id FOREIGN KEY (permission_id) REFERENCES permission(permission_id) ON DELETE CASCADE;
 
 ALTER TABLE role_permission
     ADD CONSTRAINT fk_role_permission_role_id FOREIGN KEY (role_id) REFERENCES role(role_id) ON DELETE CASCADE;
-
-ALTER TABLE user_role_farm
-    ADD CONSTRAINT fk_status FOREIGN KEY (status_id) REFERENCES status(status_id);
-
-ALTER TABLE plot
-    ADD CONSTRAINT fk_status_id FOREIGN KEY (status_id) REFERENCES status(status_id);
 
 ALTER TABLE status
     ADD CONSTRAINT fk_status_status_type_id FOREIGN KEY (status_type_id) REFERENCES status_type(status_type_id);
