@@ -123,3 +123,31 @@ ROLLBACK;
 
 -- Verify the farm no longer exists after rollback
 SELECT * FROM farm WHERE name = 'Finca Temporal';
+
+-- Habilitar la extensión pg_stat_statements
+-- 1. Buscar el archivo de configuración postgresql.conf
+-- Regularmente está en la carpeta de instalación de PostgreSQL, en la subcarpeta data
+-- Por ejemplo C:\Program Files\PostgreSQL\16\data\postgresql.conf
+
+-- 2. Abrir el archivo postgresql.conf con un editor de texto
+
+-- 3. Buscar la línea que contiene shared_preload_libraries
+-- shared_preload_libraries = 'pg_stat_statements'
+-- pg_stat_statements.max = 10000  # Número máximo de declaraciones rastreadas
+-- pg_stat_statements.track = all  # Rastrea todas las consultas
+-- pg_stat_statements.track_utility = on  # Rastrea consultas de utilidad
+
+-- 4. Guardar el archivo postgresql.conf y reiniciar el servicio de PostgreSQL
+-- Ejecutar servicios.msc, buscar el servicio de PostgreSQL
+-- En sistemas Windows, el servicio de PostgreSQL generalmente se llama:
+-- postgresql-x64-[versión]
+-- Por ejemplo:
+-- postgresql-x64-16 (para PostgreSQL 16)
+-- postgresql-x64-15 (para PostgreSQL 15)
+-- click derecho en el servicio y seleccionar Reiniciar
+
+-- 5. Verificar que la extensión pg_stat_statements está habilitada
+SELECT * FROM pg_stat_statements;
+
+-- Debe haberse creado antes la extensión pg_stat_statements con el comando:
+-- CREATE EXTENSION pg_stat_statements;
