@@ -2,6 +2,8 @@
 
 SET client_encoding = 'UTF8';
 
+BEGIN;
+
 -- TABLES
 
 CREATE TABLE coffee_variety (
@@ -860,3 +862,6 @@ CREATE INDEX idx_cultural_work_tasks_plot_status ON cultural_work_tasks USING bt
 CREATE INDEX idx_transaction_plot_date ON transaction USING btree (plot_id, transaction_date);
 
 CREATE INDEX idx_user_role_farm_user_role ON user_role_farm USING btree (user_id, role_id);
+
+-- Confirmar la transacción si todo va bien
+COMMIT;
