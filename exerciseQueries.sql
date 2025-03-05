@@ -37,3 +37,12 @@ WHERE name = 'Finca El Paraíso Orgánica';
 
 -- 10. Verificar que se ha creado el registro de auditoría para la eliminación
 SELECT * FROM audit.farm_audit WHERE operation = 'DELETE';
+
+-- 11. Consultar filas vivas y muertas
+
+SELECT schemaname, relname AS table_name, n_live_tup AS filas_vivas, n_dead_tup AS filas_muertas, last_autovacuum, last_vacuum
+FROM pg_stat_all_tables
+WHERE schemaname NOT IN ('pg_toast', 'pg_catalog', 'information_schema')
+ORDER BY n_dead_tup 
+DESC
+LIMIT 50;
