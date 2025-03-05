@@ -86,3 +86,40 @@ SELECT indexrelid::regclass AS indice,
        indislive
 FROM pg_index
 WHERE indexrelid = 'idx_farm_status_id'::regclass;
+
+-- Comandos begin, commit y rollback
+
+-- Test 1: Basic transaction with COMMIT
+-- Begin a transaction
+BEGIN;
+
+-- Insert a new farm
+INSERT INTO farm (name, area, area_unit_id, status_id) 
+VALUES ('Finca La Esperanza', 25.5, 3, 22);
+
+-- See that the farm is visible within the transaction
+SELECT * FROM farm WHERE name = 'Finca La Esperanza';
+
+-- Commit the changes to make them permanent
+COMMIT;
+
+-- Verify the farm still exists after commit
+SELECT * FROM farm WHERE name = 'Finca La Esperanza';
+
+
+-- Test 2: Transaction with ROLLBACK
+-- Begin a transaction
+BEGIN;
+
+-- Insert another farm
+INSERT INTO farm (name, area, area_unit_id, status_id) 
+VALUES ('Finca Temporal', 10.0, 3, 22);
+
+-- See that the farm is visible within the transaction
+SELECT * FROM farm WHERE name = 'Finca Temporal';
+
+-- Rollback the transaction - discard all changes
+ROLLBACK;
+
+-- Verify the farm no longer exists after rollback
+SELECT * FROM farm WHERE name = 'Finca Temporal';
