@@ -46,3 +46,20 @@ WHERE schemaname NOT IN ('pg_toast', 'pg_catalog', 'information_schema')
 ORDER BY n_dead_tup 
 DESC
 LIMIT 50;
+
+-- Comandos VACUUM, VACUUM FULL, ANALYZE, VERBOSE
+
+-- ANALYZE sirve para actualizar estadísticas sin recuperar espacio
+ANALYZE farm;
+
+-- Actualiza las estadísticas con una salida detallada
+ANALYZE VERBOSE farm;
+
+-- VACUUM Limpia la tabla eliminando las filas marcadas como “muertas” y ANALYZE actualiza las estadísticas de la tabla
+VACUUM ANALYZE farm;
+
+-- ejecuta comando VACUUM con estadísticas detalladas gracias al VERBOSE
+VACUUM VERBOSE farm;
+
+-- Realiza la limpieza de la tabla (VACUUM), actualiza las estadísticas (ANALYZE) y ofrece una salida detallada (VERBOSE)
+VACUUM VERBOSE ANALYZE farm;
