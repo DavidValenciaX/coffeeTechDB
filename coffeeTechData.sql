@@ -102,7 +102,7 @@ INSERT INTO public.farm (farm_id, name, area, area_unit_id, status_id) VALUES
 (52, 'FincaInvalida', 0.11, 10, 9),
 (53, 'FincaInvalidaa', 25.00, 9, 9),
 (54, '....', 25.00, 9, 9),
-(55, '🫠😄😄🫠', 9.00, 9, 9),
+(55, 'prueba nombre finca', 9.00, 9, 9),
 (93, 'PruebasAutomatizadas29', 891.00, 9, 9),
 (14, 'prueba con muchos caracteres tantos que no caben e', 0.90, 10, 9),
 (56, 'PruebaValidaciones', 10000.00, 9, 9),
@@ -178,10 +178,6 @@ INSERT INTO public.farm (farm_id, name, area, area_unit_id, status_id) VALUES
 (158, 'uuu', 36.00, 10, 9),
 (159, 'finca', 300.00, 9, 9),
 (160, 'Farm 1', 2.00, 3, 9);
-
---
--- Data for Name: status_type; Type: TABLE DATA; Schema: public; Owner: postgres
---
 
 INSERT INTO public.status_type (status_type_id, name) VALUES 
 (1, 'General'),
@@ -1681,3 +1677,56 @@ INSERT INTO public.user_role_farm (user_role_farm_id, role_id, user_id, farm_id,
 (231, 3, 6, 154, 22),
 (232, 1, 103, 160, 22),
 (233, 3, 38, 160, 22);
+
+SELECT setval(
+  pg_get_serial_sequence('coffee_variety', 'coffee_variety_id'),
+  (SELECT MAX(coffee_variety_id) FROM coffee_variety)
+);
+
+SELECT pg_catalog.setval('public.cultural_work_tasks_cultural_work_tasks_id_seq', 148, true);
+
+SELECT pg_catalog.setval('public.cultural_works_cultural_works_id_seq', 1, false);
+
+SELECT pg_catalog.setval('public.farm_farm_id_seq', 160, true);
+
+SELECT pg_catalog.setval('public.flowering_flowering_id_seq', 99, true);
+
+SELECT pg_catalog.setval('public.flowering_type_flowering_type_id_seq', 2, true);
+
+SELECT pg_catalog.setval('public.health_checks_health_checks_id_seq', 1, false);
+
+SELECT pg_catalog.setval('public.health_checks_id_seq', 316, true);
+
+SELECT pg_catalog.setval('public.invitation_invitation_id_seq', 66, true);
+
+SELECT pg_catalog.setval('public.notification_type_notification_type_id_seq', 2, true);
+
+SELECT pg_catalog.setval('public.notifications_notifications_id_seq', 441, true);
+
+SELECT pg_catalog.setval('public.permission_permission_id_seq', 28, true);
+
+SELECT pg_catalog.setval('public.plot_plot_id_seq', 83, true);
+
+SELECT pg_catalog.setval('public.recommendation_id_seq', 11, true);
+
+SELECT pg_catalog.setval('public.recommendation_recommendation_id_seq', 1, false);
+
+SELECT pg_catalog.setval('public.role_role_id_seq', 1, false);
+
+SELECT pg_catalog.setval('public.status_status_id_seq', 6, true);
+
+SELECT pg_catalog.setval('public.status_type_status_type_id_seq', 11, true);
+
+SELECT pg_catalog.setval('public.transaction_category_transaction_category_id_seq', 6, true);
+
+SELECT pg_catalog.setval('public.transaction_transaction_id_seq', 73, true);
+
+SELECT pg_catalog.setval('public.transaction_type_transaction_type_id_seq', 2, true);
+
+SELECT pg_catalog.setval('public.unit_of_measure_type_unit_of_measure_type_id_seq', 6, true);
+
+SELECT pg_catalog.setval('public.unit_of_measure_unit_of_measure_id_seq', 10, true);
+
+SELECT pg_catalog.setval('public.user_role_farm_user_role_farm_id_seq', 233, true);
+
+SELECT pg_catalog.setval('public.users_user_id_seq', 112, true);
