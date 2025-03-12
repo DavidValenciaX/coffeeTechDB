@@ -12,7 +12,7 @@ SELECT * FROM audit.farm_audit WHERE operation = 'INSERT';
 UPDATE farm 
 SET name = 'Finca El Paraíso Renovado', 
     area = 17.8
-WHERE name = 'Finca El Paraíso';
+WHERE farm_id = 165;
 
 -- 5. Verificar que se ha creado el registro de auditoría para la actualización
 SELECT * FROM audit.farm_audit WHERE operation = 'UPDATE';
@@ -26,14 +26,14 @@ SET name = 'Finca El Paraíso Orgánica',
     area = 20.3,
     area_unit_id = 2,
     status_id = 23
-WHERE name = 'Finca El Paraíso Renovado';
+WHERE farm_id = 165;
 
 -- 8. Verificar que se ha creado el registro de auditoría para la actualización
 SELECT * FROM audit.farm_audit WHERE operation = 'UPDATE';
 
 -- 9. Eliminar la finca que hemos estado modificando
 DELETE FROM farm 
-WHERE name = 'Finca El Paraíso Orgánica';
+WHERE farm_id = 165;
 
 -- 10. Verificar que se ha creado el registro de auditoría para la eliminación
 SELECT * FROM audit.farm_audit WHERE operation = 'DELETE';
