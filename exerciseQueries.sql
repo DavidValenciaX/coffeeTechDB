@@ -151,3 +151,65 @@ SELECT * FROM pg_stat_statements;
 
 -- Debe haberse creado antes la extensión pg_stat_statements con el comando:
 -- CREATE EXTENSION pg_stat_statements;
+
+
+-- Vistas
+--Creacion de vista
+CREATE VIEW farm_info AS
+SELECT farm_id, name, area
+FROM farm;
+
+CREATE VIEW farm_with_status AS
+SELECT f.farm_id, f.name, s.name AS status_name
+FROM farm f
+JOIN status s ON f.status_id = s.status_id;
+
+
+-- Ver las vistas:
+SELECT * FROM farm_info;
+SELECT * FROM farm_with_status;
+
+--Backups 
+
+--Crear el backup
+pg_dump -U postgres -h localhost -p 5432 -F c -b -v -f backup_db.sql CoffeeTech
+--Eliminar la base de datos
+psql -U postgres -h localhost -p 5432 -d postgres -c "DROP DATABASE \"CoffeeTech\";"
+
+--Crear db
+psql -U postgres -h localhost -p 5432 -d postgres -c "CREATE DATABASE \"CoffeeTechRestore\";"
+
+--Restaurar db
+pg_restore -U postgres -h localhost -p 5432 -d CoffeeTechRestore -v backup_db.sql
+
+-- ver la tabla farm
+psql -U postgres -h localhost -p 5432 -d CoffeeTechRestore
+\dt
+
+--Ingresar dato para pasar a linux
+psql -U postgres -h localhost -p 5432 -d CoffeeTechRestore -c "INSERT INTO farm (name, area, area_unit_id, status_id) 
+VALUES ('Finca de coffeTech Restaurado', 15, 3, 22);"
+
+--Crear backup para linux
+pg_dump -U postgres -h localhost -p 5432 -F c -b -v -f backup_db_linux.sql CoffeeTechRestore
+
+--Pasar el backup a la VM
+
+scp -P 22 backup_db.sql root@0.0.0.0:/home/natalia
+
+
+--Crear base de datos en linux
+sudo -u postgres createdb CoffeeTechRestore
+
+--Restaurar datos:
+sudo -u postgres pg_restore -d CoffeeTechRestore -v backup_db.sql
+
+-- Ver la tabla farm
+sudo -u postgres psql -d CoffeeTechRestore
+\dt
+sudo -u postgres psql -d CoffeeTechRestoreLinux -c "SELECT * FROM farm ORDER BY farm_id DESC;"
+
+
+
+
+
