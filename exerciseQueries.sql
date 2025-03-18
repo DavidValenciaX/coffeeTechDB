@@ -169,44 +169,79 @@ JOIN status s ON f.status_id = s.status_id;
 SELECT * FROM farm_info;
 SELECT * FROM farm_with_status;
 
---Backups 
+-- ===================================================
+-- BACKUP AND RESTORE OPERATIONS IN POSTGRESQL
+-- ===================================================
 
---Crear el backup
+-- Crear backup completo de la base de datos
+-- pg_dump: Herramienta para respaldo de bases PostgreSQL
+--   -U postgres: Usuario de la base de datos con permisos suficientes
+--   -h localhost: Dirección del servidor PostgreSQL (local)
+--   -p 5432: Puerto estándar de PostgreSQL
+--   -F c: Formato personalizado (custom) que permite restauración selectiva
+--   -b: Incluye objetos grandes (BLOBs) en el respaldo
+--   -v: Modo verbose para ver el progreso del respaldo
+--   -f backup_db.sql: Nombre del archivo de salida para el respaldo
 pg_dump -U postgres -h localhost -p 5432 -F c -b -v -f backup_db.sql CoffeeTech
---Eliminar la base de datos
+
+-- Eliminar la base de datos original para simular un escenario de recuperación
+-- ADVERTENCIA: Esta operación elimina TODOS los datos permanentemente
+--   psql: Cliente de línea de comandos de PostgreSQL
+--   -d postgres: Conecta a la base de datos postgres (sistema)
+--   -c: Ejecuta el comando SQL especificado
 psql -U postgres -h localhost -p 5432 -d postgres -c "DROP DATABASE \"CoffeeTech\";"
 
---Crear db
+-- Crear una nueva base de datos vacía para la restauración
+-- Este comando crea una base de datos limpia donde restauraremos el backup
 psql -U postgres -h localhost -p 5432 -d postgres -c "CREATE DATABASE \"CoffeeTechRestore\";"
 
---Restaurar db
+-- Restaurar la base de datos desde el archivo de backup
+-- pg_restore: Herramienta para restaurar backups hechos con pg_dump
+--   -d CoffeeTechRestore: Base de datos destino de la restauración
+--   -v: Modo verbose para ver el progreso detallado
+--   backup_db.sql: Archivo de backup a restaurar
 pg_restore -U postgres -h localhost -p 5432 -d CoffeeTechRestore -v backup_db.sql
 
--- ver la tabla farm
+-- Verificar la restauración conectándose a la base y listando tablas
+-- \dt: Comando de PostgreSQL que lista todas las tablas en la base actual
 psql -U postgres -h localhost -p 5432 -d CoffeeTechRestore
 \dt
 
---Ingresar dato para pasar a linux
+-- Insertar un registro de prueba para verificar la funcionalidad
+-- Este comando inserta datos después de la restauración para confirmar
+-- que la base de datos está operativa y acepta nuevos registros
 psql -U postgres -h localhost -p 5432 -d CoffeeTechRestore -c "INSERT INTO farm (name, area, area_unit_id, status_id) 
 VALUES ('Finca de coffeTech Restaurado', 15, 3, 22);"
 
---Crear backup para linux
+-- Crear backup específico para migración a Linux
+-- Se especifica un nombre diferente para el archivo de backup
+-- para distinguirlo del backup original
 pg_dump -U postgres -h localhost -p 5432 -F c -b -v -f backup_db_linux.sql CoffeeTechRestore
 
---Pasar el backup a la VM
-
+-- Transferir el archivo de backup a una máquina virtual Linux
+-- scp: Secure Copy Protocol para transferir archivos entre sistemas
+--   -P 22: Puerto SSH (22 es el puerto predeterminado)
+--   backup_db.sql: Archivo local a transferir
+--   root@0.0.0.0:/home/natalia: Destino (usuario@ip:ruta)
+--   NOTA: Reemplazar 0.0.0.0 con la IP real de la máquina virtual
 scp -P 22 backup_db.sql root@0.0.0.0:/home/natalia
 
-
---Crear base de datos en linux
+-- En el sistema Linux: Crear una base de datos para la restauración
+-- sudo -u postgres: Ejecuta el comando como usuario postgres
+-- createdb: Comando de PostgreSQL para crear bases de datos
 sudo -u postgres createdb CoffeeTechRestore
 
---Restaurar datos:
+-- En el sistema Linux: Restaurar los datos desde el backup
+-- Utiliza pg_restore pero con la sintaxis de Linux
 sudo -u postgres pg_restore -d CoffeeTechRestore -v backup_db.sql
 
--- Ver la tabla farm
+-- En el sistema Linux: Verificar la restauración
+-- Primero conecta a la base de datos y lista las tablas
 sudo -u postgres psql -d CoffeeTechRestore
 \dt
+
+-- En el sistema Linux: Consultar datos de la tabla farm
+-- Ordena por farm_id en orden descendente para ver registros nuevos primero
 sudo -u postgres psql -d CoffeeTechRestoreLinux -c "SELECT * FROM farm ORDER BY farm_id DESC;"
 
 
