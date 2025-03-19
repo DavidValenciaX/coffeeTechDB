@@ -1,21 +1,24 @@
+--conectarse al psql
+psql -U postgres -h localhost -p 5432 -d "coffeeTechDB"
+
+
 -- 1. Configurar el usuario actual para la auditoría (simulando una sesión)
 SET "app.current_user" = '0';
 
 -- 2. Insertar un nuevo registro en la tabla farm
-INSERT INTO farm (name, area, area_unit_id, status_id) 
-VALUES ('Finca El Paraíso', 15, 3, 22);
+INSERT INTO farm (name, area, area_unit_id, status_id) VALUES ('Finca El Paraíso', 15, 3, 22);
 
 -- 3. Verificar que se ha creado el registro de auditoría para la inserción
-SELECT * FROM audit.farm_audit WHERE operation = 'INSERT';
+SELECT * FROM audit.farm_audit WHERE operation = 'INSERT' ORDER BY timestamp desc;
 
 -- 4. Actualizar el registro de la finca
 UPDATE farm 
 SET name = 'Finca El Paraíso Renovado', 
     area = 17.8
-WHERE farm_id = 165;
+WHERE farm_id = 161;
 
 -- 5. Verificar que se ha creado el registro de auditoría para la actualización
-SELECT * FROM audit.farm_audit WHERE operation = 'UPDATE';
+SELECT * FROM audit.farm_audit WHERE operation = 'UPDATE' ORDER BY timestamp desc;
 
 -- 6. Cambiar a otro usuario
 SET "app.current_user" = "2";
@@ -26,14 +29,14 @@ SET name = 'Finca El Paraíso Orgánica',
     area = 20.3,
     area_unit_id = 2,
     status_id = 23
-WHERE farm_id = 165;
+WHERE farm_id = 161;
 
 -- 8. Verificar que se ha creado el registro de auditoría para la actualización
 SELECT * FROM audit.farm_audit WHERE operation = 'UPDATE';
 
 -- 9. Eliminar la finca que hemos estado modificando
 DELETE FROM farm 
-WHERE farm_id = 165;
+WHERE farm_id = 161;
 
 -- 10. Verificar que se ha creado el registro de auditoría para la eliminación
 SELECT * FROM audit.farm_audit WHERE operation = 'DELETE';
@@ -72,6 +75,13 @@ VACUUM FULL VERBOSE farm;
 
 -- Realiza la limpieza profunda de la tabla (VACUUM FULL), actualiza las estadísticas (ANALYZE) y ofrece una salida detallada (VERBOSE)
 VACUUM FULL VERBOSE ANALYZE farm;
+
+--eliminar index
+DROP INDEX idx_farm_area_unit_id;
+
+
+--crear index
+CREATE INDEX idx_farm_area_unit_id ON public.farm USING btree (area_unit_id);
 
 -- consultar indices
 SELECT * FROM pg_indexes WHERE tablename = 'farm';
@@ -154,6 +164,10 @@ SELECT * FROM pg_stat_statements;
 
 
 -- Vistas
+--ver las vistas que tengo creada
+SELECT table_name FROM information_schema.views WHERE table_schema = 'public';
+
+
 --Creacion de vista
 CREATE VIEW farm_info AS
 SELECT farm_id, name, area
@@ -169,6 +183,12 @@ JOIN status s ON f.status_id = s.status_id;
 SELECT * FROM farm_info;
 SELECT * FROM farm_with_status;
 
+--eliminar vista:
+DROP VIEW farm_info;
+
+
+
+
 -- ===================================================
 -- BACKUP AND RESTORE OPERATIONS IN POSTGRESQL
 -- ===================================================
@@ -182,29 +202,29 @@ SELECT * FROM farm_with_status;
 --   -b: Incluye objetos grandes (BLOBs) en el respaldo
 --   -v: Modo verbose para ver el progreso del respaldo
 --   -f backup_db.sql: Nombre del archivo de salida para el respaldo
-pg_dump -U postgres -h localhost -p 5432 -F c -b -v -f backup_db.sql CoffeeTech
+pg_dump -U postgres -h localhost -p 5432 -F c -b -v -f backup_db.sql "coffeeTechDB"
 
 -- Eliminar la base de datos original para simular un escenario de recuperación
 -- ADVERTENCIA: Esta operación elimina TODOS los datos permanentemente
 --   psql: Cliente de línea de comandos de PostgreSQL
 --   -d postgres: Conecta a la base de datos postgres (sistema)
 --   -c: Ejecuta el comando SQL especificado
-psql -U postgres -h localhost -p 5432 -d postgres -c "DROP DATABASE \"CoffeeTech\";"
+psql -U postgres -h localhost -p 5432 -d postgres -c "DROP DATABASE \"coffeeTechDB\";"
 
 -- Crear una nueva base de datos vacía para la restauración
 -- Este comando crea una base de datos limpia donde restauraremos el backup
-psql -U postgres -h localhost -p 5432 -d postgres -c "CREATE DATABASE \"CoffeeTechRestore\";"
+psql -U postgres -h localhost -p 5432 -d postgres -c "CREATE DATABASE \"coffeeTechRestore\";"
 
 -- Restaurar la base de datos desde el archivo de backup
 -- pg_restore: Herramienta para restaurar backups hechos con pg_dump
 --   -d CoffeeTechRestore: Base de datos destino de la restauración
 --   -v: Modo verbose para ver el progreso detallado
 --   backup_db.sql: Archivo de backup a restaurar
-pg_restore -U postgres -h localhost -p 5432 -d CoffeeTechRestore -v backup_db.sql
+pg_restore -U postgres -h localhost -p 5432 -d coffeeTechRestore -v backup_db.sql
 
 -- Verificar la restauración conectándose a la base y listando tablas
 -- \dt: Comando de PostgreSQL que lista todas las tablas en la base actual
-psql -U postgres -h localhost -p 5432 -d CoffeeTechRestore
+psql -U postgres -h localhost -p 5432 -d coffeeTechRestore
 \dt
 
 -- Insertar un registro de prueba para verificar la funcionalidad
@@ -224,7 +244,19 @@ pg_dump -U postgres -h localhost -p 5432 -F c -b -v -f backup_db_linux.sql Coffe
 --   backup_db.sql: Archivo local a transferir
 --   root@0.0.0.0:/home/natalia: Destino (usuario@ip:ruta)
 --   NOTA: Reemplazar 0.0.0.0 con la IP real de la máquina virtual
-scp -P 22 backup_db.sql root@0.0.0.0:/home/natalia
+
+--Conectarse al VPS
+ssh natalia@173.212.224.226
+contraseña es:   nataliaeisisporsiempre
+
+scp -P 22 backup_db.sql natalia@173.212.224.226:/home/natalia
+
+--ver bases de datos:
+sudo -u postgres psql -l
+
+--Eliminar base de datos:
+sudo -u postgres dropdb "CoffeeTechRestore"
+
 
 -- En el sistema Linux: Crear una base de datos para la restauración
 -- sudo -u postgres: Ejecuta el comando como usuario postgres
