@@ -245,6 +245,20 @@ sudo -u postgres psql -d CoffeeTechRestore
 sudo -u postgres psql -d CoffeeTechRestoreLinux -c "SELECT * FROM farm ORDER BY farm_id DESC;"
 
 
+-- Crear backup de linux
 
+sudo -u postgres pg_dump -F p -b -v -f ~/backup_CoffeeTechRestoreLinux.sql CoffeeTechRestore
+
+-- pasar a windows el backup
+
+scp -P 22 natalia@173.212.224.226:/home/natalia/backup_CoffeeTechRestoreLinux.sql "C:/Users/natyr/Documents/Universidad/10no Semestre/Mantenimiento y pruebas de software/coffeeTechDB/"
+
+--restaurar backup de linux en windows
+
+psql -U postgres -h localhost -p 5432 -d postgres -c "CREATE DATABASE \"CoffeeTechRestoreLinux\";"
+
+psql -U postgres -h localhost -p 5432 -d CoffeeTechRestoreLinux -f backup_CoffeeTechRestoreLinux.sql
+
+-- Verificar tablas
 
 
