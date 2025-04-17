@@ -43,7 +43,7 @@ INSERT INTO public.status_type (status_type_id, name) VALUES
 (9, 'Flowering'),
 (10, 'Task'),
 (11, 'Transaction'),
-(12, 'Deteccion');
+(12, 'Detection');
 
 INSERT INTO public.status (status_id, name, status_type_id) VALUES 
 
@@ -67,27 +67,27 @@ INSERT INTO public.status (status_id, name, status_type_id) VALUES
 (14, 'Pendiente', 5),
 (15, 'Revisado', 5),
 
-(18, 'Pendiente', 6),
-(19, 'Respondida', 6),
-(20, 'Programada', 6),
-(21, 'AsignacionTarea', 6),
-(31, 'Inactivo', 6),
-(32, 'ActualizacionTarea', 6),
+(16, 'Pendiente', 6),
+(17, 'Respondida', 6),
+(18, 'Programada', 6),
+(19, 'AsignacionTarea', 6),
+(20, 'Inactivo', 6),
+(21, 'ActualizacionTarea', 6),
 
-(16, 'Aceptada', 7),
-(17, 'Rechazada', 7),
+(22, 'Aceptada', 7),
+(23, 'Rechazada', 7),
 (24, 'Pendiente', 7),
 
-(22, 'Activo', 8),
-(23, 'Inactivo', 8),
+(25, 'Activo', 8),
+(26, 'Inactivo', 8),
 
-(25, 'Activa', 9),
-(26, 'Cosechada', 9),
-(30, 'Inactivo', 9),
+(27, 'Activa', 9),
+(28, 'Cosechada', 9),
+(29, 'Inactivo', 9),
 
-(27, 'Por hacer', 10),
-(28, 'Terminado', 10),
-(29, 'Inactivo', 10),
+(30, 'Por hacer', 10),
+(31, 'Terminado', 10),
+(32, 'Inactivo', 10),
 
 (33, 'Activo', 11),
 (34, 'Inactivo', 11),
@@ -117,12 +117,12 @@ INSERT INTO public.recommendation (recommendation_id, recommendation, name) VALU
 
 INSERT INTO public.notification_type (notification_type_id, name) VALUES 
 (1, 'Invitation'),
-(2, 'reminder'),
-(3, 'Invitation_accepted'),
-(4, 'invitation_rejected'),
-(5, 'Asignacion_tarea'),
-(6, 'Actualizacion_tarea'),
-(7, 'EliminacionTarea');
+(2, 'Reminder'),
+(3, 'Invitation_Accepted'),
+(4, 'Invitation_Rejected'),
+(5, 'TaskAssignment'),
+(6, 'TaskUpdate'),
+(7, 'TaskDeletion');
 
 INSERT INTO public.permission (permission_id, description, name) VALUES 
 (1, 'Permite al usuario modificar la informacion de la finca', 'edit_farm'),

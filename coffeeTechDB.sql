@@ -54,7 +54,7 @@ CREATE TABLE health_checks (
     recommendation_id integer NOT NULL,
     prediction VARCHAR(150) NOT NULL,
     cultural_work_tasks_id integer NOT NULL,
-    status_id integer DEFAULT (SELECT status_id FROM status WHERE name = 'Pendiente' AND status_type_id = (SELECT status_type_id FROM status_type WHERE name = 'Deteccion')) NOT NULL
+    status_id integer DEFAULT (SELECT status_id FROM status WHERE name = 'Pendiente' AND status_type_id = (SELECT status_type_id FROM status_type WHERE name = 'Detection')) NOT NULL
 );
 
 CREATE TABLE users (
@@ -148,7 +148,7 @@ CREATE TABLE transaction (
     status_id integer NOT NULL,
     value numeric(15, 2) NOT NULL,
     transaction_category_id integer NOT NULL,
-    creador_id integer NOT NULL
+    creator_id integer NOT NULL
 );
 
 CREATE TABLE transaction_type (
@@ -284,7 +284,7 @@ ALTER TABLE transaction
     ADD CONSTRAINT fk_transaction_transaction_type_id FOREIGN KEY (transaction_type_id) REFERENCES transaction_type(transaction_type_id);
 
 ALTER TABLE transaction 
-    ADD CONSTRAINT fk_transaction_creador FOREIGN KEY (creador_id) REFERENCES users(user_id);
+    ADD CONSTRAINT fk_transaction_creator FOREIGN KEY (creator_id) REFERENCES users(user_id);
 
 ALTER TABLE transaction_category
     ADD CONSTRAINT fk_transaction_type FOREIGN KEY (transaction_type_id) REFERENCES transaction_type(transaction_type_id) ON DELETE CASCADE;
