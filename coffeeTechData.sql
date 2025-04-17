@@ -46,40 +46,52 @@ INSERT INTO public.status_type (status_type_id, name) VALUES
 (12, 'Deteccion');
 
 INSERT INTO public.status (status_id, name, status_type_id) VALUES 
+
 (1, 'Activo', 1),
 (2, 'Inactivo', 1),
 (3, 'Pendiente', 1),
 (4, 'En Proceso', 1),
+
 (5, 'Activo', 2),
 (6, 'Verificado', 2),
 (7, 'No Verificado', 2),
 (8, 'Suspendido', 2),
+
 (9, 'Activo', 3),
 (10, 'Inactivo', 3),
+
 (11, 'Activo', 4),
 (12, 'Inactivo', 4),
+
 (13, 'Completado', 5),
 (14, 'Pendiente', 5),
 (15, 'Revisado', 5),
-(16, 'Aceptada', 7),
-(17, 'Rechazada', 7),
+
 (18, 'Pendiente', 6),
-(22, 'Activo', 8),
-(23, 'Inactivo', 8),
-(24, 'Pendiente', 7),
 (19, 'Respondida', 6),
-(25, 'Activa', 9),
-(26, 'Cosechada', 9),
-(27, 'Por hacer', 10),
-(28, 'Terminado', 10),
-(21, 'AsignacionTarea', 6),
 (20, 'Programada', 6),
-(29, 'Inactivo', 10),
-(30, 'Inactivo', 9),
+(21, 'AsignacionTarea', 6),
 (31, 'Inactivo', 6),
 (32, 'ActualizacionTarea', 6),
+
+(16, 'Aceptada', 7),
+(17, 'Rechazada', 7),
+(24, 'Pendiente', 7),
+
+(22, 'Activo', 8),
+(23, 'Inactivo', 8),
+
+(25, 'Activa', 9),
+(26, 'Cosechada', 9),
+(30, 'Inactivo', 9),
+
+(27, 'Por hacer', 10),
+(28, 'Terminado', 10),
+(29, 'Inactivo', 10),
+
 (33, 'Activo', 11),
 (34, 'Inactivo', 11),
+
 (35, 'Pendiente', 12),
 (36, 'Aceptado', 12),
 (37, 'Descartado', 12),
