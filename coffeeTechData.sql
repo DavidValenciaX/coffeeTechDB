@@ -28,25 +28,15 @@ INSERT INTO public.unit_of_measure (unit_of_measure_id, name, abbreviation, unit
 (3, 'Hectárea', 'ha', 2);
 
 INSERT INTO public.status_type (status_type_id, name) VALUES 
-(1, 'General'),
 (2, 'User'),
 (3, 'Farm'),
 (4, 'Plot'),
-(5, 'Health_Check'),
 (6, 'Notification'),
 (7, 'Invitation'),
 (8, 'user_role_farm'),
-(9, 'Flowering'),
-(10, 'Task'),
-(11, 'Transaction'),
-(12, 'Detection');
+(11, 'Transaction');
 
 INSERT INTO public.status (status_id, name, status_type_id) VALUES 
-
-(1, 'Activo', 1),
-(2, 'Inactivo', 1),
-(3, 'Pendiente', 1),
-(4, 'En Proceso', 1),
 
 (5, 'Activo', 2),
 (6, 'Verificado', 2),
@@ -58,10 +48,6 @@ INSERT INTO public.status (status_id, name, status_type_id) VALUES
 
 (11, 'Activo', 4),
 (12, 'Inactivo', 4),
-
-(13, 'Completado', 5),
-(14, 'Pendiente', 5),
-(15, 'Revisado', 5),
 
 (16, 'Pendiente', 6),
 (17, 'Respondida', 6),
@@ -77,21 +63,8 @@ INSERT INTO public.status (status_id, name, status_type_id) VALUES
 (25, 'Activo', 8),
 (26, 'Inactivo', 8),
 
-(27, 'Activa', 9),
-(28, 'Cosechada', 9),
-(29, 'Inactivo', 9),
-
-(30, 'Por hacer', 10),
-(31, 'Terminado', 10),
-(32, 'Inactivo', 10),
-
 (33, 'Activo', 11),
-(34, 'Inactivo', 11),
-
-(35, 'Pendiente', 12),
-(36, 'Aceptado', 12),
-(37, 'Descartado', 12),
-(38, 'Desactivado', 12);
+(34, 'Inactivo', 11);
 
 INSERT INTO public.notification_type (notification_type_id, name) VALUES 
 (1, 'Invitation'),
