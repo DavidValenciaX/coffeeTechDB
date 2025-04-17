@@ -28,43 +28,43 @@ INSERT INTO public.unit_of_measure (unit_of_measure_id, name, abbreviation, unit
 (3, 'Hectárea', 'ha', 2);
 
 INSERT INTO public.status_type (status_type_id, name) VALUES 
-(2, 'User'),
-(3, 'Farm'),
-(4, 'Plot'),
-(6, 'Notification'),
-(7, 'Invitation'),
-(8, 'user_role_farm'),
-(11, 'Transaction');
+(1, 'User'),
+(2, 'Farm'),
+(3, 'Plot'),
+(4, 'Notification'),
+(5, 'Invitation'),
+(6, 'user_role_farm'),
+(7, 'Transaction');
 
 INSERT INTO public.status (status_id, name, status_type_id) VALUES 
 
+(1, 'Activo', 1),
+(2, 'Verificado', 1),
+(3, 'No Verificado', 1),
+(4, 'Suspendido', 1),
+
 (5, 'Activo', 2),
-(6, 'Verificado', 2),
-(7, 'No Verificado', 2),
-(8, 'Suspendido', 2),
+(6, 'Inactivo', 2),
 
-(9, 'Activo', 3),
-(10, 'Inactivo', 3),
+(7, 'Activo', 3),
+(8, 'Inactivo', 3),
 
-(11, 'Activo', 4),
-(12, 'Inactivo', 4),
+(9, 'Pendiente', 4),
+(10, 'Respondida', 4),
+(11, 'Programada', 4),
+(12, 'AsignacionTarea', 4),
+(13, 'Inactivo', 4),
+(14, 'ActualizacionTarea', 4),
 
-(16, 'Pendiente', 6),
-(17, 'Respondida', 6),
-(18, 'Programada', 6),
-(19, 'AsignacionTarea', 6),
-(20, 'Inactivo', 6),
-(21, 'ActualizacionTarea', 6),
+(15, 'Aceptada', 5),
+(16, 'Rechazada', 5),
+(17, 'Pendiente', 5),
 
-(22, 'Aceptada', 7),
-(23, 'Rechazada', 7),
-(24, 'Pendiente', 7),
+(18, 'Activo', 6),
+(19, 'Inactivo', 6),
 
-(25, 'Activo', 8),
-(26, 'Inactivo', 8),
-
-(33, 'Activo', 11),
-(34, 'Inactivo', 11);
+(20, 'Activo', 7),
+(21, 'Inactivo', 7);
 
 INSERT INTO public.notification_type (notification_type_id, name) VALUES 
 (1, 'Invitation'),
