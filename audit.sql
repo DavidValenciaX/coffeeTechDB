@@ -6,23 +6,6 @@ CREATE SCHEMA IF NOT EXISTS audit;
 -- Create an ENUM type for audit operations
 CREATE TYPE audit.operation_type AS ENUM ('INSERT', 'UPDATE', 'DELETE');
 
--- Audit table for cultural_work_tasks
-CREATE TABLE IF NOT EXISTS audit.cultural_work_tasks_audit (
-    audit_id SERIAL PRIMARY KEY,
-    cultural_work_tasks_id INTEGER,
-    cultural_works_id INTEGER,
-    plot_id INTEGER,
-    reminder_owner BOOLEAN,
-    reminder_collaborator BOOLEAN,
-    collaborator_user_id INTEGER,
-    owner_user_id INTEGER,
-    status_id INTEGER,
-    task_date DATE,
-    created_at TIMESTAMP,
-    operation audit.operation_type NOT NULL,
-    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
 -- Audit table for farm
 CREATE TABLE IF NOT EXISTS audit.farm_audit (
     audit_id SERIAL PRIMARY KEY,
@@ -37,32 +20,6 @@ CREATE TABLE IF NOT EXISTS audit.farm_audit (
     old_area_unit_id INTEGER,
     old_status_id INTEGER,
     modified_by_user_id INTEGER,
-    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Audit table for health_checks
-CREATE TABLE IF NOT EXISTS audit.health_checks_audit (
-    audit_id SERIAL PRIMARY KEY,
-    health_checks_id INTEGER,
-    check_date DATE,
-    recommendation_id INTEGER,
-    prediction VARCHAR(150),
-    cultural_work_tasks_id INTEGER,
-    status_id INTEGER,
-    operation audit.operation_type NOT NULL,
-    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Audit table for flowering
-CREATE TABLE IF NOT EXISTS audit.flowering_audit (
-    audit_id SERIAL PRIMARY KEY,
-    flowering_id INTEGER,
-    plot_id INTEGER,
-    flowering_date DATE,
-    harvest_date DATE,
-    status_id INTEGER,
-    flowering_type_id INTEGER,
-    operation audit.operation_type NOT NULL,
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -131,47 +88,6 @@ CREATE TABLE IF NOT EXISTS audit.users_audit (
 
 -- FUNCTIONS
 
-CREATE OR REPLACE FUNCTION log_cultural_work_tasks_changes() RETURNS trigger
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-    -- Log based on operation type
-    IF TG_OP = 'INSERT' THEN
-        INSERT INTO audit.cultural_work_tasks_audit (
-            cultural_work_tasks_id, cultural_works_id, plot_id, 
-            reminder_owner, reminder_collaborator, collaborator_user_id, 
-            owner_user_id, status_id, task_date, created_at, operation
-        ) VALUES (
-            NEW.cultural_work_tasks_id, NEW.cultural_works_id, NEW.plot_id,
-            NEW.reminder_owner, NEW.reminder_collaborator, NEW.collaborator_user_id,
-            NEW.owner_user_id, NEW.status_id, NEW.task_date, NEW.created_at, 'INSERT'
-        );
-    ELSIF TG_OP = 'UPDATE' THEN
-        INSERT INTO audit.cultural_work_tasks_audit (
-            cultural_work_tasks_id, cultural_works_id, plot_id, 
-            reminder_owner, reminder_collaborator, collaborator_user_id, 
-            owner_user_id, status_id, task_date, created_at, operation
-        ) VALUES (
-            NEW.cultural_work_tasks_id, NEW.cultural_works_id, NEW.plot_id,
-            NEW.reminder_owner, NEW.reminder_collaborator, NEW.collaborator_user_id,
-            NEW.owner_user_id, NEW.status_id, NEW.task_date, NEW.created_at, 'UPDATE'
-        );
-    ELSIF TG_OP = 'DELETE' THEN
-        INSERT INTO audit.cultural_work_tasks_audit (
-            cultural_work_tasks_id, cultural_works_id, plot_id, 
-            reminder_owner, reminder_collaborator, collaborator_user_id, 
-            owner_user_id, status_id, task_date, created_at, operation
-        ) VALUES (
-            OLD.cultural_work_tasks_id, OLD.cultural_works_id, OLD.plot_id,
-            OLD.reminder_owner, OLD.reminder_collaborator, OLD.collaborator_user_id,
-            OLD.owner_user_id, OLD.status_id, OLD.task_date, OLD.created_at, 'DELETE'
-        );
-    END IF;
-    
-    RETURN NEW;
-END;
-$$;
-
 -- Función mejorada para auditar cambios en farm
 CREATE OR REPLACE FUNCTION log_farm_changes() RETURNS trigger
     LANGUAGE plpgsql
@@ -209,76 +125,6 @@ BEGIN
             farm_id, name, area, area_unit_id, status_id, operation, modified_by_user_id
         ) VALUES (
             OLD.farm_id, OLD.name, OLD.area, OLD.area_unit_id, OLD.status_id, 'DELETE', val_user_id
-        );
-    END IF;
-    
-    RETURN NEW;
-END;
-$$;
-
-CREATE OR REPLACE FUNCTION log_health_checks_changes() RETURNS trigger
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-    -- Log based on operation type
-    IF TG_OP = 'INSERT' THEN
-        INSERT INTO audit.health_checks_audit (
-            health_checks_id, check_date, recommendation_id, prediction, 
-            cultural_work_tasks_id, status_id, operation
-        ) VALUES (
-            NEW.health_checks_id, NEW.check_date, NEW.recommendation_id, NEW.prediction,
-            NEW.cultural_work_tasks_id, NEW.status_id, 'INSERT'
-        );
-    ELSIF TG_OP = 'UPDATE' THEN
-        INSERT INTO audit.health_checks_audit (
-            health_checks_id, check_date, recommendation_id, prediction, 
-            cultural_work_tasks_id, status_id, operation
-        ) VALUES (
-            NEW.health_checks_id, NEW.check_date, NEW.recommendation_id, NEW.prediction,
-            NEW.cultural_work_tasks_id, NEW.status_id, 'UPDATE'
-        );
-    ELSIF TG_OP = 'DELETE' THEN
-        INSERT INTO audit.health_checks_audit (
-            health_checks_id, check_date, recommendation_id, prediction, 
-            cultural_work_tasks_id, status_id, operation
-        ) VALUES (
-            OLD.health_checks_id, OLD.check_date, OLD.recommendation_id, OLD.prediction,
-            OLD.cultural_work_tasks_id, OLD.status_id, 'DELETE'
-        );
-    END IF;
-    
-    RETURN NEW;
-END;
-$$;
-
-CREATE OR REPLACE FUNCTION log_flowering_changes() RETURNS trigger
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-    -- Log based on operation type
-    IF TG_OP = 'INSERT' THEN
-        INSERT INTO audit.flowering_audit (
-            flowering_id, plot_id, flowering_date, harvest_date, 
-            status_id, flowering_type_id, operation
-        ) VALUES (
-            NEW.flowering_id, NEW.plot_id, NEW.flowering_date, NEW.harvest_date,
-            NEW.status_id, NEW.flowering_type_id, 'INSERT'
-        );
-    ELSIF TG_OP = 'UPDATE' THEN
-        INSERT INTO audit.flowering_audit (
-            flowering_id, plot_id, flowering_date, harvest_date, 
-            status_id, flowering_type_id, operation
-        ) VALUES (
-            NEW.flowering_id, NEW.plot_id, NEW.flowering_date, NEW.harvest_date,
-            NEW.status_id, NEW.flowering_type_id, 'UPDATE'
-        );
-    ELSIF TG_OP = 'DELETE' THEN
-        INSERT INTO audit.flowering_audit (
-            flowering_id, plot_id, flowering_date, harvest_date, 
-            status_id, flowering_type_id, operation
-        ) VALUES (
-            OLD.flowering_id, OLD.plot_id, OLD.flowering_date, OLD.harvest_date,
-            OLD.status_id, OLD.flowering_type_id, 'DELETE'
         );
     END IF;
     
@@ -444,13 +290,7 @@ $$;
 
 -- TRIGGERS
 
-CREATE TRIGGER cultural_work_tasks_audit_trigger AFTER INSERT OR DELETE OR UPDATE ON cultural_work_tasks FOR EACH ROW EXECUTE FUNCTION log_cultural_work_tasks_changes();
-
 CREATE TRIGGER farm_audit_trigger AFTER INSERT OR DELETE OR UPDATE ON farm FOR EACH ROW EXECUTE FUNCTION log_farm_changes();
-
-CREATE TRIGGER health_checks_audit_trigger AFTER INSERT OR DELETE OR UPDATE ON health_checks FOR EACH ROW EXECUTE FUNCTION log_health_checks_changes();
-
-CREATE TRIGGER log_flowering_changes AFTER INSERT OR DELETE OR UPDATE ON flowering FOR EACH ROW EXECUTE FUNCTION log_flowering_changes();
 
 CREATE TRIGGER plot_audit_trigger AFTER INSERT OR DELETE OR UPDATE ON plot FOR EACH ROW EXECUTE FUNCTION log_plot_changes();
 

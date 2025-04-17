@@ -2,30 +2,9 @@ BEGIN;
 
 -- Indexes for Foreign Keys and frequently queried columns
 
--- cultural_work_tasks
-CREATE INDEX idx_cultural_work_tasks_cultural_works_id ON cultural_work_tasks(cultural_works_id);
-CREATE INDEX idx_cultural_work_tasks_plot_id ON cultural_work_tasks(plot_id);
-CREATE INDEX idx_cultural_work_tasks_collaborator_user_id ON cultural_work_tasks(collaborator_user_id);
-CREATE INDEX idx_cultural_work_tasks_owner_user_id ON cultural_work_tasks(owner_user_id);
-CREATE INDEX idx_cultural_work_tasks_status_id ON cultural_work_tasks(status_id);
-CREATE INDEX idx_cultural_work_tasks_task_date ON cultural_work_tasks(task_date);
-
 -- farm
 CREATE INDEX idx_farm_area_unit_id ON farm(area_unit_id);
 CREATE INDEX idx_farm_status_id ON farm(status_id);
-
--- flowering
-CREATE INDEX idx_flowering_plot_id ON flowering(plot_id);
-CREATE INDEX idx_flowering_status_id ON flowering(status_id);
-CREATE INDEX idx_flowering_type_id ON flowering(flowering_type_id);
-CREATE INDEX idx_flowering_flowering_date ON flowering(flowering_date);
-CREATE INDEX idx_flowering_harvest_date ON flowering(harvest_date);
-
--- health_checks
-CREATE INDEX idx_health_checks_cultural_work_tasks_id ON health_checks(cultural_work_tasks_id);
-CREATE INDEX idx_health_checks_recommendation_id ON health_checks(recommendation_id);
-CREATE INDEX idx_health_checks_status_id ON health_checks(status_id);
-CREATE INDEX idx_health_checks_check_date ON health_checks(check_date);
 
 -- invitation
 CREATE INDEX idx_invitation_farm_id ON invitation(farm_id);

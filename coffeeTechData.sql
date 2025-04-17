@@ -8,10 +8,6 @@ INSERT INTO public.coffee_variety (coffee_variety_id, name) VALUES
 (5, 'Tipica'),
 (6, 'Tabi');
 
-INSERT INTO public.cultural_works (cultural_works_id, name, description) VALUES 
-(1, 'Chequeo de Salud', 'Evaluación de la salud general de las plantas de café para identificar enfermedades, plagas o deficiencias y así aplicar medidas preventivas y correctivas.'),
-(2, 'Chequeo de estado de maduración', 'Inspección de cultivos para determinar el nivel de maduración de los frutos y planificar la cosecha en el momento óptimo para la mejor calidad.');
-
 INSERT INTO public.unit_of_measure_type (unit_of_measure_type_id, name) VALUES 
 (1, 'Longitud'),
 (2, 'Área'),
@@ -96,24 +92,6 @@ INSERT INTO public.status (status_id, name, status_type_id) VALUES
 (36, 'Aceptado', 12),
 (37, 'Descartado', 12),
 (38, 'Desactivado', 12);
-
-INSERT INTO public.flowering_type (flowering_type_id, name) VALUES 
-(1, 'Principal'),
-(2, 'Mitaca');
-
-INSERT INTO public.recommendation (recommendation_id, recommendation, name) VALUES 
-(1, 'Aplicar un fertilizante rico en nitrógeno, como el sulfato de amonio o la urea.', 'nitrogen_N'),
-(2, 'Utilizar fertilizantes con alto contenido de fósforo, como superfosfato o fosfato monoamónico.', 'phosphorus_P'),
-(3, 'Aplicar fertilizantes ricos en potasio, como el sulfato de potasio o cenizas de madera.', 'potassium_K'),
-(4, 'Aplicar fungicidas a base de cobre o específicos para Cercospora según indicaciones de un especialista.', 'cercospora'),
-(5, 'Usar fungicidas sistémicos o preventivos para combatir la roya, aplicando según el ciclo de la enfermedad y las condiciones climáticas.', 'ferrugem'),
-(6, 'Aplicar fungicidas específicos para roya, especialmente aquellos aprobados para su uso en el cultivo afectado.', 'leaf_rust'),
-(7, 'Está sanita, sigue así', 'hoja_sana'),
-(11, 'Dejar que las frutas continúen madurando antes de la recolección.', 'Verde'),
-(8, 'Recolectar las frutas sobremaduras y procesarlas adecuadamente.', 'Sobremaduro'),
-(9, 'Recolectar las frutas maduras para su comercialización.', 'Maduro'),
-(10, 'Mantener las frutas pintonas bajo observación y recolectar según el progreso de maduración.', 'Pintón'),
-(12, 'No se han identificado granos. No se requiere acción adicional.', 'No hay granos');
 
 INSERT INTO public.notification_type (notification_type_id, name) VALUES 
 (1, 'Invitation'),
@@ -229,20 +207,11 @@ INSERT INTO public.transaction_category (transaction_category_id, name, transact
 SELECT setval(pg_get_serial_sequence('coffee_variety', 'coffee_variety_id'),
               (SELECT COALESCE(MAX(coffee_variety_id), 0) + 1 FROM coffee_variety), false);
 
-SELECT setval(pg_get_serial_sequence('cultural_works', 'cultural_works_id'),
-              (SELECT COALESCE(MAX(cultural_works_id), 0) + 1 FROM cultural_works), false);
-
-SELECT setval(pg_get_serial_sequence('flowering_type', 'flowering_type_id'), 
-              (SELECT COALESCE(MAX(flowering_type_id), 0) + 1 FROM flowering_type), false);
-
 SELECT setval(pg_get_serial_sequence('notification_type', 'notification_type_id'), 
               (SELECT COALESCE(MAX(notification_type_id), 0) + 1 FROM notification_type), false);
 
 SELECT setval(pg_get_serial_sequence('permission', 'permission_id'), 
               (SELECT COALESCE(MAX(permission_id), 0) + 1 FROM permission), false);
-
-SELECT setval(pg_get_serial_sequence('recommendation', 'recommendation_id'), 
-              (SELECT COALESCE(MAX(recommendation_id), 0) + 1 FROM recommendation), false);
 
 SELECT setval(pg_get_serial_sequence('role', 'role_id'), 
               (SELECT COALESCE(MAX(role_id), 0) + 1 FROM role), false);
