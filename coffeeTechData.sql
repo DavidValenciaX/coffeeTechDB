@@ -75,8 +75,6 @@ INSERT INTO public.permission (permission_id, description, name) VALUES
 (13, 'Permiso para eliminar lotes', 'delete_plot'),
 (8, 'Permite al usuario listar los lotes', 'read_plots'),
 
-(18, 'Permite al usuario ver reportes de la finca', 'read_report'),
-
 (24, 'Permite al usuario ver las transaciones de la finca', 'read_transaction'),
 (25, 'Permite al usuario editar las transaciones de la finca', 'edit_transaction'),
 (26, 'Permite al usuario agregar las transaciones de la finca', 'add_transaction'),
@@ -102,22 +100,28 @@ INSERT INTO public.role_permission (role_id, permission_id) VALUES
 (1, 11),
 (1, 12),
 (1, 13),
-(1, 18),
+
 (1, 24),
 (1, 25),
 (1, 26),
 (1, 27),
+
 (1, 29),
 
+
 (2, 1),
+
 (2, 3),
 (2, 4),
+
 (2, 7),
 (2, 8),
 (2, 9),
 (2, 10),
+
 (2, 12),
 (2, 13),
+
 (2, 24),
 (2, 25),
 (2, 26),
