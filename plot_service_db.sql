@@ -1,9 +1,6 @@
 -- BASIC CONFIGURATION
 SET client_encoding = 'UTF8';
 
--- EXTENSIONS
-CREATE EXTENSION pg_stat_statements;
-
 BEGIN;
 
 -- TABLES
