@@ -8,24 +8,10 @@ INSERT INTO public.coffee_variety (coffee_variety_id, name) VALUES
 (5, 'Tipica'),
 (6, 'Tabi');
 
-INSERT INTO public.unit_of_measure_type (unit_of_measure_type_id, name) VALUES 
-(1, 'Longitud'),
-(2, 'Área'),
-(3, 'Masa'),
-(4, 'Densidad'),
-(5, 'Temperatura'),
-(6, 'Precipitación');
-
-INSERT INTO public.unit_of_measure (unit_of_measure_id, name, abbreviation, unit_of_measure_type_id) VALUES 
-(1, 'Metro', 'm', 1),
-(2, 'Kilómetro', 'km', 1),
-(3, 'Metro cuadrado', 'm²', 2),
-(4, 'Kilómetro cuadrado', 'km²', 2),
-(5, 'Hectárea', 'ha', 2),
-(6, 'Kilogramos', 'kg', 3),
-(7, 'Plantas por hectárea', 'pl/ha', 4),
-(8, 'Grados Celsius', '°C', 5),
-(9, 'Milímetros', 'mm', 6);
+INSERT INTO public.area_units (area_unit_id, name, abbreviation) VALUES 
+(1, 'Metro cuadrado', 'm²'),
+(2, 'Kilómetro cuadrado', 'km²'),
+(3, 'Hectárea', 'ha');
 
 INSERT INTO public.status_type (status_type_id, name) VALUES 
 (1, 'User'),
@@ -166,11 +152,8 @@ SELECT setval(pg_get_serial_sequence('transaction_category', 'transaction_catego
 SELECT setval(pg_get_serial_sequence('transaction_type', 'transaction_type_id'), 
               (SELECT COALESCE(MAX(transaction_type_id), 0) + 1 FROM transaction_type), false);
 
-SELECT setval(pg_get_serial_sequence('unit_of_measure_type', 'unit_of_measure_type_id'), 
-              (SELECT COALESCE(MAX(unit_of_measure_type_id), 0) + 1 FROM unit_of_measure_type), false);
-
-SELECT setval(pg_get_serial_sequence('unit_of_measure', 'unit_of_measure_id'), 
-              (SELECT COALESCE(MAX(unit_of_measure_id), 0) + 1 FROM unit_of_measure), false);
+SELECT setval(pg_get_serial_sequence('area_units', 'area_unit_id'), 
+              (SELECT COALESCE(MAX(area_unit_id), 0) + 1 FROM area_units), false);
 
 -- Confirmar la transacción si todo va bien
 COMMIT;
