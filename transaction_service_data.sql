@@ -1,13 +1,9 @@
 BEGIN;
 
--- Inserción de tipos de estado
-INSERT INTO status_type (status_type_id, name) VALUES 
-(1, 'Transaction');
-
--- Inserción de estados
-INSERT INTO status (status_id, name, status_type_id) VALUES 
-(1, 'Activo', 1),
-(2, 'Inactivo', 1);
+-- Inserción de estados de transacción
+INSERT INTO transaction_status (status_id, name) VALUES 
+(1, 'Activo'),
+(2, 'Inactivo');
 
 -- Inserción de tipos de transacción
 INSERT INTO transaction_type (transaction_type_id, name) VALUES 
@@ -24,11 +20,8 @@ INSERT INTO transaction_category (transaction_category_id, name, transaction_typ
 (6, 'Otros', 2);
 
 -- Actualización de secuencias
-SELECT setval(pg_get_serial_sequence('status', 'status_id'), 
-              (SELECT COALESCE(MAX(status_id), 0) + 1 FROM status), false);
-
-SELECT setval(pg_get_serial_sequence('status_type', 'status_type_id'), 
-              (SELECT COALESCE(MAX(status_type_id), 0) + 1 FROM status_type), false);
+SELECT setval(pg_get_serial_sequence('transaction_status', 'status_id'), 
+              (SELECT COALESCE(MAX(status_id), 0) + 1 FROM transaction_status), false);
 
 SELECT setval(pg_get_serial_sequence('transaction_category', 'transaction_category_id'), 
               (SELECT COALESCE(MAX(transaction_category_id), 0) + 1 FROM transaction_category), false);
