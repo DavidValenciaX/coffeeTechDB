@@ -2,12 +2,12 @@ BEGIN;
 
 -- Inserción de tipos de estado
 INSERT INTO status_type (status_type_id, name) VALUES 
-(7, 'Transaction');
+(1, 'Transaction');
 
 -- Inserción de estados
 INSERT INTO status (status_id, name, status_type_id) VALUES 
-(20, 'Activo', 7),
-(21, 'Inactivo', 7);
+(1, 'Activo', 1),
+(2, 'Inactivo', 1);
 
 -- Inserción de tipos de transacción
 INSERT INTO transaction_type (transaction_type_id, name) VALUES 

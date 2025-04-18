@@ -11,12 +11,12 @@ INSERT INTO coffee_variety (coffee_variety_id, name) VALUES
 
 -- Inserción de tipos de estado
 INSERT INTO status_type (status_type_id, name) VALUES 
-(3, 'Plot');
+(1, 'Plot');
 
 -- Inserción de estados
 INSERT INTO status (status_id, name, status_type_id) VALUES 
-(7, 'Activo', 3),
-(8, 'Inactivo', 3);
+(1, 'Activo', 1),
+(2, 'Inactivo', 1);
 
 -- Actualización de secuencias
 SELECT setval(pg_get_serial_sequence('coffee_variety', 'coffee_variety_id'),
