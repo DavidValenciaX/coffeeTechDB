@@ -121,7 +121,14 @@ INSERT INTO public.role_permission (role_id, permission_id) VALUES
 (2, 14),
 (2, 15),
 (2, 16),
-(2, 17);
+(2, 17),
+
+(3, 9),
+
+(3, 13),
+(3, 14),
+
+(3, 16);
 
 INSERT INTO public.transaction_type (transaction_type_id, name) VALUES 
 (1, 'Ingreso'),
