@@ -37,7 +37,7 @@ INSERT INTO public.notification_type (notification_type_id, name) VALUES
 (3, 'Invitation_Accepted'),
 (4, 'Invitation_Rejected');
 
--- Inserción de permisos (Assuming all permissions are managed by the User service)
+-- Inserción de permisos
 INSERT INTO public.permission (permission_id, description, name) VALUES
 (1, 'Permite al usuario modificar la informacion de la finca', 'edit_farm'),
 (5, 'Permite al usuario eliminar finca de  donde es propietario', 'delete_farm'),
@@ -51,31 +51,19 @@ INSERT INTO public.permission (permission_id, description, name) VALUES
 (4, 'Permite al usuario agregar lotes', 'add_plot'),
 (12, 'Permiso para editar lotes', 'edit_plot'),
 (13, 'Permiso para eliminar lotes', 'delete_plot'),
-(14, 'Permiso para agregar floraciones', 'add_flowering'),
-(15, 'Permiso para editar floraciones', 'edit_flowering'),
 (8, 'Permite al usuario listar los lotes', 'read_plots'),
-(16, 'Permiso para listar floraciones', 'read_flowering'),
-(17, 'Permiso para eliminar floraciones', 'delete_flowering'),
 (18, 'Permite al usuario ver reportes de la finca', 'read_report'),
-(19, 'Permite al usuario agregar una tarea de labor cultural\n', 'add_cultural_work_task'),
-(21, 'Permite al usuario leer las tarea de labor cultural de un lote', 'read_cultural_work_task'),
-(20, 'Permite al usuario completar una tarea de labor cultural', 'complete_cultural_work_task'),
-(22, 'Permite al usuario modificar la información de la tarea de labor cultural', 'edit_cultural_work_task'),
-(23, 'Permite al usuario eliminar la tarea de labor cultural', 'delete_cultural_work_task'),
 (24, 'Permite al usuario ver las transaciones de la finca', 'read_transaction'),
 (25, 'Permite al usuario editar las transaciones de la finca', 'edit_transaction'),
 (26, 'Permite al usuario agregar las transaciones de la finca', 'add_transaction'),
 (27, 'Permite al usuario eliminar las transaciones de la finca', 'delete_transaction'),
-(28, 'Permiso para realizar detecciones', 'perform_detection'),
-(29, 'Permite al usuario ver los reportes financieron', 'read_financial_report'),
-(31, 'Permite al usuario ver los reportes de maduracion', 'read_maturation_checks'),
-(30, 'Permite al usuario ver los reportes de salud', 'read_health_checks_report');
+(29, 'Permite al usuario ver los reportes financieros', 'read_financial_report');
 
 -- Inserción de roles
 INSERT INTO public.role (role_id, name) VALUES
 (1, 'Propietario'),
-(3, 'Operador de campo'),
-(2, 'Administrador de finca');
+(2, 'Administrador de finca'),
+(3, 'Operador de campo');
 
 -- Inserción de permisos por rol
 INSERT INTO public.role_permission (role_id, permission_id) VALUES
@@ -98,37 +86,19 @@ INSERT INTO public.role_permission (role_id, permission_id) VALUES
 (1, 13),
 (2, 12),
 (2, 13),
-(1, 14),
-(1, 15),
-(2, 14),
-(2, 15),
-(1, 16),
-(1, 17),
 (2, 4),
 (2, 10),
-(2, 16),
-(2, 17),
 (1, 18),
 (2, 8),
-(1, 19),
-(3, 20),
-(1, 21),
-(1, 22),
-(1, 23),
 (1, 26),
 (1, 25),
 (1, 27),
 (1, 24),
-(1, 28),
-(2, 28),
-(3, 28),
 (1, 29),
 (2, 24),
 (2, 25),
 (2, 26),
-(2, 27),
-(1, 30),
-(1, 31);
+(2, 27);
 
 -- Actualización de secuencias para las tablas pobladas
 SELECT setval(pg_get_serial_sequence('status_type', 'status_type_id'),
