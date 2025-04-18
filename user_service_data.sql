@@ -3,9 +3,9 @@ BEGIN;
 -- Inserción de tipos de estado relevantes para el servicio de usuarios
 INSERT INTO public.status_type (status_type_id, name) VALUES
 (1, 'User'),
-(4, 'Notification'),
-(5, 'Invitation'),
-(6, 'user_role_farm');
+(2, 'Notification'),
+(3, 'Invitation'),
+(4, 'user_role_farm');
 
 -- Inserción de estados relevantes para el servicio de usuarios
 INSERT INTO public.status (status_id, name, status_type_id) VALUES
@@ -14,30 +14,28 @@ INSERT INTO public.status (status_id, name, status_type_id) VALUES
 (2, 'Verificado', 1),
 (3, 'No Verificado', 1),
 (4, 'Suspendido', 1),
+
 -- Notification statuses
-(9, 'Pendiente', 4),
-(10, 'Respondida', 4),
-(11, 'Programada', 4),
-(12, 'AsignacionTarea', 4), -- Assuming Task related notifications are handled here
-(13, 'Inactivo', 4),
-(14, 'ActualizacionTarea', 4), -- Assuming Task related notifications are handled here
+(5, 'Pendiente', 2),
+(6, 'Respondida', 2),
+(7, 'Programada', 2),
+(8, 'Inactiva', 2),
+
 -- Invitation statuses
-(15, 'Aceptada', 5),
-(16, 'Rechazada', 5),
-(17, 'Pendiente', 5),
+(9, 'Aceptada', 3),
+(10, 'Rechazada', 3),
+(11, 'Pendiente', 3),
+
 -- user_role_farm statuses
-(18, 'Activo', 6),
-(19, 'Inactivo', 6);
+(12, 'Activo', 4),
+(13, 'Inactivo', 4);
 
 -- Inserción de tipos de notificación
 INSERT INTO public.notification_type (notification_type_id, name) VALUES
 (1, 'Invitation'),
 (2, 'Reminder'),
 (3, 'Invitation_Accepted'),
-(4, 'Invitation_Rejected'),
-(5, 'TaskAssignment'),
-(6, 'TaskUpdate'),
-(7, 'TaskDeletion');
+(4, 'Invitation_Rejected');
 
 -- Inserción de permisos (Assuming all permissions are managed by the User service)
 INSERT INTO public.permission (permission_id, description, name) VALUES

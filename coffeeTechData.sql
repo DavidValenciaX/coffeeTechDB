@@ -52,28 +52,23 @@ INSERT INTO public.status (status_id, name, status_type_id) VALUES
 (9, 'Pendiente', 4),
 (10, 'Respondida', 4),
 (11, 'Programada', 4),
-(12, 'AsignacionTarea', 4),
-(13, 'Inactivo', 4),
-(14, 'ActualizacionTarea', 4),
+(12, 'Inactiva', 4),
 
-(15, 'Aceptada', 5),
-(16, 'Rechazada', 5),
-(17, 'Pendiente', 5),
+(13, 'Aceptada', 5),
+(14, 'Rechazada', 5),
+(15, 'Pendiente', 5),
 
-(18, 'Activo', 6),
-(19, 'Inactivo', 6),
+(16, 'Activo', 6),
+(17, 'Inactivo', 6),
 
-(20, 'Activo', 7),
-(21, 'Inactivo', 7);
+(18, 'Activo', 7),
+(19, 'Inactivo', 7);
 
 INSERT INTO public.notification_type (notification_type_id, name) VALUES 
 (1, 'Invitation'),
 (2, 'Reminder'),
 (3, 'Invitation_Accepted'),
-(4, 'Invitation_Rejected'),
-(5, 'TaskAssignment'),
-(6, 'TaskUpdate'),
-(7, 'TaskDeletion');
+(4, 'Invitation_Rejected');
 
 INSERT INTO public.permission (permission_id, description, name) VALUES 
 (1, 'Permite al usuario modificar la informacion de la finca', 'edit_farm'),
