@@ -5,7 +5,7 @@ INSERT INTO status_type (status_type_id, name) VALUES
 (1, 'User'),
 (2, 'Notification'),
 (3, 'Invitation'),
-(4, 'user_role_farm');
+(4, 'User_Role_Farm');
 
 -- Inserción de estados relevantes para el servicio de usuarios
 INSERT INTO status (status_id, name, status_type_id) VALUES
@@ -26,7 +26,7 @@ INSERT INTO status (status_id, name, status_type_id) VALUES
 (10, 'Rechazada', 3),
 (11, 'Pendiente', 3),
 
--- user_role_farm statuses
+-- User_Role_Farm statuses
 (12, 'Activo', 4),
 (13, 'Inactivo', 4);
 
