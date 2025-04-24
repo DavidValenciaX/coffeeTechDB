@@ -197,7 +197,7 @@ ALTER TABLE notifications
     ADD CONSTRAINT fk_notifications_invitation_id FOREIGN KEY (invitation_id) REFERENCES invitations(invitation_id) ON DELETE CASCADE;
 
 ALTER TABLE notifications
-    ADD CONSTRAINT fk_notifications_farm_id FOREIGN KEY (farm_id) REFERENCES farms(farm_id);
+    ADD CONSTRAINT fk_notifications_farm_id FOREIGN KEY (farm_id) REFERENCES farms(farm_id) ON DELETE CASCADE;
 
 ALTER TABLE user_role_farm
     ADD CONSTRAINT fk_user_role_farm_farm_id FOREIGN KEY (farm_id) REFERENCES farms(farm_id) ON DELETE CASCADE;
