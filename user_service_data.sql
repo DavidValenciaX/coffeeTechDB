@@ -9,24 +9,24 @@ INSERT INTO status_type (status_type_id, name) VALUES
 
 -- Inserción de estados relevantes para el servicio de usuarios
 INSERT INTO status (status_id, name, status_type_id) VALUES
--- User statuses
+-- User states
 (1, 'Activo', 1),
 (2, 'Verificado', 1),
 (3, 'No Verificado', 1),
 (4, 'Suspendido', 1),
 
--- Notification statuses
+-- Notification states
 (5, 'Pendiente', 2),
 (6, 'Respondida', 2),
 (7, 'Programada', 2),
 (8, 'Inactiva', 2),
 
--- Invitation statuses
+-- Invitation states
 (9, 'Aceptada', 3),
 (10, 'Rechazada', 3),
 (11, 'Pendiente', 3),
 
--- User_Role_Farm statuses
+-- User_Role_Farm states
 (12, 'Activo', 4),
 (13, 'Inactivo', 4);
 

@@ -106,21 +106,21 @@ INSERT INTO transaction_categories (transaction_category_id, name, transaction_t
 (6, 'Otros', 2);
 
 -- Nuevos inserts para tablas de status específicas
-INSERT INTO user_statuses (user_status_id, name) VALUES 
+INSERT INTO user_states (user_status_id, name) VALUES 
 (1, 'Activo'),
 (2, 'Verificado'),
 (3, 'No Verificado'),
 (4, 'Suspendido');
 
-INSERT INTO farm_statuses (farm_status_id, name) VALUES 
+INSERT INTO farm_states (farm_status_id, name) VALUES 
 (1, 'Activo'),
 (2, 'Inactivo');
 
-INSERT INTO plot_statuses (plot_status_id, name) VALUES 
+INSERT INTO plot_states (plot_status_id, name) VALUES 
 (1, 'Activo'),
 (2, 'Inactivo');
 
-INSERT INTO notification_statuses (notification_status_id, name) VALUES 
+INSERT INTO notification_states (notification_status_id, name) VALUES 
 (1, 'Pendiente'),
 (2, 'Respondida'),
 (3, 'Programada'),
@@ -128,15 +128,15 @@ INSERT INTO notification_statuses (notification_status_id, name) VALUES
 (5, 'Aceptada'),
 (6, 'Rechazada');
 
-INSERT INTO user_farm_role_statuses (user_farm_role_status_id, name) VALUES 
+INSERT INTO user_farm_role_states (user_farm_role_status_id, name) VALUES 
 (1, 'Activo'),
 (2, 'Inactivo');
 
-INSERT INTO transaction_statuses (transaction_status_id, name) VALUES 
+INSERT INTO transaction_states (transaction_status_id, name) VALUES 
 (1, 'Activo'),
 (2, 'Inactivo');
 
-INSERT INTO invitation_statuses (invitation_status_id, name) VALUES 
+INSERT INTO invitation_states (invitation_status_id, name) VALUES 
 (1, 'Aceptada'),
 (2, 'Rechazada'),
 (3, 'Pendiente');
@@ -162,26 +162,26 @@ SELECT setval(pg_get_serial_sequence('transaction_types', 'transaction_type_id')
 SELECT setval(pg_get_serial_sequence('area_units', 'area_unit_id'), 
               (SELECT COALESCE(MAX(area_unit_id), 0) + 1 FROM area_units), false);
 
-SELECT setval(pg_get_serial_sequence('user_statuses', 'user_status_id'), 
-              (SELECT COALESCE(MAX(user_status_id), 0) + 1 FROM user_statuses), false);
+SELECT setval(pg_get_serial_sequence('user_states', 'user_status_id'), 
+              (SELECT COALESCE(MAX(user_status_id), 0) + 1 FROM user_states), false);
 
-SELECT setval(pg_get_serial_sequence('farm_statuses', 'farm_status_id'), 
-              (SELECT COALESCE(MAX(farm_status_id), 0) + 1 FROM farm_statuses), false);
+SELECT setval(pg_get_serial_sequence('farm_states', 'farm_status_id'), 
+              (SELECT COALESCE(MAX(farm_status_id), 0) + 1 FROM farm_states), false);
 
-SELECT setval(pg_get_serial_sequence('plot_statuses', 'plot_status_id'), 
-              (SELECT COALESCE(MAX(plot_status_id), 0) + 1 FROM plot_statuses), false);
+SELECT setval(pg_get_serial_sequence('plot_states', 'plot_status_id'), 
+              (SELECT COALESCE(MAX(plot_status_id), 0) + 1 FROM plot_states), false);
 
-SELECT setval(pg_get_serial_sequence('notification_statuses', 'notification_status_id'), 
-              (SELECT COALESCE(MAX(notification_status_id), 0) + 1 FROM notification_statuses), false);
+SELECT setval(pg_get_serial_sequence('notification_states', 'notification_status_id'), 
+              (SELECT COALESCE(MAX(notification_status_id), 0) + 1 FROM notification_states), false);
 
-SELECT setval(pg_get_serial_sequence('user_farm_role_statuses', 'user_farm_role_status_id'), 
-              (SELECT COALESCE(MAX(user_farm_role_status_id), 0) + 1 FROM user_farm_role_statuses), false);
+SELECT setval(pg_get_serial_sequence('user_farm_role_states', 'user_farm_role_status_id'), 
+              (SELECT COALESCE(MAX(user_farm_role_status_id), 0) + 1 FROM user_farm_role_states), false);
 
-SELECT setval(pg_get_serial_sequence('transaction_statuses', 'transaction_status_id'), 
-              (SELECT COALESCE(MAX(transaction_status_id), 0) + 1 FROM transaction_statuses), false);
+SELECT setval(pg_get_serial_sequence('transaction_states', 'transaction_status_id'), 
+              (SELECT COALESCE(MAX(transaction_status_id), 0) + 1 FROM transaction_states), false);
 
-SELECT setval(pg_get_serial_sequence('invitation_statuses', 'invitation_status_id'), 
-              (SELECT COALESCE(MAX(invitation_status_id), 0) + 1 FROM invitation_statuses), false);
+SELECT setval(pg_get_serial_sequence('invitation_states', 'invitation_status_id'), 
+              (SELECT COALESCE(MAX(invitation_status_id), 0) + 1 FROM invitation_states), false);
 
 -- Confirmar la transacción si todo va bien
 COMMIT;
