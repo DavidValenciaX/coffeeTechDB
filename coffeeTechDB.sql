@@ -59,7 +59,7 @@ CREATE TABLE plots (
     name VARCHAR(255) NOT NULL,
     longitude NUMERIC(11, 8) CHECK (longitude BETWEEN -180 AND 180),
     latitude NUMERIC(11, 8) CHECK (latitude BETWEEN -90 AND 90),
-    altitude NUMERIC(10, 2),
+    altitude NUMERIC(10, 2) CHECK (altitude >= 0 AND altitude <= 3000),
     coffee_variety_id integer NOT NULL,
     farm_id integer NOT NULL,
     plot_status_id integer NOT NULL
@@ -145,7 +145,8 @@ CREATE TABLE farms (
     name VARCHAR(255) NOT NULL,
     area numeric(10,2) NOT NULL,
     area_unit_id integer NOT NULL,
-    farm_status_id integer NOT NULL
+    farm_status_id integer NOT NULL,
+    CHECK (area > 0)
 );
 
 CREATE TABLE user_role_farm (
