@@ -16,8 +16,8 @@ CREATE TABLE users (
     name VARCHAR(255) NOT NULL,
     email VARCHAR(150) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
-    verification_token VARCHAR(255),
-    session_token VARCHAR(255),
+    verification_token VARCHAR(255) UNIQUE,
+    session_token VARCHAR(255) UNIQUE,
     user_status_id integer NOT NULL,
     fcm_token VARCHAR(255)
 );
