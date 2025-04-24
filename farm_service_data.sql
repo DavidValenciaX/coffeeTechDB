@@ -15,7 +15,7 @@ INSERT INTO farm_status (status_id, name) VALUES
 SELECT setval(pg_get_serial_sequence('farm_status', 'status_id'), 
               (SELECT COALESCE(MAX(status_id), 0) + 1 FROM farm_status), false);
 
-SELECT setval(pg_get_serial_sequence('area_units', 'unit_of_measure_id'), 
-              (SELECT COALESCE(MAX(unit_of_measure_id), 0) + 1 FROM area_units), false);
+SELECT setval(pg_get_serial_sequence('area_units', 'area_unit_id'), 
+              (SELECT COALESCE(MAX(area_unit_id), 0) + 1 FROM area_units), false);
 
 COMMIT;
