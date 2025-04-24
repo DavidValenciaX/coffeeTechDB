@@ -1,6 +1,6 @@
 BEGIN;
 
-INSERT INTO public.coffee_variety (coffee_variety_id, name) VALUES 
+INSERT INTO coffee_variety (coffee_variety_id, name) VALUES 
 (1, 'Castillo'),
 (2, 'Borbon'),
 (3, 'Caturra'),
@@ -8,21 +8,21 @@ INSERT INTO public.coffee_variety (coffee_variety_id, name) VALUES
 (5, 'Tipica'),
 (6, 'Tabi');
 
-INSERT INTO public.area_units (area_unit_id, name, abbreviation) VALUES 
+INSERT INTO area_units (area_unit_id, name, abbreviation) VALUES 
 (1, 'Metro cuadrado', 'm²'),
 (2, 'Kilómetro cuadrado', 'km²'),
 (3, 'Hectárea', 'ha');
 
-INSERT INTO public.status_type (status_type_id, name) VALUES 
+INSERT INTO status_type (status_type_id, name) VALUES 
 (1, 'User'),
 (2, 'Farm'),
 (3, 'Plot'),
 (4, 'Notification'),
 (5, 'Invitation'),
-(6, 'user_role_farm'),
+(6, 'User_Role_Farm'),
 (7, 'Transaction');
 
-INSERT INTO public.status (status_id, name, status_type_id) VALUES 
+INSERT INTO status (status_id, name, status_type_id) VALUES 
 
 (1, 'Activo', 1),
 (2, 'Verificado', 1),
@@ -50,13 +50,13 @@ INSERT INTO public.status (status_id, name, status_type_id) VALUES
 (18, 'Activo', 7),
 (19, 'Inactivo', 7);
 
-INSERT INTO public.notification_type (notification_type_id, name) VALUES 
+INSERT INTO notification_type (notification_type_id, name) VALUES 
 (1, 'Invitation'),
 (2, 'Reminder'),
 (3, 'Invitation_Accepted'),
 (4, 'Invitation_Rejected');
 
-INSERT INTO public.permission (permission_id, description, name) VALUES
+INSERT INTO permission (permission_id, description, name) VALUES
 (1, 'Permite al usuario modificar la informacion de la finca', 'edit_farm'),
 (2, 'Permite al usuario eliminar finca de donde es propietario', 'delete_farm'),
 
@@ -82,12 +82,12 @@ INSERT INTO public.permission (permission_id, description, name) VALUES
 
 (18, 'Permite al usuario ver los reportes financieros', 'read_financial_report');
 
-INSERT INTO public.role (role_id, name) VALUES 
+INSERT INTO role (role_id, name) VALUES 
 (1, 'Propietario'),
 (2, 'Administrador de finca'),
 (3, 'Operador de campo');
 
-INSERT INTO public.role_permission (role_id, permission_id) VALUES
+INSERT INTO role_permission (role_id, permission_id) VALUES
 (1, 1),
 (1, 2),
 (1, 3),
@@ -130,11 +130,11 @@ INSERT INTO public.role_permission (role_id, permission_id) VALUES
 
 (3, 16);
 
-INSERT INTO public.transaction_type (transaction_type_id, name) VALUES 
+INSERT INTO transaction_type (transaction_type_id, name) VALUES 
 (1, 'Ingreso'),
 (2, 'Gasto');
 
-INSERT INTO public.transaction_category (transaction_category_id, name, transaction_type_id) VALUES 
+INSERT INTO transaction_category (transaction_category_id, name, transaction_type_id) VALUES 
 (1, 'Venta de café', 1),
 (2, 'Otros', 1),
 (3, 'Pagos a colaboradores', 2),
