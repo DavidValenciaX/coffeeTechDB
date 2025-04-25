@@ -228,6 +228,9 @@ ALTER TABLE plots
 ALTER TABLE plots
     ADD CONSTRAINT fk_plot_plot_state_id FOREIGN KEY (plot_state_id) REFERENCES plot_states(plot_state_id);
 
+ALTER TABLE plots
+    ADD CONSTRAINT fk_plot_area_unit_id FOREIGN KEY (area_unit_id) REFERENCES area_units(area_unit_id);
+
 ALTER TABLE transactions
     ADD CONSTRAINT fk_transaction_plot_id FOREIGN KEY (plot_id) REFERENCES plots(plot_id) ON DELETE CASCADE;
 
