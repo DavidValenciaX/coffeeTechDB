@@ -128,7 +128,7 @@ INSERT INTO plot_states (plot_state_id, name) VALUES
 (1, 'Activo'),
 (2, 'Inactivo');
 
-INSERT INTO user_farm_role_states (user_farm_role_state_id, name) VALUES 
+INSERT INTO user_role_farm_states (user_role_farm_state_id, name) VALUES 
 (1, 'Activo'),
 (2, 'Inactivo');
 
@@ -174,8 +174,8 @@ SELECT setval(pg_get_serial_sequence('plot_states', 'plot_state_id'),
 SELECT setval(pg_get_serial_sequence('notification_states', 'notification_state_id'), 
               (SELECT COALESCE(MAX(notification_state_id), 0) + 1 FROM notification_states), false);
 
-SELECT setval(pg_get_serial_sequence('user_farm_role_states', 'user_farm_role_state_id'), 
-              (SELECT COALESCE(MAX(user_farm_role_state_id), 0) + 1 FROM user_farm_role_states), false);
+SELECT setval(pg_get_serial_sequence('user_role_farm_states', 'user_role_farm_state_id'), 
+              (SELECT COALESCE(MAX(user_role_farm_state_id), 0) + 1 FROM user_role_farm_states), false);
 
 SELECT setval(pg_get_serial_sequence('transaction_states', 'transaction_state_id'), 
               (SELECT COALESCE(MAX(transaction_state_id), 0) + 1 FROM transaction_states), false);
