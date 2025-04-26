@@ -1,31 +1,12 @@
 BEGIN;
 
-INSERT INTO coffee_varieties (coffee_variety_id, name) VALUES 
-(1, 'Castillo'),
-(2, 'Borbon'),
-(3, 'Caturra'),
-(4, 'Colombia'),
-(5, 'Tipica'),
-(6, 'Tabi');
+-- USERS
 
-INSERT INTO area_units (area_unit_id, name, abbreviation) VALUES 
-(1, 'Metro cuadrado', 'm²'),
-(2, 'Kilómetro cuadrado', 'km²'),
-(3, 'Hectárea', 'ha');
-
-INSERT INTO notification_states (notification_state_id, name) VALUES 
-(1, 'Pendiente'),
-(2, 'Respondida'),
-(3, 'Programada'),
-(4, 'Inactiva'),
-(5, 'Aceptada'),
-(6, 'Rechazada');
-
-INSERT INTO notification_types (notification_type_id, name) VALUES 
-(1, 'Invitation'),
-(2, 'Reminder'),
-(3, 'Invitation_Accepted'),
-(4, 'Invitation_Rejected');
+INSERT INTO user_states (user_state_id, name) VALUES 
+(1, 'Activo'),
+(2, 'Verificado'),
+(3, 'No Verificado'),
+(4, 'Suspendido');
 
 INSERT INTO permissions (permission_id, description, name) VALUES
 (1, 'Permite al usuario modificar la informacion de la finca', 'edit_farm'),
@@ -101,24 +82,7 @@ INSERT INTO role_permission (role_id, permission_id) VALUES
 
 (3, 16);
 
-INSERT INTO transaction_types (transaction_type_id, name) VALUES 
-(1, 'Ingreso'),
-(2, 'Gasto');
-
-INSERT INTO transaction_categories (transaction_category_id, name, transaction_type_id) VALUES 
-(1, 'Venta de café', 1),
-(2, 'Otros', 1),
-(3, 'Pagos a colaboradores', 2),
-(4, 'Fertilizantes', 2),
-(5, 'Plaguicidas/herbicidas', 2),
-(6, 'Otros', 2);
-
--- Nuevos inserts para tablas de state específicas
-INSERT INTO user_states (user_state_id, name) VALUES 
-(1, 'Activo'),
-(2, 'Verificado'),
-(3, 'No Verificado'),
-(4, 'Suspendido');
+-- FARMS
 
 INSERT INTO farm_states (farm_state_id, name) VALUES 
 (1, 'Activo'),
@@ -132,14 +96,59 @@ INSERT INTO user_role_farm_states (user_role_farm_state_id, name) VALUES
 (1, 'Activo'),
 (2, 'Inactivo');
 
-INSERT INTO transaction_states (transaction_state_id, name) VALUES 
-(1, 'Activo'),
-(2, 'Inactivo');
+INSERT INTO coffee_varieties (coffee_variety_id, name) VALUES 
+(1, 'Castillo'),
+(2, 'Borbon'),
+(3, 'Caturra'),
+(4, 'Colombia'),
+(5, 'Tipica'),
+(6, 'Tabi');
+
+INSERT INTO area_units (area_unit_id, name, abbreviation) VALUES 
+(1, 'Metro cuadrado', 'm²'),
+(2, 'Kilómetro cuadrado', 'km²'),
+(3, 'Hectárea', 'ha');
+
+-- INVITATIONS
 
 INSERT INTO invitation_states (invitation_state_id, name) VALUES 
 (1, 'Aceptada'),
 (2, 'Rechazada'),
 (3, 'Pendiente');
+
+-- NOTIFICATIONS
+
+INSERT INTO notification_states (notification_state_id, name) VALUES 
+(1, 'Pendiente'),
+(2, 'Respondida'),
+(3, 'Programada'),
+(4, 'Inactiva'),
+(5, 'Aceptada'),
+(6, 'Rechazada');
+
+INSERT INTO notification_types (notification_type_id, name) VALUES 
+(1, 'Invitation'),
+(2, 'Reminder'),
+(3, 'Invitation_Accepted'),
+(4, 'Invitation_Rejected');
+
+-- TRANSACTIONS
+
+INSERT INTO transaction_types (transaction_type_id, name) VALUES 
+(1, 'Ingreso'),
+(2, 'Gasto');
+
+INSERT INTO transaction_categories (transaction_category_id, name, transaction_type_id) VALUES 
+(1, 'Venta de café', 1),
+(2, 'Otros', 1),
+(3, 'Pagos a colaboradores', 2),
+(4, 'Fertilizantes', 2),
+(5, 'Plaguicidas/herbicidas', 2),
+(6, 'Otros', 2);
+
+INSERT INTO transaction_states (transaction_state_id, name) VALUES 
+(1, 'Activo'),
+(2, 'Inactivo');
 
 SELECT setval(pg_get_serial_sequence('coffee_varieties', 'coffee_variety_id'),
               (SELECT COALESCE(MAX(coffee_variety_id), 0) + 1 FROM coffee_varieties), false);
