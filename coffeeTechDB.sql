@@ -100,8 +100,7 @@ CREATE TABLE plots (
     area NUMERIC(10, 2) CHECK (area > 0),
     area_unit_id integer NOT NULL,
     plot_state_id integer NOT NULL,
-    UNIQUE(name, farm_id),
-    CHECK (area > 0)
+    UNIQUE(name, farm_id)
 );
 
 -- INVITATIONS
@@ -211,7 +210,7 @@ ALTER TABLE notifications
     ADD CONSTRAINT fk_notifications_user_id FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE;
 
 ALTER TABLE notifications
-    ADD CONSTRAINT fk_notifications_invitation_id FOREIGN KEY (invitation_id) REFERENCES invitations(invitation_id) ON DELETE CASCADE;
+    ADD CONSTRAINT fk_notifications_invitation_id FOREIGN KEY (invitation_id) REFERENCES invitations(invitation_id) ON DELETE SET NULL;
 
 ALTER TABLE notifications
     ADD CONSTRAINT fk_notifications_farm_id FOREIGN KEY (farm_id) REFERENCES farms(farm_id) ON DELETE CASCADE;

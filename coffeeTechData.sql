@@ -13,6 +13,14 @@ INSERT INTO area_units (area_unit_id, name, abbreviation) VALUES
 (2, 'Kilómetro cuadrado', 'km²'),
 (3, 'Hectárea', 'ha');
 
+INSERT INTO notification_states (notification_state_id, name) VALUES 
+(1, 'Pendiente'),
+(2, 'Respondida'),
+(3, 'Programada'),
+(4, 'Inactiva'),
+(5, 'Aceptada'),
+(6, 'Rechazada');
+
 INSERT INTO notification_types (notification_type_id, name) VALUES 
 (1, 'Invitation'),
 (2, 'Reminder'),
@@ -119,14 +127,6 @@ INSERT INTO farm_states (farm_state_id, name) VALUES
 INSERT INTO plot_states (plot_state_id, name) VALUES 
 (1, 'Activo'),
 (2, 'Inactivo');
-
-INSERT INTO notification_states (notification_state_id, name) VALUES 
-(1, 'Pendiente'),
-(2, 'Respondida'),
-(3, 'Programada'),
-(4, 'Inactiva'),
-(5, 'Aceptada'),
-(6, 'Rechazada');
 
 INSERT INTO user_farm_role_states (user_farm_role_state_id, name) VALUES 
 (1, 'Activo'),
