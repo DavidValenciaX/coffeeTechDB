@@ -152,7 +152,8 @@ CREATE TABLE notifications (
     message VARCHAR(255),
     notification_date timestamp with time zone NOT NULL,
     user_id integer NOT NULL,
-    invitation_id integer,
+    entity_type VARCHAR(50),
+    entity_id integer,
     notification_type_id integer NOT NULL,
     notification_state_id integer NOT NULL,
     farm_id integer
@@ -269,9 +270,6 @@ ALTER TABLE notifications
 
 ALTER TABLE notifications
     ADD CONSTRAINT fk_notifications_user_id FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE;
-
-ALTER TABLE notifications
-    ADD CONSTRAINT fk_notifications_invitation_id FOREIGN KEY (invitation_id) REFERENCES invitations(invitation_id) ON DELETE SET NULL;
 
 ALTER TABLE notifications
     ADD CONSTRAINT fk_notifications_farm_id FOREIGN KEY (farm_id) REFERENCES farms(farm_id) ON DELETE CASCADE;
