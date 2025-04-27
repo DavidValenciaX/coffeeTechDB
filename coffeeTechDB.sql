@@ -1,10 +1,6 @@
--- BASIC CONFIGURATION
-
-SET client_encoding = 'UTF8';
-
 BEGIN;
 
--- TABLAS
+-- TABLES
 
 -- USERS
 
