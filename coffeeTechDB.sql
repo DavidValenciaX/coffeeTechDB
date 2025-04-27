@@ -148,8 +148,7 @@ CREATE TABLE notifications (
     entity_type VARCHAR(50),
     entity_id INTEGER,
     notification_type_id INTEGER NOT NULL,
-    notification_state_id INTEGER NOT NULL,
-    farm_id INTEGER
+    notification_state_id INTEGER NOT NULL
 );
 
 CREATE TABLE user_devices (
@@ -273,9 +272,6 @@ ALTER TABLE notifications
 
 ALTER TABLE notifications
     ADD CONSTRAINT fk_notifications_notification_state_id FOREIGN KEY (notification_state_id) REFERENCES notification_states(notification_state_id);
-
-ALTER TABLE notifications
-    ADD CONSTRAINT fk_notifications_farm_id FOREIGN KEY (farm_id) REFERENCES farms(farm_id) ON DELETE CASCADE;
 
 ALTER TABLE notification_devices
     ADD CONSTRAINT fk_notification_devices_notification_id FOREIGN KEY (notification_id) REFERENCES notifications(notification_id) ON DELETE CASCADE;
