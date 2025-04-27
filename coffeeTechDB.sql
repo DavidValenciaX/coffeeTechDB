@@ -275,9 +275,6 @@ ALTER TABLE notifications
     ADD CONSTRAINT fk_notifications_notification_state_id FOREIGN KEY (notification_state_id) REFERENCES notification_states(notification_state_id);
 
 ALTER TABLE notifications
-    ADD CONSTRAINT fk_notifications_user_id FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE;
-
-ALTER TABLE notifications
     ADD CONSTRAINT fk_notifications_farm_id FOREIGN KEY (farm_id) REFERENCES farms(farm_id) ON DELETE CASCADE;
 
 ALTER TABLE notification_devices
