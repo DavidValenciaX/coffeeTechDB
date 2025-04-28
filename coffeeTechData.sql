@@ -150,11 +150,10 @@ INSERT INTO transaction_states (transaction_state_id, name) VALUES
 (1, 'Activo'),
 (2, 'Inactivo');
 
-SELECT setval(pg_get_serial_sequence('coffee_varieties', 'coffee_variety_id'),
-              (SELECT COALESCE(MAX(coffee_variety_id), 0) + 1 FROM coffee_varieties), false);
+-- USERS
 
-SELECT setval(pg_get_serial_sequence('notification_types', 'notification_type_id'), 
-              (SELECT COALESCE(MAX(notification_type_id), 0) + 1 FROM notification_types), false);
+SELECT setval(pg_get_serial_sequence('user_states', 'user_state_id'), 
+              (SELECT COALESCE(MAX(user_state_id), 0) + 1 FROM user_states), false);
 
 SELECT setval(pg_get_serial_sequence('permissions', 'permission_id'), 
               (SELECT COALESCE(MAX(permission_id), 0) + 1 FROM permissions), false);
@@ -162,17 +161,7 @@ SELECT setval(pg_get_serial_sequence('permissions', 'permission_id'),
 SELECT setval(pg_get_serial_sequence('roles', 'role_id'), 
               (SELECT COALESCE(MAX(role_id), 0) + 1 FROM roles), false);
 
-SELECT setval(pg_get_serial_sequence('transaction_categories', 'transaction_category_id'), 
-              (SELECT COALESCE(MAX(transaction_category_id), 0) + 1 FROM transaction_categories), false);
-
-SELECT setval(pg_get_serial_sequence('transaction_types', 'transaction_type_id'), 
-              (SELECT COALESCE(MAX(transaction_type_id), 0) + 1 FROM transaction_types), false);
-
-SELECT setval(pg_get_serial_sequence('area_units', 'area_unit_id'), 
-              (SELECT COALESCE(MAX(area_unit_id), 0) + 1 FROM area_units), false);
-
-SELECT setval(pg_get_serial_sequence('user_states', 'user_state_id'), 
-              (SELECT COALESCE(MAX(user_state_id), 0) + 1 FROM user_states), false);
+-- FARMS
 
 SELECT setval(pg_get_serial_sequence('farm_states', 'farm_state_id'), 
               (SELECT COALESCE(MAX(farm_state_id), 0) + 1 FROM farm_states), false);
@@ -180,17 +169,38 @@ SELECT setval(pg_get_serial_sequence('farm_states', 'farm_state_id'),
 SELECT setval(pg_get_serial_sequence('plot_states', 'plot_state_id'), 
               (SELECT COALESCE(MAX(plot_state_id), 0) + 1 FROM plot_states), false);
 
-SELECT setval(pg_get_serial_sequence('notification_states', 'notification_state_id'), 
-              (SELECT COALESCE(MAX(notification_state_id), 0) + 1 FROM notification_states), false);
-
 SELECT setval(pg_get_serial_sequence('user_role_farm_states', 'user_role_farm_state_id'), 
               (SELECT COALESCE(MAX(user_role_farm_state_id), 0) + 1 FROM user_role_farm_states), false);
 
-SELECT setval(pg_get_serial_sequence('transaction_states', 'transaction_state_id'), 
-              (SELECT COALESCE(MAX(transaction_state_id), 0) + 1 FROM transaction_states), false);
+SELECT setval(pg_get_serial_sequence('coffee_varieties', 'coffee_variety_id'),
+              (SELECT COALESCE(MAX(coffee_variety_id), 0) + 1 FROM coffee_varieties), false);
+
+SELECT setval(pg_get_serial_sequence('area_units', 'area_unit_id'), 
+              (SELECT COALESCE(MAX(area_unit_id), 0) + 1 FROM area_units), false);
+
+-- INVITATIONS
 
 SELECT setval(pg_get_serial_sequence('invitation_states', 'invitation_state_id'), 
               (SELECT COALESCE(MAX(invitation_state_id), 0) + 1 FROM invitation_states), false);
+
+-- NOTIFICATIONS
+
+SELECT setval(pg_get_serial_sequence('notification_states', 'notification_state_id'), 
+              (SELECT COALESCE(MAX(notification_state_id), 0) + 1 FROM notification_states), false);
+
+SELECT setval(pg_get_serial_sequence('notification_types', 'notification_type_id'), 
+              (SELECT COALESCE(MAX(notification_type_id), 0) + 1 FROM notification_types), false);
+
+-- TRANSACTIONS
+
+SELECT setval(pg_get_serial_sequence('transaction_types', 'transaction_type_id'), 
+              (SELECT COALESCE(MAX(transaction_type_id), 0) + 1 FROM transaction_types), false);
+
+SELECT setval(pg_get_serial_sequence('transaction_categories', 'transaction_category_id'), 
+              (SELECT COALESCE(MAX(transaction_category_id), 0) + 1 FROM transaction_categories), false);
+
+SELECT setval(pg_get_serial_sequence('transaction_states', 'transaction_state_id'), 
+              (SELECT COALESCE(MAX(transaction_state_id), 0) + 1 FROM transaction_states), false);
 
 -- Confirmar la transacción si todo va bien
 COMMIT;
