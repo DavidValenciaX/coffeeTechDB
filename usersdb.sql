@@ -50,9 +50,6 @@ ALTER TABLE users
 ALTER TABLE user_sessions
     ADD CONSTRAINT fk_user_sessions_user_id FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE;
 
-ALTER TABLE user_devices
-    ADD CONSTRAINT fk_user_devices_user_id FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE;
-
 ALTER TABLE role_permission
     ADD CONSTRAINT fk_role_permission_permission_id FOREIGN KEY (permission_id) REFERENCES permissions(permission_id) ON DELETE CASCADE;
 
