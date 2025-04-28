@@ -77,3 +77,12 @@ INSERT INTO role_permission (role_id, permission_id) VALUES
 (3, 14),
 
 (3, 16);
+
+SELECT setval(pg_get_serial_sequence('user_states', 'user_state_id'), 
+              (SELECT COALESCE(MAX(user_state_id), 0) + 1 FROM user_states), false);
+
+SELECT setval(pg_get_serial_sequence('permissions', 'permission_id'), 
+              (SELECT COALESCE(MAX(permission_id), 0) + 1 FROM permissions), false);
+
+SELECT setval(pg_get_serial_sequence('roles', 'role_id'), 
+              (SELECT COALESCE(MAX(role_id), 0) + 1 FROM roles), false);

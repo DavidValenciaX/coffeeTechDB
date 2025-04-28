@@ -13,3 +13,12 @@ INSERT INTO transaction_categories (transaction_category_id, name, transaction_t
 INSERT INTO transaction_states (transaction_state_id, name) VALUES 
 (1, 'Activo'),
 (2, 'Inactivo');
+
+SELECT setval(pg_get_serial_sequence('transaction_types', 'transaction_type_id'), 
+              (SELECT COALESCE(MAX(transaction_type_id), 0) + 1 FROM transaction_types), false);
+
+SELECT setval(pg_get_serial_sequence('transaction_categories', 'transaction_category_id'), 
+              (SELECT COALESCE(MAX(transaction_category_id), 0) + 1 FROM transaction_categories), false);
+
+SELECT setval(pg_get_serial_sequence('transaction_states', 'transaction_state_id'), 
+              (SELECT COALESCE(MAX(transaction_state_id), 0) + 1 FROM transaction_states), false);
