@@ -101,8 +101,6 @@ CREATE TABLE plots (
     altitude NUMERIC(10, 2) CHECK (altitude >= 0 AND altitude <= 3000),
     coffee_variety_id INTEGER NOT NULL,
     farm_id INTEGER NOT NULL,
-    area NUMERIC(10, 2) CHECK (area > 0),
-    area_unit_id INTEGER NOT NULL,
     plot_state_id INTEGER NOT NULL,
     UNIQUE(name, farm_id)
 );
@@ -230,9 +228,6 @@ ALTER TABLE plots
 
 ALTER TABLE plots
     ADD CONSTRAINT fk_plot_plot_state_id FOREIGN KEY (plot_state_id) REFERENCES plot_states(plot_state_id);
-
-ALTER TABLE plots
-    ADD CONSTRAINT fk_plot_area_unit_id FOREIGN KEY (area_unit_id) REFERENCES area_units(area_unit_id);
 
 ALTER TABLE user_role_farm
     ADD CONSTRAINT fk_user_role_farm_farm_id FOREIGN KEY (farm_id) REFERENCES farms(farm_id) ON DELETE CASCADE;
