@@ -117,11 +117,10 @@ CREATE TABLE invitations (
     invited_user_id INTEGER NOT NULL,
     suggested_role_id INTEGER NOT NULL,
     invitation_state_id INTEGER NOT NULL,
-    entity_type VARCHAR(50) NOT NULL,
-    entity_id INTEGER NOT NULL,
+    farm_id INTEGER NOT NULL,
     inviter_user_id INTEGER NOT NULL,
     invitation_date TIMESTAMP WITH TIME ZONE NOT NULL,
-    UNIQUE(invited_user_id, entity_type, entity_id)
+    UNIQUE(invited_user_id, farm_id)
 );
 
 -- NOTIFICATIONS
